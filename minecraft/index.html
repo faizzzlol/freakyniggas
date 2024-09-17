@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="icon" type="image/png" href="/freakyniggas/FreakyNiggasLogo.png" sizes="16x16">
+    <title>Minecraft Servers - Freaky Niggas</title>
+    <link rel="stylesheet" href="styles.css">
+    <script defer src="script.js"></script>
+</head>
+<body>
+    <header>
+        <div class="banner">
+            <img src="/freakyniggas/FreakyNiggasBanner.gif" alt="Freaky Niggas Banner" class="banner-img">
+        </div>
+
+        <nav>
+            <ul>
+                <li><a href="/freakyniggas/">Home</a></li>
+                <li><a href="/freakyniggas/minecraft" class="active">Minecraft</a></li>
+                <li><a href="/freakyniggas/valorant">Valorant</a></li>
+            </ul>
+        </nav>
+
+        <div class="theme-switch">
+            <label for="theme-toggle">🌙</label>
+            <input type="checkbox" id="theme-toggle">
+        </div>
+    </header>
+
+    <main>
+        <section class="minecraft-servers">
+            <h1>Minecraft Servers</h1>
+
+            <!-- Niggas SMP -->
+            <div class="server-card">
+                <h2>Niggas SMP</h2>
+                <p><strong>IP:</strong> N1ggsSMPtest.aternos.me</p>
+                <p><strong>Platform:</strong> Java Edition</p>
+                <p><strong>Version:</strong> Latest</p>
+                <button class="copy-btn" data-clipboard-text="N1ggsSMPtest.aternos.me">Copy IP</button>
+            </div>
+
+            <!-- Niggas Superheroes -->
+            <div class="server-card">
+                <h2>Niggas Superheroes</h2>
+                <p><strong>IP:</strong> nhero.aternos.me</p>
+                <p><strong>Platform:</strong> Java Edition</p>
+                <p><strong>Version:</strong> 1.7.10 only</p>
+                <p><strong>Mods:</strong> Fisk's Heroes and others</p>
+                <button class="copy-btn" data-clipboard-text="nhero.aternos.me">Copy IP</button>
+            </div>
+
+            <!-- Niggas Foundation (Placeholder for Future Expansion) -->
+            <div class="server-card">
+                <h2>Niggas Foundation</h2>
+                <p><em>Server information coming soon...</em></p>
+            </div>
+        </section>
+    </main>
+
+    <footer>
+        <p>&copy; 2024 Freaky Niggas. All rights reserved.</p>
+    </footer>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/2.0.10/clipboard.min.js"></script>
+    <script>
+        // Clipboard.js for Copy IP Buttons
+        new ClipboardJS('.copy-btn');
+
+        // Dark Mode Toggle and Save Preference
+        const themeToggle = document.getElementById('theme-toggle');
+        const currentTheme = localStorage.getItem('theme') || 'light';
+        document.body.classList.add(currentTheme);
+
+        themeToggle.checked = currentTheme === 'dark';
+
+        themeToggle.addEventListener('change', () => {
+            const newTheme = themeToggle.checked ? 'dark' : 'light';
+            document.body.classList.toggle('dark', themeToggle.checked);
+            localStorage.setItem('theme', newTheme);
+        });
+    </script>
+</body>
+</html>
