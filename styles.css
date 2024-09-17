@@ -87,3 +87,14 @@ body.dark .server-card {
     background-color: var(--primary-color-dark);
     color: var(--text-color-dark);
 }
+.banner {
+    text-align: center;
+    margin-bottom: 20px;
+}
+
+.banner-img {
+    max-width: 100%;
+    height: auto;
+    display: block;
+    margin: 0 auto;
+}
