@@ -156,4 +156,23 @@ body {
     max-width: 100%;
     height: auto;
 }
+/* Add styling for the popup message */
+.popup {
+    visibility: hidden;
+    position: fixed;
+    bottom: 20px;
+    left: 50%;
+    transform: translateX(-50%);
+    background-color: #333;
+    color: #fff;
+    padding: 10px 20px;
+    border-radius: 5px;
+    font-size: 16px;
+    opacity: 0;
+    transition: visibility 0s, opacity 0.3s ease-in-out;
+}
 
+.popup.show {
+    visibility: visible;
+    opacity: 1;
+}
