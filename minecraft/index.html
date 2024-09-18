@@ -59,6 +59,9 @@
         </section>
     </main>
 
+    <!-- Popup for "Copied" message -->
+    <div id="popup" class="popup">Copied!</div>
+    
     <footer>
         <p>&copy; 2024 Freaky Niggas. All rights reserved.</p>
         <p><small>Not affiliated with Mojang Studios or Microsoft. "Minecraft" is a trademark of Mojang Studios, a subsidiary of Microsoft.</small></p>
@@ -68,6 +71,15 @@
     <script>
         // Clipboard.js for Copy IP Buttons
         new ClipboardJS('.copy-btn');
+
+        // Show popup when copying
+        clipboard.on('success', function(e) {
+            const popup = document.getElementById('popup');
+            popup.classList.add('show');
+            setTimeout(() => {
+                popup.classList.remove('show');
+            }, 2000); // Hide the popup after 2 seconds
+        });
 
         // Dark Mode Toggle and Save Preference
         const themeToggle = document.getElementById('theme-toggle');
