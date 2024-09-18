@@ -160,3 +160,9 @@ body {
     visibility: visible;
     opacity: 1;
 }
+.server-banner {
+    width: 100%;
+    max-width: 800px;
+    display: block;
+    margin: 10px auto;
+}
