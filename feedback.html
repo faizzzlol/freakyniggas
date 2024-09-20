@@ -14,9 +14,11 @@
     <meta property="og:description" content="Feedback - Freaky Niggas (FN). Minecraft, Valorant Communities."/>
     <link rel="stylesheet" href="styles.css">
     <script defer src="script.js"></script>
+    <script src="https://dipped.dev/static/plugins/discordwidget/index.js"></script>
 </head>
 <body>
     <header>
+        <!-- Freaky Niggas Banner -->
         <div class="banner">
             <img src="FreakyNiggasBanner.gif" alt="Freaky Niggas Banner" class="banner-img">
         </div>
@@ -28,6 +30,7 @@
                 <li><a href="valorant">Valorant</a></li>
                 <li><a href="#discord">Discord</a></li>
                 <li><a href="">Feedback</a></li>
+                <!-- Add other game pages -->
             </ul>
         </nav>
         <div class="theme-switch">
@@ -42,31 +45,38 @@
             <p>We value your feedback!</p>
         </section>
 
-        <form id="feedback-form">
-            <div class="form-group">
-                <label for="user-name">Your Name:</label>
-                <input type="text" id="user-name" name="user-name" required>
-            </div>
-
-            <div class="form-group">
-                <label for="rating">Rate Us:</label>
-                <div id="star-rating">
-                    <span class="star" data-value="1">&#9733;</span>
-                    <span class="star" data-value="2">&#9733;</span>
-                    <span class="star" data-value="3">&#9733;</span>
-                    <span class="star" data-value="4">&#9733;</span>
-                    <span class="star" data-value="5">&#9733;</span>
+        <section>
+            <form id="feedback-form">
+                <div class="form-group">
+                    <label for="user-name">Your Name:</label>
+                    <input type="text" id="user-name" name="user-name" required>
                 </div>
-                <input type="hidden" id="rating" name="rating" required>
-            </div>
 
-            <div class="form-group">
-                <label for="feedback">Your Feedback:</label>
-                <textarea id="feedback" name="feedback" rows="5" required></textarea>
-            </div>
+                <div class="form-group">
+                    <label for="rating">Rate Us:</label>
+                    <div id="star-rating">
+                        <span class="star" data-value="1">&#9733;</span>
+                        <span class="star" data-value="2">&#9733;</span>
+                        <span class="star" data-value="3">&#9733;</span>
+                        <span class="star" data-value="4">&#9733;</span>
+                        <span class="star" data-value="5">&#9733;</span>
+                    </div>
+                    <input type="hidden" id="rating" name="rating" required>
+                </div>
 
-            <button type="submit" class="submit-btn">Submit Feedback</button>
-        </form>
+                <div class="form-group">
+                    <label for="feedback">Your Feedback:</label>
+                    <textarea id="feedback" name="feedback" rows="5" required></textarea>
+                </div>
+
+                <!-- "NOTE:" informing users -->
+                <div class="form-group">
+                    <p><strong>NOTE:</strong> Once you submit your feedback, you cannot delete or edit it. Please make sure all information is correct before submitting.</p>
+                </div>
+
+                <button type="submit" class="submit-btn">Submit Feedback</button>
+            </form>
+        </section>
     </main>
 
     <footer>
@@ -74,7 +84,7 @@
     </footer>
 
     <script>
-        // Theme toggle function
+        // Toggle theme function
         function toggleTheme() {
             const themeToggle = document.getElementById('theme-toggle');
             const isDarkMode = themeToggle.checked;
@@ -100,8 +110,6 @@
                 document.body.setAttribute('data-theme', 'light');
                 themeToggle.checked = false;
             }
-
-            themeToggle.addEventListener('change', toggleTheme);
         });
 
         // Star rating system
@@ -116,7 +124,7 @@
             });
         });
 
-        // Form submission
+        // Form submission with Discord embed
         document.getElementById('feedback-form').addEventListener('submit', function(event) {
             event.preventDefault();
 
@@ -124,17 +132,41 @@
             const rating = document.getElementById('rating').value;
             const feedback = document.getElementById('feedback').value;
 
-            const payload = {
+            const embedPayload = {
                 username: "Freaky Niggas - Feedback",
-                content: `**New Feedback Received**\n**Name:** ${userName}\n**Rating:** ${rating} stars\n**Feedback:** ${feedback}`
+                embeds: [{
+                    title: "New Feedback Received",
+                    color: 3447003, // Discord embed color in hex
+                    fields: [
+                        {
+                            name: "Name",
+                            value: userName,
+                            inline: true
+                        },
+                        {
+                            name: "Rating",
+                            value: `${rating} stars`,
+                            inline: true
+                        },
+                        {
+                            name: "Feedback",
+                            value: feedback,
+                            inline: false
+                        }
+                    ],
+                    footer: {
+                        text: "Feedback cannot be edited or deleted once submitted."
+                    },
+                    timestamp: new Date()
+                }]
             };
 
             fetch('https://discord.com/api/webhooks/1286700191327453205/lGj-kz75VWmSIM4mvWjtjr8FBk8CLVVsr8hOcUnpxTnv9WTGLHnzLgiopZ7UZmPf_8q0', {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify(payload)
+                body: JSON.stringify(embedPayload)
             }).then(() => {
-                alert('Thank you for your feedback!');
+                alert('Thank you for your feedback! Note: You cannot edit or delete your feedback.');
                 document.getElementById('feedback-form').reset();
             }).catch(error => {
                 console.error('Error:', error);
