@@ -98,3 +98,119 @@ body.dark .server-card {
     display: block;
     margin: 0 auto;
 }
+/* Feedback section styles */
+.feedback-section {
+    background-color: #2c2c2c;
+    border-radius: 8px;
+    padding: 40px;
+    margin: 20px auto;
+    max-width: 600px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
+}
+
+.feedback-form h2 {
+    font-size: 2rem;
+    color: #ffcc00;
+    margin-bottom: 20px;
+    text-align: center;
+}
+
+.form-group {
+    margin-bottom: 20px;
+}
+
+.form-group label {
+    display: block;
+    font-size: 1.2rem;
+    margin-bottom: 5px;
+}
+
+.form-group input[type="text"],
+.form-group textarea {
+    width: 100%;
+    padding: 10px;
+    font-size: 1rem;
+    border-radius: 4px;
+    border: 1px solid #555;
+    background-color: #444;
+    color: #fff;
+    box-sizing: border-box;
+}
+
+.form-group textarea {
+    resize: none;
+}
+
+.form-group input[type="text"]::placeholder,
+.form-group textarea::placeholder {
+    color: #ccc;
+}
+
+#star-rating {
+    font-size: 2rem;
+    display: flex;
+    justify-content: center;
+}
+
+.star {
+    color: #ccc;
+    cursor: pointer;
+    transition: color 0.3s ease;
+}
+
+.star:hover,
+.star.selected {
+    color: #ffcc00;
+}
+
+/* Note section styles */
+.form-group.note p {
+    color: #ff6666;
+    font-size: 1rem;
+    text-align: center;
+    font-weight: bold;
+}
+
+/* Submit button styles */
+.submit-btn {
+    display: block;
+    width: 100%;
+    padding: 10px;
+    font-size: 1.2rem;
+    background-color: #ffcc00;
+    color: #1a1a1a;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+.submit-btn:hover {
+    background-color: #ff9933;
+}
+
+footer {
+    text-align: center;
+    padding: 20px;
+    background-color: #333;
+    color: #f4f4f4;
+}
+
+/* Responsive design */
+@media (max-width: 600px) {
+    .feedback-section {
+        padding: 20px;
+    }
+    
+    h1 {
+        font-size: 2rem;
+    }
+
+    .feedback-form h2 {
+        font-size: 1.8rem;
+    }
+
+    .submit-btn {
+        font-size: 1rem;
+    }
+}
