@@ -1,100 +1,521 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="icon" type="image/png" href="FreakyNiggasLogo.png" sizes="16x16">
-    <title>Freaky Niggas</title>
-    <meta name="description" content="Freaky Niggas (FN). Minecraft, Valorant Communities.">
-    <meta name="keywords" content="Freaky Niggas, FN, Faiz Freaky Niggas, Freaky, Nigga, Niggers, Nigger, Niggas, The Legend Of Legiona, TheLoL, TheLoL Website, The LoL, TheLol Server, The LoL Server, The Legend of Legiona Website, faizzzlol, FaizGG, Faiz Gaming, The Sus, TLoL, TL, CornHub, 4k, Apple, iPhone 16, iPhone 15, Apple Watch, iPhone SE, YouTube, Netflix, Roblox, Twitch, Maybank, Instagram, Paiz Shop, Skyxion, Neverland, Paiz Corp, Paiz Chicken, Paiz Railways">
-    <meta property="og:title" content="Freaky Niggas"/>
-    <meta property="og:url" content="https://faizzzlol.github.io/freakyniggas/"/>
-    <meta property="og:image" content="FreakyNiggasLogo.gif"/>
-    <meta property="og:type" content="website"/>
-    <meta property="og:description" content="Freaky Niggas (FN). Minecraft, Valorant Communities."/>
-    <link rel="stylesheet" href="styles.css">
-    <script defer src="script.js"></script>
-    <script src="https://dipped.dev/static/plugins/discordwidget/index.js"></script>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Freaky Niggas</title>
+  <link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:ital,wght@0,700;0,900;1,900&family=DM+Mono:wght@400;500&family=Barlow:wght@400;600&display=swap" rel="stylesheet"/>
+  <style>
+    :root {
+      --bg: #080808;
+      --surface: #0f0f0f;
+      --surface2: #161616;
+      --border: #222;
+      --text: #f5f5f5;
+      --muted: #555;
+      --muted2: #888;
+      --white: #ffffff;
+      --font-display: 'Barlow Condensed', sans-serif;
+      --font-body: 'Barlow', sans-serif;
+      --font-mono: 'DM Mono', monospace;
+    }
+
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    html { scroll-behavior: smooth; }
+
+    body {
+      background: var(--bg);
+      color: var(--text);
+      font-family: var(--font-body);
+      font-size: 17px;
+      overflow-x: hidden;
+    }
+
+    /* grain overlay */
+    body::before {
+      content: '';
+      position: fixed; inset: 0;
+      background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='300' height='300'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.75' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='300' height='300' filter='url(%23n)' opacity='0.06'/%3E%3C/svg%3E");
+      pointer-events: none; z-index: 9999; mix-blend-mode: overlay;
+    }
+
+    /* ── NAV ── */
+    nav {
+      position: fixed; top: 0; left: 0; right: 0; z-index: 100;
+      display: flex; align-items: center; justify-content: space-between;
+      padding: 1.1rem 2.5rem;
+      background: rgba(8,8,8,0.92);
+      backdrop-filter: blur(10px);
+      border-bottom: 1px solid var(--border);
+    }
+
+    .nav-logo {
+      display: flex; align-items: center; gap: 0.7rem;
+      text-decoration: none;
+    }
+
+    .nav-logo img {
+      width: 36px; height: 36px;
+      border-radius: 5px; object-fit: cover;
+    }
+
+    .nav-wordmark {
+      font-family: var(--font-display);
+      font-weight: 900; font-size: 1.25rem;
+      letter-spacing: 0.08em; color: var(--white);
+      text-transform: uppercase;
+    }
+
+    .nav-links {
+      display: flex; gap: 2rem; list-style: none; align-items: center;
+    }
+
+    .nav-links a {
+      color: var(--muted2); text-decoration: none;
+      font-family: var(--font-mono); font-size: 0.72rem;
+      letter-spacing: 0.14em; text-transform: uppercase;
+      transition: color 0.2s;
+    }
+
+    .nav-links a:hover { color: var(--white); }
+
+    .nav-cta {
+      background: var(--white) !important;
+      color: #000 !important;
+      padding: 0.42rem 1.05rem;
+      border-radius: 3px;
+    }
+
+    .nav-cta:hover { background: #ddd !important; }
+
+    /* ── HERO ── */
+    .hero {
+      min-height: 100vh;
+      display: flex; flex-direction: column;
+      align-items: center; justify-content: center;
+      text-align: center;
+      padding: 7rem 2rem 5rem;
+      position: relative; overflow: hidden;
+    }
+
+    /* scanlines */
+    .hero::before {
+      content: '';
+      position: absolute; inset: 0;
+      background: repeating-linear-gradient(
+        0deg, transparent, transparent 2px,
+        rgba(255,255,255,0.01) 2px, rgba(255,255,255,0.01) 4px
+      );
+      pointer-events: none;
+    }
+
+    .hero-eyebrow {
+      font-family: var(--font-mono); font-size: 0.7rem;
+      letter-spacing: 0.25em; color: var(--muted);
+      text-transform: uppercase; margin-bottom: 2.5rem;
+      display: flex; align-items: center; gap: 0.7rem;
+      animation: fadeUp 0.5s ease both;
+    }
+
+    .hero-eyebrow::before, .hero-eyebrow::after {
+      content: ''; width: 28px; height: 1px; background: var(--border);
+    }
+
+    /* Banner */
+    .hero-banner {
+      width: 100%; max-width: 820px;
+      border-radius: 6px; overflow: hidden;
+      border: 1px solid var(--border);
+      margin-bottom: 3rem;
+      position: relative;
+      animation: fadeUp 0.6s 0.05s ease both;
+      box-shadow: 0 0 80px rgba(0,0,0,0.6);
+    }
+
+    .hero-banner img { width: 100%; display: block; }
+
+    /* glitch sweep on banner */
+    .hero-banner::after {
+      content: '';
+      position: absolute; left: 0; right: 0; height: 2px;
+      background: rgba(255,255,255,0.2);
+      top: 35%;
+      animation: sweep 5s infinite;
+    }
+
+    @keyframes sweep {
+      0%,80%,100% { opacity:0; top:35%; }
+      82% { opacity:1; top:33%; }
+      84% { opacity:0; top:62%; }
+      86% { opacity:1; top:62%; }
+      88% { opacity:0; }
+    }
+
+    /* Title */
+    .hero-title {
+      font-family: var(--font-display);
+      font-weight: 900; font-style: italic;
+      font-size: clamp(4rem, 12vw, 9.5rem);
+      line-height: 0.88; letter-spacing: 0.01em;
+      text-transform: uppercase; color: var(--white);
+      position: relative;
+      animation: fadeUp 0.6s 0.15s ease both;
+    }
+
+    .hero-title::before, .hero-title::after {
+      content: attr(data-text);
+      position: absolute; top:0; left:0; right:0;
+      font-family:inherit; font-weight:inherit;
+      font-style:inherit; font-size:inherit;
+      line-height:inherit; letter-spacing:inherit;
+    }
+
+    .hero-title::before {
+      color: rgba(0,220,255,0.3);
+      clip-path: polygon(0 15%, 100% 15%, 100% 35%, 0 35%);
+      animation: ga 7s infinite;
+    }
+
+    .hero-title::after {
+      color: rgba(255,30,30,0.3);
+      clip-path: polygon(0 58%, 100% 58%, 100% 76%, 0 76%);
+      animation: gb 7s infinite;
+    }
+
+    @keyframes ga {
+      0%,88%,100%{transform:none;opacity:0}
+      90%{transform:translateX(-5px);opacity:1}
+      92%{transform:translateX(5px);opacity:1}
+      94%{transform:none;opacity:0}
+    }
+
+    @keyframes gb {
+      0%,91%,100%{transform:none;opacity:0}
+      93%{transform:translateX(5px);opacity:1}
+      95%{transform:translateX(-4px);opacity:1}
+      97%{transform:none;opacity:0}
+    }
+
+    .hero-sub {
+      font-size: 1rem; color: var(--muted2);
+      margin-top: 1.4rem; max-width: 400px;
+      animation: fadeUp 0.6s 0.25s ease both;
+    }
+
+    .hero-actions {
+      display: flex; gap: 0.7rem; margin-top: 2.2rem;
+      flex-wrap: wrap; justify-content: center;
+      animation: fadeUp 0.6s 0.35s ease both;
+    }
+
+    .btn {
+      display: inline-flex; align-items: center; gap: 0.5rem;
+      padding: 0.68rem 1.5rem;
+      font-family: var(--font-mono); font-size: 0.76rem;
+      letter-spacing: 0.12em; text-transform: uppercase;
+      text-decoration: none; border-radius: 3px;
+      border: none; cursor: pointer; transition: all 0.2s;
+    }
+
+    .btn-white { background: var(--white); color: #000; }
+    .btn-white:hover { background: #ddd; transform: translateY(-2px); }
+
+    .btn-ghost {
+      background: transparent; color: var(--muted2);
+      border: 1px solid var(--border);
+    }
+    .btn-ghost:hover { border-color: #555; color: var(--white); transform: translateY(-2px); }
+
+    .share-row {
+      display: flex; align-items: center; gap: 0.55rem;
+      margin-top: 1.8rem;
+      font-family: var(--font-mono); font-size: 0.7rem; color: var(--muted);
+      animation: fadeUp 0.6s 0.45s ease both;
+    }
+
+    .url-chip {
+      background: var(--surface2); border: 1px solid var(--border);
+      padding: 0.28rem 0.65rem; border-radius: 3px; color: var(--muted2);
+    }
+
+    .copy-btn {
+      background: var(--border); border: none;
+      color: var(--muted2); padding: 0.28rem 0.6rem;
+      border-radius: 3px; font-family: var(--font-mono);
+      font-size: 0.68rem; cursor: pointer; transition: all 0.2s;
+    }
+    .copy-btn:hover { background: var(--white); color: #000; }
+
+    /* ── DIVIDER ── */
+    hr { border: none; border-top: 1px solid var(--border); }
+
+    /* ── SECTIONS ── */
+    .section {
+      padding: 5rem 2rem;
+      max-width: 1060px; margin: 0 auto;
+    }
+
+    .section-label {
+      font-family: var(--font-mono); font-size: 0.67rem;
+      letter-spacing: 0.22em; color: var(--muted);
+      text-transform: uppercase; margin-bottom: 0.7rem;
+    }
+
+    .section-title {
+      font-family: var(--font-display);
+      font-weight: 900; font-style: italic;
+      font-size: clamp(2.6rem, 5vw, 4.2rem);
+      line-height: 0.9; letter-spacing: 0.02em;
+      text-transform: uppercase; margin-bottom: 2.2rem;
+    }
+
+    /* ── GAME CARDS ── */
+    .games-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(280px,1fr));
+      gap: 1px; background: var(--border);
+      border: 1px solid var(--border); border-radius: 6px; overflow: hidden;
+    }
+
+    .game-card {
+      background: var(--surface);
+      text-decoration: none; color: var(--text);
+      display: flex; flex-direction: column;
+      transition: background 0.2s;
+    }
+
+    .game-card:hover { background: var(--surface2); }
+    .game-card:hover .gc-arrow { transform: translate(3px,-3px); }
+
+    .gc-img {
+      width: 100%; height: 185px;
+      object-fit: cover; display: block;
+      filter: grayscale(1) contrast(1.05);
+      transition: filter 0.3s;
+    }
+
+    .game-card:hover .gc-img { filter: grayscale(0.4) contrast(1.05); }
+
+    .gc-body { padding: 1.3rem; flex: 1; }
+
+    .gc-tag {
+      font-family: var(--font-mono); font-size: 0.65rem;
+      letter-spacing: 0.18em; color: var(--muted);
+      text-transform: uppercase; margin-bottom: 0.35rem;
+    }
+
+    .gc-name {
+      font-family: var(--font-display); font-weight: 900; font-style: italic;
+      font-size: 2.3rem; line-height: 1;
+      letter-spacing: 0.02em; text-transform: uppercase;
+    }
+
+    .gc-desc { color: var(--muted2); font-size: 0.87rem; margin-top: 0.35rem; }
+
+    .gc-foot {
+      padding: 0.85rem 1.3rem;
+      border-top: 1px solid var(--border);
+      display: flex; align-items: center; justify-content: space-between;
+    }
+
+    .gc-status {
+      display: flex; align-items: center; gap: 0.38rem;
+      font-family: var(--font-mono); font-size: 0.67rem; color: var(--muted);
+    }
+
+    .dot {
+      width: 5px; height: 5px;
+      background: #4ade80; border-radius: 50%;
+      animation: blink 2s infinite;
+    }
+
+    .gc-arrow { color: var(--muted); transition: transform 0.2s; }
+
+    /* ── COMMUNITY ── */
+    .comm-grid {
+      display: grid; grid-template-columns: 1fr 1fr;
+      border: 1px solid var(--border); border-radius: 6px; overflow: hidden;
+    }
+
+    .comm-card {
+      background: var(--surface);
+      padding: 2rem; display: flex; flex-direction: column; gap: 0.85rem;
+    }
+
+    .comm-card:first-child { border-right: 1px solid var(--border); }
+
+    .comm-platform {
+      font-family: var(--font-mono); font-size: 0.65rem;
+      letter-spacing: 0.2em; color: var(--muted); text-transform: uppercase;
+    }
+
+    .comm-name {
+      font-family: var(--font-display); font-weight: 900; font-style: italic;
+      font-size: 2.3rem; line-height: 1; text-transform: uppercase;
+    }
+
+    .comm-desc { color: var(--muted2); font-size: 0.88rem; flex: 1; }
+
+    .btn-discord { background: #5865F2; color: #fff; }
+    .btn-discord:hover { background: #4752c4; transform: translateY(-2px); }
+    .btn-wa { background: #25D366; color: #000; }
+    .btn-wa:hover { background: #1eb85a; transform: translateY(-2px); }
+
+    /* ── FOOTER ── */
+    footer {
+      border-top: 1px solid var(--border);
+      padding: 1.8rem 2.5rem;
+      display: flex; align-items: center; justify-content: space-between;
+      flex-wrap: wrap; gap: 1rem;
+    }
+
+    .foot-logo {
+      display: flex; align-items: center; gap: 0.55rem;
+    }
+
+    .foot-logo img { width: 26px; height: 26px; border-radius: 4px; object-fit: cover; }
+
+    .foot-wordmark {
+      font-family: var(--font-display); font-weight: 900;
+      font-size: 1.05rem; letter-spacing: 0.08em; color: var(--white);
+    }
+
+    .foot-copy { font-family: var(--font-mono); font-size: 0.67rem; color: var(--muted); }
+
+    .foot-link {
+      font-family: var(--font-mono); font-size: 0.67rem;
+      color: var(--muted); text-decoration: none; transition: color 0.2s;
+    }
+    .foot-link:hover { color: var(--white); }
+
+    /* ── ANIMS ── */
+    @keyframes fadeUp {
+      from { opacity:0; transform:translateY(16px); }
+      to   { opacity:1; transform:translateY(0); }
+    }
+
+    @keyframes blink {
+      0%,100%{opacity:1} 50%{opacity:0.3}
+    }
+
+    @media (max-width:680px) {
+      .comm-grid { grid-template-columns:1fr; }
+      .comm-card:first-child { border-right:none; border-bottom:1px solid var(--border); }
+      nav { padding:1rem 1.2rem; }
+      .nav-links { gap:0.8rem; }
+      footer { flex-direction:column; }
+    }
+  </style>
 </head>
 <body>
-    <header>
-        <!-- Freaky Niggas Banner -->
-        <div class="banner">
-            <img src="FreakyNiggasBanner.gif" alt="Freaky Niggas Banner" class="banner-img">
+
+  <nav>
+    <a class="nav-logo" href="#">
+      <img src="https://faizzzlol.github.io/freakyniggas/FreakyNiggasLogo.gif" alt="FN"/>
+      <span class="nav-wordmark">Freaky Niggas</span>
+    </a>
+    <ul class="nav-links">
+      <li><a href="#games">Games</a></li>
+      <li><a href="#community">Community</a></li>
+      <li><a href="https://chat.whatsapp.com/E0Z4puJdXR8HhRcjoce3h6" target="_blank" class="nav-cta">Join Now</a></li>
+    </ul>
+  </nav>
+
+  <div class="hero">
+    <div class="hero-eyebrow">Community is live — come hang</div>
+
+    <div class="hero-banner">
+      <img src="https://faizzzlol.github.io/freakyniggas/FreakyNiggasBanner.gif" alt="Freaky Niggas Banner"/>
+    </div>
+
+    <div class="hero-title" data-text="Freaky Niggas">Freaky Niggas</div>
+
+    <p class="hero-sub">A gaming community built different. Minecraft, Valorant, and good vibes only.</p>
+
+    <div class="hero-actions">
+      <a href="https://chat.whatsapp.com/E0Z4puJdXR8HhRcjoce3h6" target="_blank" class="btn btn-white">Join WhatsApp</a>
+      <a href="#games" class="btn btn-ghost">Explore Games</a>
+    </div>
+
+    <div class="share-row">
+      Share:
+      <span class="url-chip">bit.ly/freakyniggas</span>
+      <button class="copy-btn" onclick="
+        navigator.clipboard.writeText('https://bit.ly/freakyniggas');
+        this.textContent='Copied!';
+        setTimeout(()=>this.textContent='Copy',1500)
+      ">Copy</button>
+    </div>
+  </div>
+
+  <hr/>
+
+  <div class="section" id="games">
+    <div class="section-label">// What we play</div>
+    <div class="section-title">Our Servers</div>
+    <div class="games-grid">
+
+      <a class="game-card" href="https://faizzzlol.github.io/freakyniggas/minecraft">
+        <img class="gc-img" src="https://images.unsplash.com/photo-1606144042614-b2417e99c4e3?w=700&q=80" alt="Minecraft"/>
+        <div class="gc-body">
+          <div class="gc-tag">// Survival & More</div>
+          <div class="gc-name">Minecraft</div>
+          <div class="gc-desc">Build, survive, and cause chaos with the crew on our server.</div>
         </div>
-        
-        <nav>
-            <ul>
-                <li><a href="">Home</a></li>
-                <li><a href="minecraft">Minecraft</a></li>
-                <li><a href="valorant">Valorant</a></li>
-                <li><a href="#discord">Discord</a></li>
-                <li><a href="feedback">Feedback</a></li>
-                <!-- Add other game pages -->
-            </ul>
-        </nav>
-        <div class="theme-switch">
-            <label for="theme-toggle">🌙</label>
-            <input type="checkbox" id="theme-toggle">
+        <div class="gc-foot">
+          <div class="gc-status"><span class="dot"></span> Server Live</div>
+          <span class="gc-arrow">↗</span>
         </div>
-    </header>
-    
-    <main>
-        <section class="welcome">
-            <h1>Welcome to Freaky Niggas Community!</h1>
-            <p>Join our amazing community where we play games like Minecraft, Valorant, and more!</p>
-        </section>
+      </a>
 
-        <section>
-            <div style="background-color: #333; padding: 10px; border-radius: 10px; display: flex; align-items: center; width: 300px;">
-              <p style="color: white; margin: 0; font-size: 14px; flex: 1;">Share this site: <span id="short-url">https://bit.ly/freakyniggas</span></p>
-              <button onclick="copyShortURL()" style="background-color: #444; color: white; border: none; padding: 5px 10px; border-radius: 5px; cursor: pointer;">Copy</button>
-            </div>
-            
-            <script>
-              function copyShortURL() {
-                const url = "https://bit.ly/freakyniggas";
-                navigator.clipboard.writeText(url).then(() => {
-                  alert("Short URL copied to clipboard!");
-                }).catch(err => {
-                  console.error("Failed to copy: ", err);
-                });
-              }
-            </script>
-        </section>
-        
-        <section class="features">
-            <h2>Our Servers</h2>
-            <div class="server-list">
-                <a href="minecraft" class="server-card">Minecraft</a>
-                <a href="valorant" class="server-card">Valorant</a>
-                <!-- Add more games -->
-            </div>
-        </section>
+      <a class="game-card" href="https://faizzzlol.github.io/freakyniggas/valorant">
+        <img class="gc-img" src="https://images.unsplash.com/photo-1542751371-adc38448a05e?w=700&q=80" alt="Valorant"/>
+        <div class="gc-body">
+          <div class="gc-tag">// Competitive</div>
+          <div class="gc-name">Valorant</div>
+          <div class="gc-desc">5v5 tactical chaos. Ranked grind or just goofing — you decide.</div>
+        </div>
+        <div class="gc-foot">
+          <div class="gc-status"><span class="dot"></span> Active</div>
+          <span class="gc-arrow">↗</span>
+        </div>
+      </a>
 
-        <!-- WhatsApp Widget Section -->
-        <section class="whatsapp">
-            <div style="background-color: #25D366; padding: 10px; border-radius: 10px; display: flex; align-items: center; width: 300px;">
-              <img src="https://upload.wikimedia.org/wikipedia/commons/6/6b/WhatsApp.svg" alt="WhatsApp Logo" style="width: 50px; margin-right: 10px;">
-              <div style="color: white; font-family: Arial, sans-serif;">
-                <h3 style="margin: 0; font-size: 18px;">Join Our WhatsApp</h3>
-                <p style="margin: 0; font-size: 14px;">Connect with the community on WhatsApp!</p>
-                <a href="https://chat.whatsapp.com/E0Z4puJdXR8HhRcjoce3h6" target="_blank" style="color: white; text-decoration: underline;">Join Now</a>
-              </div>
-            </div>
-        </section>
-            
-         <!-- Discord Widget Section -->
-        <section class="discord">
-            <h2>Join Our Discord</h2>
-            <p>Connect with the community, share ideas, and join the fun on our Discord server.</p>
-            <iframe src="https://discord.com/widget?id=1243186580731199519&theme=dark" width="350" height="500" allowtransparency="true" frameborder="0" sandbox="allow-popups allow-popups-to-escape-sandbox allow-same-origin allow-scripts"></iframe>
-        </section>
-    </main>
+    </div>
+  </div>
 
-    <footer>
-        <p>&copy; 2025 Freaky Niggas. All rights reserved.</p>
-    </footer>
+  <hr/>
+
+  <div class="section" id="community">
+    <div class="section-label">// Connect with us</div>
+    <div class="section-title">Join the Squad</div>
+    <div class="comm-grid">
+
+      <div class="comm-card">
+        <div class="comm-platform">// Platform</div>
+        <div class="comm-name">Discord</div>
+        <div class="comm-desc">Main hub — voice chat, memes, announcements, game coordination.</div>
+        <a href="https://discord.com/invite/8kwW33zq" class="btn btn-discord">Open Discord</a>
+      </div>
+
+      <div class="comm-card">
+        <div class="comm-platform">// Platform</div>
+        <div class="comm-name">WhatsApp</div>
+        <div class="comm-desc">Quick updates, session callouts, and random nonsense in the group chat.</div>
+        <a href="https://chat.whatsapp.com/E0Z4puJdXR8HhRcjoce3h6" target="_blank" class="btn btn-wa">Join Group</a>
+      </div>
+
+    </div>
+  </div>
+
+  <footer>
+    <div class="foot-logo">
+      <img src="https://faizzzlol.github.io/freakyniggas/FreakyNiggasLogo.gif" alt="FN"/>
+      <span class="foot-wordmark">Freaky Niggas</span>
+    </div>
+    <div class="foot-copy">© 2025 Freaky Niggas. All rights reserved.</div>
+    <a class="foot-link" href="https://faizzzlol.github.io/freakyniggas/feedback">Feedback →</a>
+  </footer>
+
 </body>
 </html>
-
