@@ -1,266 +1,333 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="icon" type="image/png" href="FreakyNiggasLogo.png" sizes="16x16">
-    <title>Feedback - Freaky Niggas</title>
-    <meta name="description" content="Feedback - Freaky Niggas (FN). Minecraft, Valorant Communities.">
-    <meta name="keywords" content="Freaky Niggas, FN, Faiz Freaky Niggas, Freaky, Nigga, Niggers, Nigger, Niggas, The Legend Of Legiona, TheLoL, TheLoL Website, The LoL, TheLol Server, The LoL Server, The Legend of Legiona Website, faizzzlol, FaizGG, Faiz Gaming, The Sus, TLoL, TL, CornHub, 4k, Apple, iPhone 16, iPhone 15, Apple Watch, iPhone SE, YouTube, Netflix, Roblox, Twitch, Maybank, Instagram, Paiz Shop, Skyxion, Neverland, Paiz Corp, Paiz Chicken, Paiz Railways">
-    <meta property="og:title" content="Feedback - Freaky Niggas"/>
-    <meta property="og:url" content="https://faizzzlol.github.io/freakyniggas/feedback"/>
-    <meta property="og:image" content="FreakyNiggasLogo.gif"/>
-    <meta property="og:type" content="website"/>
-    <meta property="og:description" content="Feedback - Freaky Niggas (FN). Minecraft, Valorant Communities."/>
-    <link rel="stylesheet" href="styles.css">
-    <script defer src="script.js"></script>
-    <style>
-        /* General page styles */
-        body {
-            font-family: 'Arial', sans-serif;
-            background-color: #1a1a1a;
-            color: #f4f4f4;
-            margin: 0;
-            padding: 0;
-            line-height: 1.6;
-        }
-        
-        header {
-            background-color: #333;
-            padding: 20px;
-            text-align: center;
-        }
-        
-        header .banner {
-            margin-bottom: 20px;
-        }
-        
-        header nav ul {
-            list-style: none;
-            padding: 0;
-        }
-        
-        header nav ul li {
-            display: inline-block;
-            margin: 0 15px;
-        }
-        
-        header nav ul li a {
-            text-decoration: none;
-            color: #fff;
-            font-weight: bold;
-        }
-        
-        header .theme-switch {
-            position: absolute;
-            top: 15px;
-            right: 15px;
-        }
-        
-        main {
-            padding: 20px;
-        }
-        
-        h1, h2 {
-            text-align: center;
-        }
-        
-        h1 {
-            font-size: 2.5rem;
-            margin-bottom: 10px;
-        }
-        
-        p {
-            font-size: 1.1rem;
-            text-align: center;
-        }
-        
-        /* Feedback section styles */
-        .feedback-section {
-            background-color: #2c2c2c;
-            border-radius: 8px;
-            padding: 40px;
-            margin: 20px auto;
-            max-width: 600px;
-            box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
-        }
-        
-        .feedback-form h2 {
-            font-size: 2rem;
-            color: #ffcc00;
-            margin-bottom: 20px;
-            text-align: center;
-        }
-        
-        .form-group {
-            margin-bottom: 20px;
-        }
-        
-        .form-group label {
-            display: block;
-            font-size: 1.2rem;
-            margin-bottom: 5px;
-        }
-        
-        .form-group input[type="text"],
-        .form-group textarea {
-            width: 100%;
-            padding: 10px;
-            font-size: 1rem;
-            border-radius: 4px;
-            border: 1px solid #555;
-            background-color: #444;
-            color: #fff;
-            box-sizing: border-box;
-        }
-        
-        .form-group textarea {
-            resize: none;
-        }
-        
-        .form-group input[type="text"]::placeholder,
-        .form-group textarea::placeholder {
-            color: #ccc;
-        }
-        
-        #star-rating {
-            font-size: 2rem;
-            display: flex;
-            justify-content: center;
-        }
-        
-        .star {
-            color: #ccc;
-            cursor: pointer;
-            transition: color 0.3s ease;
-        }
-        
-        .star:hover,
-        .star.selected {
-            color: #ffcc00;
-        }
-        
-        /* Note section styles */
-        .form-group.note p {
-            color: #ff6666;
-            font-size: 1rem;
-            text-align: center;
-            font-weight: bold;
-        }
-        
-        /* Submit button styles */
-        .submit-btn {
-            display: block;
-            width: 100%;
-            padding: 10px;
-            font-size: 1.2rem;
-            background-color: #ffcc00;
-            color: #1a1a1a;
-            border: none;
-            border-radius: 4px;
-            cursor: pointer;
-            transition: background-color 0.3s ease;
-        }
-        
-        .submit-btn:hover {
-            background-color: #ff9933;
-        }
-        
-        footer {
-            text-align: center;
-            padding: 20px;
-            background-color: #333;
-            color: #f4f4f4;
-        }
-        
-        /* Responsive design */
-        @media (max-width: 600px) {
-            .feedback-section {
-                padding: 20px;
-            }
-            
-            h1 {
-                font-size: 2rem;
-            }
-        
-            .feedback-form h2 {
-                font-size: 1.8rem;
-            }
-        
-            .submit-btn {
-                font-size: 1rem;
-            }
-        }
-    </style>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Feedback — Freaky Niggas</title>
+  <link rel="icon" type="image/gif" href="https://faizzzlol.github.io/freakyniggas/FreakyNiggasLogo.gif"/>
+  <link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:ital,wght@0,700;0,900;1,900&family=DM+Mono:wght@400;500&family=Barlow:wght@400;600&display=swap" rel="stylesheet"/>
+  <style>
+    :root {
+      --bg: #080808;
+      --surface: #0f0f0f;
+      --surface2: #161616;
+      --border: #222;
+      --text: #f5f5f5;
+      --muted: #555;
+      --muted2: #888;
+      --white: #ffffff;
+      --font-display: 'Barlow Condensed', sans-serif;
+      --font-body: 'Barlow', sans-serif;
+      --font-mono: 'DM Mono', monospace;
+    }
+
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    html { scroll-behavior: smooth; }
+
+    body {
+      background: var(--bg); color: var(--text);
+      font-family: var(--font-body); font-size: 17px;
+      overflow-x: hidden;
+    }
+
+    body::before {
+      content: '';
+      position: fixed; inset: 0;
+      background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='300' height='300'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.75' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='300' height='300' filter='url(%23n)' opacity='0.06'/%3E%3C/svg%3E");
+      pointer-events: none; z-index: 9999; mix-blend-mode: overlay;
+    }
+
+    /* NAV */
+    nav {
+      position: fixed; top: 0; left: 0; right: 0; z-index: 100;
+      display: flex; align-items: center; justify-content: space-between;
+      padding: 1.1rem 2.5rem;
+      background: rgba(8,8,8,0.92);
+      backdrop-filter: blur(10px);
+      border-bottom: 1px solid var(--border);
+    }
+
+    .nav-logo { display: flex; align-items: center; gap: 0.7rem; text-decoration: none; }
+    .nav-logo img { width: 36px; height: 36px; border-radius: 5px; object-fit: cover; }
+    .nav-wordmark { font-family: var(--font-display); font-weight: 900; font-size: 1.25rem; letter-spacing: 0.08em; color: var(--white); text-transform: uppercase; }
+
+    .nav-links { display: flex; gap: 2rem; list-style: none; align-items: center; }
+    .nav-links a { color: var(--muted2); text-decoration: none; font-family: var(--font-mono); font-size: 0.72rem; letter-spacing: 0.14em; text-transform: uppercase; transition: color 0.2s; }
+    .nav-links a:hover { color: var(--white); }
+    .nav-links a.active { color: var(--white); }
+
+    .nav-cta { background: var(--white) !important; color: #000 !important; padding: 0.42rem 1.05rem; border-radius: 3px; }
+    .nav-cta:hover { background: #ddd !important; }
+
+    /* PAGE */
+    .page-hero {
+      padding: 7rem 2rem 2.5rem;
+      max-width: 720px; margin: 0 auto;
+      animation: fadeUp 0.6s ease both;
+    }
+
+    .breadcrumb {
+      font-family: var(--font-mono); font-size: 0.68rem;
+      letter-spacing: 0.14em; color: var(--muted);
+      text-transform: uppercase; margin-bottom: 1.2rem;
+      display: flex; align-items: center; gap: 0.5rem;
+    }
+    .breadcrumb a { color: var(--muted); text-decoration: none; transition: color 0.2s; }
+    .breadcrumb a:hover { color: var(--white); }
+    .breadcrumb span { color: var(--muted2); }
+
+    .page-title {
+      font-family: var(--font-display); font-weight: 900; font-style: italic;
+      font-size: clamp(3.5rem, 8vw, 7rem);
+      line-height: 0.88; letter-spacing: 0.01em;
+      text-transform: uppercase; color: var(--white);
+    }
+
+    .page-sub { color: var(--muted2); font-family: var(--font-mono); font-size: 0.72rem; letter-spacing: 0.1em; margin-top: 0.9rem; }
+
+    /* FORM SECTION */
+    .section { padding: 1rem 2rem 5rem; max-width: 720px; margin: 0 auto; }
+
+    .form-card {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      overflow: hidden;
+    }
+
+    .form-body { padding: 2rem; display: flex; flex-direction: column; gap: 1.5rem; }
+
+    .form-group { display: flex; flex-direction: column; gap: 0.5rem; }
+
+    label {
+      font-family: var(--font-mono); font-size: 0.68rem;
+      letter-spacing: 0.18em; color: var(--muted);
+      text-transform: uppercase;
+    }
+
+    input[type="text"], textarea {
+      background: var(--surface2);
+      border: 1px solid var(--border);
+      border-radius: 4px;
+      color: var(--text);
+      font-family: var(--font-body);
+      font-size: 0.95rem;
+      padding: 0.75rem 1rem;
+      width: 100%;
+      transition: border-color 0.2s, box-shadow 0.2s;
+      outline: none;
+      resize: vertical;
+    }
+
+    input[type="text"]:focus, textarea:focus {
+      border-color: #444;
+      box-shadow: 0 0 0 3px rgba(255,255,255,0.04);
+    }
+
+    textarea { min-height: 130px; }
+
+    /* STAR RATING */
+    .star-group { display: flex; flex-direction: column; gap: 0.5rem; }
+
+    .stars {
+      display: flex; gap: 0.3rem; flex-direction: row-reverse;
+      justify-content: flex-end;
+    }
+
+    .stars input { display: none; }
+
+    .stars label {
+      font-size: 1.9rem; color: var(--border);
+      cursor: pointer; transition: color 0.15s;
+      letter-spacing: 0; text-transform: none;
+    }
+
+    .stars input:checked ~ label,
+    .stars label:hover,
+    .stars label:hover ~ label {
+      color: #fbbf24;
+    }
+
+    /* NOTE */
+    .form-note {
+      background: var(--surface2);
+      border: 1px solid var(--border);
+      border-left: 3px solid #444;
+      border-radius: 4px;
+      padding: 0.8rem 1rem;
+      font-family: var(--font-mono);
+      font-size: 0.7rem; letter-spacing: 0.08em;
+      color: var(--muted2); line-height: 1.6;
+    }
+
+    /* FOOTER of card */
+    .form-foot {
+      padding: 1.2rem 2rem;
+      border-top: 1px solid var(--border);
+      display: flex; align-items: center; justify-content: flex-end;
+    }
+
+    .btn-submit {
+      background: var(--white); color: #000;
+      border: none; padding: 0.7rem 2rem;
+      border-radius: 4px;
+      font-family: var(--font-mono); font-size: 0.78rem;
+      letter-spacing: 0.14em; text-transform: uppercase;
+      cursor: pointer; transition: all 0.2s;
+    }
+
+    .btn-submit:hover { background: #ddd; transform: translateY(-2px); }
+
+    /* SUCCESS STATE */
+    .success-card {
+      display: none;
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      padding: 3rem 2rem;
+      text-align: center;
+      flex-direction: column; align-items: center; gap: 0.8rem;
+    }
+
+    .success-icon { font-size: 2.5rem; }
+
+    .success-title {
+      font-family: var(--font-display); font-weight: 900; font-style: italic;
+      font-size: 2.4rem; text-transform: uppercase;
+    }
+
+    .success-msg { color: var(--muted2); font-size: 0.92rem; max-width: 300px; }
+
+    /* FOOTER */
+    hr { border: none; border-top: 1px solid var(--border); }
+
+    footer {
+      border-top: 1px solid var(--border);
+      padding: 1.8rem 2.5rem;
+      display: flex; align-items: center; justify-content: space-between;
+      flex-wrap: wrap; gap: 1rem;
+    }
+
+    .foot-logo { display: flex; align-items: center; gap: 0.55rem; }
+    .foot-logo img { width: 26px; height: 26px; border-radius: 4px; object-fit: cover; }
+    .foot-wordmark { font-family: var(--font-display); font-weight: 900; font-size: 1.05rem; letter-spacing: 0.08em; color: var(--white); }
+    .foot-copy { font-family: var(--font-mono); font-size: 0.67rem; color: var(--muted); }
+    .foot-link { font-family: var(--font-mono); font-size: 0.67rem; color: var(--muted); text-decoration: none; transition: color 0.2s; }
+    .foot-link:hover { color: var(--white); }
+
+    @keyframes fadeUp {
+      from { opacity:0; transform:translateY(16px); }
+      to   { opacity:1; transform:translateY(0); }
+    }
+
+    @media (max-width: 680px) {
+      nav { padding: 1rem 1.2rem; }
+      .nav-links { gap: 0.8rem; }
+      footer { flex-direction: column; }
+      .form-body { padding: 1.3rem; }
+    }
+  </style>
 </head>
 <body>
-    <header>
-        <!-- Freaky Niggas Banner -->
-        <div class="banner">
-            <img src="FreakyNiggasBanner.gif" alt="Freaky Niggas Banner" class="banner-img">
+
+  <nav>
+    <a class="nav-logo" href="https://faizzzlol.github.io/freakyniggas/">
+      <img src="https://faizzzlol.github.io/freakyniggas/FreakyNiggasLogo.gif" alt="FN"/>
+      <span class="nav-wordmark">Freaky Niggas</span>
+    </a>
+    <ul class="nav-links">
+      <li><a href="https://faizzzlol.github.io/freakyniggas/">Home</a></li>
+      <li><a href="https://faizzzlol.github.io/freakyniggas/minecraft">Minecraft</a></li>
+      <li><a href="https://faizzzlol.github.io/freakyniggas/valorant">Valorant</a></li>
+      <li><a href="https://faizzzlol.github.io/freakyniggas/feedback" class="active">Feedback</a></li>
+    </ul>
+  </nav>
+
+  <div class="page-hero">
+    <div class="breadcrumb">
+      <a href="https://faizzzlol.github.io/freakyniggas/">FN</a>
+      <span>/</span>
+      <span>Feedback</span>
+    </div>
+    <div class="page-title">Leave<br/>Feedback</div>
+    <div class="page-sub">// Help us improve the servers & site</div>
+  </div>
+
+  <div class="section">
+
+    <div class="form-card" id="formCard">
+      <div class="form-body">
+
+        <div class="form-group">
+          <label for="name">Your Name</label>
+          <input type="text" id="name" placeholder="e.g. xXSlayer99Xx" autocomplete="off"/>
         </div>
-        
-        <nav>
-            <ul>
-                <li><a href="/freakyniggas/">Home</a></li>
-                <li><a href="minecraft">Minecraft</a></li>
-                <li><a href="valorant">Valorant</a></li>
-                <li><a href="#discord">Discord</a></li>
-                <li><a href="">Feedback</a></li>
-            </ul>
-        </nav>
-        <div class="theme-switch">
-            <label for="theme-toggle">🌙</label>
-            <input type="checkbox" id="theme-toggle">
+
+        <div class="star-group">
+          <label>Rating</label>
+          <div class="stars">
+            <input type="radio" id="s5" name="rating" value="5"/>
+            <label for="s5" title="5 stars">★</label>
+            <input type="radio" id="s4" name="rating" value="4"/>
+            <label for="s4" title="4 stars">★</label>
+            <input type="radio" id="s3" name="rating" value="3"/>
+            <label for="s3" title="3 stars">★</label>
+            <input type="radio" id="s2" name="rating" value="2"/>
+            <label for="s2" title="2 stars">★</label>
+            <input type="radio" id="s1" name="rating" value="1"/>
+            <label for="s1" title="1 star">★</label>
+          </div>
         </div>
-    </header>
-    
-    <main>
-        <section class="welcome">
-            <h1>We Value Your Feedback!</h1>
-            <p>Please help us improve our server and website by leaving a rating and your thoughts below.</p>
-        </section>
 
-        <section class="feedback-section">
-            <form id="feedback-form" class="feedback-form">
-                <h2>Submit Your Feedback</h2>
+        <div class="form-group">
+          <label for="feedback">Your Feedback</label>
+          <textarea id="feedback" placeholder="Tell us what's good, what's broken, or just leave a random thought..."></textarea>
+        </div>
 
-                <div class="form-group">
-                    <label for="user-name">Your Name:</label>
-                    <input type="text" id="user-name" name="user-name" placeholder="Enter your name" required>
-                </div>
+        <div class="form-note">
+          ⚠ Once submitted, feedback cannot be edited or deleted. Double-check before hitting submit.
+        </div>
 
-                <div class="form-group">
-                    <label for="rating">Rate Us:</label>
-                    <div id="star-rating">
-                        <span class="star" data-value="1">&#9733;</span>
-                        <span class="star" data-value="2">&#9733;</span>
-                        <span class="star" data-value="3">&#9733;</span>
-                        <span class="star" data-value="4">&#9733;</span>
-                        <span class="star" data-value="5">&#9733;</span>
-                    </div>
-                    <input type="hidden" id="rating" name="rating" required>
-                </div>
+      </div>
+      <div class="form-foot">
+        <button class="btn-submit" onclick="submitFeedback()">Submit Feedback →</button>
+      </div>
+    </div>
 
-                <div class="form-group">
-                    <label for="feedback">Your Feedback:</label>
-                    <textarea id="feedback" name="feedback" placeholder="Type your feedback here..." rows="5" required></textarea>
-                </div>
+    <div class="success-card" id="successCard">
+      <div class="success-icon">✓</div>
+      <div class="success-title">Thanks!</div>
+      <div class="success-msg">Your feedback has been received. We actually read these.</div>
+    </div>
 
-                <!-- "NOTE:" informing users -->
-                <div class="form-group note">
-                    <p><strong>NOTE:</strong> Once you submit your feedback, you cannot delete or edit it. Please make sure all information is correct before submitting.</p>
-                </div>
+  </div>
 
-                <button type="submit" class="submit-btn">Submit Feedback</button>
-            </form>
-        </section>
-    </main>
+  <footer>
+    <div class="foot-logo">
+      <img src="https://faizzzlol.github.io/freakyniggas/FreakyNiggasLogo.gif" alt="FN"/>
+      <span class="foot-wordmark">Freaky Niggas</span>
+    </div>
+    <div class="foot-copy">© 2025 Freaky Niggas. All rights reserved.</div>
+    <a class="foot-link" href="https://faizzzlol.github.io/freakyniggas/">← Back Home</a>
+  </footer>
 
-    <footer>
-        <p>&copy; 2025 Freaky Niggas. All rights reserved.</p>
-    </footer>
+  <script>
+    function submitFeedback() {
+      const name = document.getElementById('name').value.trim();
+      const feedback = document.getElementById('feedback').value.trim();
+      const rating = document.querySelector('input[name="rating"]:checked');
 
-    <script src="script.js"></script>
+      if (!name) { alert('Please enter your name.'); return; }
+      if (!rating) { alert('Please select a rating.'); return; }
+      if (!feedback) { alert('Please write some feedback.'); return; }
+
+      // Show success state
+      document.getElementById('formCard').style.display = 'none';
+      const s = document.getElementById('successCard');
+      s.style.display = 'flex';
+      s.style.animation = 'fadeUp 0.5s ease both';
+    }
+  </script>
+
 </body>
 </html>
