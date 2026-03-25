@@ -1,90 +1,406 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="icon" type="image/png" href="/freakyniggas/FreakyNiggasLogo.png" sizes="16x16">
-    <title>Minecraft Servers - Freaky Niggas</title>
-    <link rel="stylesheet" href="/freakyniggas/minecraft/styles.css">
-    <script defer src="/freakyniggas/script.js"></script>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Minecraft Servers — Freaky Niggas</title>
+  <link rel="icon" type="image/gif" href="https://faizzzlol.github.io/freakyniggas/FreakyNiggasLogo.gif"/>
+  <link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:ital,wght@0,700;0,900;1,900&family=DM+Mono:wght@400;500&family=Barlow:wght@400;600&display=swap" rel="stylesheet"/>
+  <style>
+    :root {
+      --bg: #080808;
+      --surface: #0f0f0f;
+      --surface2: #161616;
+      --border: #222;
+      --text: #f5f5f5;
+      --muted: #555;
+      --muted2: #888;
+      --white: #ffffff;
+      --green: #4ade80;
+      --font-display: 'Barlow Condensed', sans-serif;
+      --font-body: 'Barlow', sans-serif;
+      --font-mono: 'DM Mono', monospace;
+    }
+
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    html { scroll-behavior: smooth; }
+
+    body {
+      background: var(--bg);
+      color: var(--text);
+      font-family: var(--font-body);
+      font-size: 17px;
+      overflow-x: hidden;
+    }
+
+    body::before {
+      content: '';
+      position: fixed; inset: 0;
+      background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='300' height='300'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.75' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='300' height='300' filter='url(%23n)' opacity='0.06'/%3E%3C/svg%3E");
+      pointer-events: none; z-index: 9999; mix-blend-mode: overlay;
+    }
+
+    /* NAV */
+    nav {
+      position: fixed; top: 0; left: 0; right: 0; z-index: 100;
+      display: flex; align-items: center; justify-content: space-between;
+      padding: 1.1rem 2.5rem;
+      background: rgba(8,8,8,0.92);
+      backdrop-filter: blur(10px);
+      border-bottom: 1px solid var(--border);
+    }
+
+    .nav-logo {
+      display: flex; align-items: center; gap: 0.7rem;
+      text-decoration: none;
+    }
+
+    .nav-logo img { width: 36px; height: 36px; border-radius: 5px; object-fit: cover; }
+
+    .nav-wordmark {
+      font-family: var(--font-display); font-weight: 900;
+      font-size: 1.25rem; letter-spacing: 0.08em;
+      color: var(--white); text-transform: uppercase;
+    }
+
+    .nav-links { display: flex; gap: 2rem; list-style: none; align-items: center; }
+
+    .nav-links a {
+      color: var(--muted2); text-decoration: none;
+      font-family: var(--font-mono); font-size: 0.72rem;
+      letter-spacing: 0.14em; text-transform: uppercase;
+      transition: color 0.2s;
+    }
+
+    .nav-links a:hover, .nav-links a.active { color: var(--white); }
+
+    .nav-cta {
+      background: var(--white) !important; color: #000 !important;
+      padding: 0.42rem 1.05rem; border-radius: 3px;
+    }
+
+    .nav-cta:hover { background: #ddd !important; }
+
+    /* PAGE HERO */
+    .page-hero {
+      padding: 7rem 2rem 3rem;
+      max-width: 1060px; margin: 0 auto;
+      animation: fadeUp 0.6s ease both;
+    }
+
+    .breadcrumb {
+      font-family: var(--font-mono); font-size: 0.68rem;
+      letter-spacing: 0.14em; color: var(--muted);
+      text-transform: uppercase; margin-bottom: 1.2rem;
+      display: flex; align-items: center; gap: 0.5rem;
+    }
+
+    .breadcrumb a { color: var(--muted); text-decoration: none; transition: color 0.2s; }
+    .breadcrumb a:hover { color: var(--white); }
+    .breadcrumb span { color: var(--muted2); }
+
+    .page-title {
+      font-family: var(--font-display); font-weight: 900; font-style: italic;
+      font-size: clamp(3.5rem, 8vw, 7rem);
+      line-height: 0.88; letter-spacing: 0.01em;
+      text-transform: uppercase; color: var(--white);
+    }
+
+    .page-sub {
+      color: var(--muted2); font-size: 0.95rem;
+      margin-top: 0.9rem; font-family: var(--font-mono);
+      font-size: 0.72rem; letter-spacing: 0.1em;
+    }
+
+    /* SECTION */
+    .section {
+      padding: 1rem 2rem 5rem;
+      max-width: 1060px; margin: 0 auto;
+    }
+
+    /* SERVER CARD */
+    .server-card {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      overflow: hidden;
+      margin-bottom: 1.5rem;
+      transition: border-color 0.3s;
+    }
+
+    .server-card:hover { border-color: #333; }
+
+    /* server banner — each server's own image */
+    .server-banner {
+      width: 100%; height: 220px;
+      object-fit: cover; display: block;
+      filter: grayscale(0.15) contrast(1.05);
+      transition: filter 0.3s;
+    }
+
+    .server-card:hover .server-banner { filter: grayscale(0) contrast(1.05); }
+
+    .server-body { padding: 1.8rem 2rem; }
+
+    .server-tag {
+      font-family: var(--font-mono); font-size: 0.65rem;
+      letter-spacing: 0.2em; color: var(--muted);
+      text-transform: uppercase; margin-bottom: 0.5rem;
+    }
+
+    .server-name {
+      font-family: var(--font-display); font-weight: 900; font-style: italic;
+      font-size: 2.8rem; line-height: 0.9;
+      text-transform: uppercase; margin-bottom: 1rem;
+    }
+
+    .server-desc {
+      color: var(--muted2); font-size: 0.9rem; margin-bottom: 1.5rem;
+    }
+
+    /* info rows */
+    .server-info {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+      gap: 1px;
+      background: var(--border);
+      border: 1px solid var(--border);
+      border-radius: 5px;
+      overflow: hidden;
+      margin-bottom: 1.5rem;
+    }
+
+    .info-item {
+      background: var(--surface2);
+      padding: 0.9rem 1.1rem;
+    }
+
+    .info-label {
+      font-family: var(--font-mono); font-size: 0.62rem;
+      letter-spacing: 0.18em; color: var(--muted);
+      text-transform: uppercase; margin-bottom: 0.25rem;
+    }
+
+    .info-value {
+      font-family: var(--font-mono); font-size: 0.82rem;
+      color: var(--text);
+    }
+
+    /* IP row */
+    .ip-row {
+      display: flex; align-items: center; gap: 0.6rem;
+      flex-wrap: wrap;
+    }
+
+    .ip-chip {
+      background: var(--surface2);
+      border: 1px solid var(--border);
+      padding: 0.5rem 1rem;
+      border-radius: 4px;
+      font-family: var(--font-mono);
+      font-size: 0.88rem;
+      color: var(--white);
+      letter-spacing: 0.05em;
+      flex: 1; min-width: 200px;
+    }
+
+    .copy-btn {
+      background: var(--white); border: none;
+      color: #000; padding: 0.5rem 1.1rem;
+      border-radius: 4px; font-family: var(--font-mono);
+      font-size: 0.75rem; letter-spacing: 0.1em;
+      text-transform: uppercase; cursor: pointer;
+      transition: all 0.2s; white-space: nowrap;
+    }
+
+    .copy-btn:hover { background: #ddd; transform: translateY(-1px); }
+
+    .access-link {
+      display: inline-flex; align-items: center; gap: 0.4rem;
+      color: var(--muted2); text-decoration: none;
+      font-family: var(--font-mono); font-size: 0.72rem;
+      letter-spacing: 0.1em; text-transform: uppercase;
+      transition: color 0.2s; margin-top: 0.8rem;
+    }
+
+    .access-link:hover { color: var(--white); }
+
+    /* COMING SOON card */
+    .server-card.soon {
+      border-style: dashed;
+    }
+
+    .soon-body {
+      padding: 3rem 2rem;
+      display: flex; flex-direction: column;
+      align-items: center; justify-content: center;
+      text-align: center; gap: 0.7rem;
+    }
+
+    .soon-label {
+      font-family: var(--font-mono); font-size: 0.68rem;
+      letter-spacing: 0.22em; color: var(--muted);
+      text-transform: uppercase;
+    }
+
+    .soon-name {
+      font-family: var(--font-display); font-weight: 900; font-style: italic;
+      font-size: 2.4rem; text-transform: uppercase; color: var(--muted2);
+    }
+
+    .soon-badge {
+      background: var(--surface2); border: 1px solid var(--border);
+      padding: 0.3rem 0.8rem; border-radius: 99px;
+      font-family: var(--font-mono); font-size: 0.65rem;
+      letter-spacing: 0.15em; color: var(--muted);
+      text-transform: uppercase;
+    }
+
+    /* FOOTER */
+    hr { border: none; border-top: 1px solid var(--border); }
+
+    footer {
+      border-top: 1px solid var(--border);
+      padding: 1.8rem 2.5rem;
+      display: flex; align-items: center; justify-content: space-between;
+      flex-wrap: wrap; gap: 1rem;
+    }
+
+    .foot-logo { display: flex; align-items: center; gap: 0.55rem; }
+    .foot-logo img { width: 26px; height: 26px; border-radius: 4px; object-fit: cover; }
+    .foot-wordmark { font-family: var(--font-display); font-weight: 900; font-size: 1.05rem; letter-spacing: 0.08em; color: var(--white); }
+    .foot-copy { font-family: var(--font-mono); font-size: 0.67rem; color: var(--muted); }
+    .foot-disclaimer { font-family: var(--font-mono); font-size: 0.6rem; color: var(--muted); max-width: 400px; text-align: right; line-height: 1.5; }
+
+    @keyframes fadeUp {
+      from { opacity:0; transform:translateY(16px); }
+      to   { opacity:1; transform:translateY(0); }
+    }
+
+    @media (max-width: 680px) {
+      nav { padding: 1rem 1.2rem; }
+      .nav-links { gap: 0.8rem; }
+      .server-body { padding: 1.2rem; }
+      footer { flex-direction: column; }
+      .foot-disclaimer { text-align: left; }
+    }
+  </style>
 </head>
 <body>
-    <header>
-        <div class="banner">
-            <img src="/freakyniggas/FreakyNiggasBanner.gif" alt="Freaky Niggas Banner" class="banner-img">
+
+  <nav>
+    <a class="nav-logo" href="https://faizzzlol.github.io/freakyniggas/">
+      <img src="https://faizzzlol.github.io/freakyniggas/FreakyNiggasLogo.gif" alt="FN"/>
+      <span class="nav-wordmark">Freaky Niggas</span>
+    </a>
+    <ul class="nav-links">
+      <li><a href="https://faizzzlol.github.io/freakyniggas/">Home</a></li>
+      <li><a href="https://faizzzlol.github.io/freakyniggas/minecraft" class="active">Minecraft</a></li>
+      <li><a href="https://faizzzlol.github.io/freakyniggas/valorant">Valorant</a></li>
+      <li><a href="https://chat.whatsapp.com/E0Z4puJdXR8HhRcjoce3h6" target="_blank" class="nav-cta">Join Now</a></li>
+    </ul>
+  </nav>
+
+  <div class="page-hero">
+    <div class="breadcrumb">
+      <a href="https://faizzzlol.github.io/freakyniggas/">FN</a>
+      <span>/</span>
+      <span>Minecraft</span>
+    </div>
+    <div class="page-title">Minecraft<br/>Servers</div>
+    <div class="page-sub">// 3 servers · Java & Bedrock</div>
+  </div>
+
+  <div class="section">
+
+    <!-- Niggas SMP -->
+    <div class="server-card">
+      <img class="server-banner" src="https://faizzzlol.github.io/freakyniggas/minecraft/Freaky_Niggas_SMP.jpg" alt="Niggas SMP Banner"/>
+      <div class="server-body">
+        <div class="server-tag">// Server 01</div>
+        <div class="server-name">Niggas SMP</div>
+        <div class="server-desc">Semi-Vanilla survival with the Aurelium Skills plugin. Level up your stats while causing chaos.</div>
+
+        <div class="server-info">
+          <div class="info-item">
+            <div class="info-label">Platform</div>
+            <div class="info-value">Java & Bedrock</div>
+          </div>
+          <div class="info-item">
+            <div class="info-label">Version</div>
+            <div class="info-value">1.14 – 1.21.3</div>
+          </div>
+          <div class="info-item">
+            <div class="info-label">Type</div>
+            <div class="info-value">Semi-Vanilla</div>
+          </div>
         </div>
 
-        <nav>
-            <ul>
-                <li><a href="/freakyniggas/">Home</a></li>
-                <li><a href="/freakyniggas/minecraft" class="active">Minecraft</a></li>
-                <li><a href="/freakyniggas/valorant">Valorant</a></li>
-            </ul>
-        </nav>
-
-        <div class="theme-switch">
-            <label for="theme-toggle">🌙</label>
-            <input type="checkbox" id="theme-toggle">
+        <div class="ip-row">
+          <div class="ip-chip">freakyniggas.enderman.cloud</div>
+          <button class="copy-btn" onclick="
+            navigator.clipboard.writeText('freakyniggas.enderman.cloud');
+            this.textContent='Copied!';
+            setTimeout(()=>this.textContent='Copy IP',1500)
+          ">Copy IP</button>
         </div>
-    </header>
+        <a class="access-link" href="https://freemcserver.net/server/1506969" target="_blank">Access Server Page ↗</a>
+      </div>
+    </div>
 
-    <main>
-        <section class="minecraft-servers">
-            <h1>Minecraft Servers</h1>
+    <!-- Niggas Superheroes -->
+    <div class="server-card">
+      <img class="server-banner" src="https://faizzzlol.github.io/freakyniggas/minecraft/NIGGAS-SUPERHEROES.jpg" alt="Niggas Superheroes Banner"/>
+      <div class="server-body">
+        <div class="server-tag">// Server 02</div>
+        <div class="server-name">Niggas Superheroes</div>
+        <div class="server-desc">Fisk's Superheroes mod and more. Pick your hero, suit up, and go wild.</div>
 
-            <!-- Niggas SMP -->
-            <div class="server-card">
-                <h2>Niggas SMP</h2>
-                <img src="/freakyniggas/minecraft/Freaky_Niggas_SMP.jpg" alt="Niggas SMP Banner" class="server-banner">
-                <p><strong>Semi-Vanilla Server with Aurelium Skills plugin!</strong></p>
-                <p><strong>IP:</strong> freakyniggas.enderman.cloud</p>
-                <p><strong>Platform:</strong> Java Edition & Bedrock</p>
-                <p><strong>Version:</strong> 1.14 - 1.21.3</p>
-                <p><strong>Access server:</strong> <a href="https://freemcserver.net/server/1506969">https://freemcserver.net/server/1506969</a></p>
-                <button class="copy-btn" data-clipboard-text="freakyniggas.enderman.cloud">Copy IP</button>
-            </div>
+        <div class="server-info">
+          <div class="info-item">
+            <div class="info-label">Platform</div>
+            <div class="info-value">Java Edition</div>
+          </div>
+          <div class="info-item">
+            <div class="info-label">Version</div>
+            <div class="info-value">1.7.10 only</div>
+          </div>
+          <div class="info-item">
+            <div class="info-label">Mods</div>
+            <div class="info-value">Fisk's Heroes + more</div>
+          </div>
+        </div>
 
-            <!-- Niggas Superheroes -->
-            <div class="server-card">
-                <h2>Niggas Superheroes</h2>
-                <img src="/freakyniggas/minecraft/NIGGAS-SUPERHEROES.jpg" alt="Niggas Superheroes Banner" class="server-banner">
-                <p><strong>IP:</strong> nhero.aternos.me</p>
-                <p><strong>Platform:</strong> Java Edition</p>
-                <p><strong>Version:</strong> 1.7.10 only</p>
-                <p><strong>Mods:</strong> Fisk's Heroes and others</p>
-                <button class="copy-btn" data-clipboard-text="nhero.aternos.me">Copy IP</button>
-            </div>
+        <div class="ip-row">
+          <div class="ip-chip">nhero.aternos.me</div>
+          <button class="copy-btn" onclick="
+            navigator.clipboard.writeText('nhero.aternos.me');
+            this.textContent='Copied!';
+            setTimeout(()=>this.textContent='Copy IP',1500)
+          ">Copy IP</button>
+        </div>
+      </div>
+    </div>
 
-            <!-- Niggas Foundation (Placeholder for Future Expansion) -->
-            <div class="server-card">
-                <h2>Niggas Foundation</h2>
-                <p><em>Server information coming soon...</em></p>
-            </div>
-        </section>
-    </main>
-    
-    <footer>
-        <p>&copy; 2025 Freaky Niggas. All rights reserved.</p>
-        <p><small>Not affiliated with Mojang Studios or Microsoft. "Minecraft" is a trademark of Mojang Studios, a subsidiary of Microsoft.</small></p>
-    </footer>
+    <!-- Niggas Foundation — coming soon -->
+    <div class="server-card soon">
+      <div class="soon-body">
+        <div class="soon-label">// Server 03</div>
+        <div class="soon-name">Niggas Foundation</div>
+        <div class="soon-badge">Coming Soon</div>
+      </div>
+    </div>
 
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/2.0.10/clipboard.min.js"></script>
-    <script>
-        // Clipboard.js for Copy IP Buttons
-        new ClipboardJS('.copy-btn');
+  </div>
 
-        // Dark Mode Toggle and Save Preference
-        const themeToggle = document.getElementById('theme-toggle');
-        const currentTheme = localStorage.getItem('theme') || 'light';
-        document.body.classList.add(currentTheme);
+  <footer>
+    <div class="foot-logo">
+      <img src="https://faizzzlol.github.io/freakyniggas/FreakyNiggasLogo.gif" alt="FN"/>
+      <span class="foot-wordmark">Freaky Niggas</span>
+    </div>
+    <div class="foot-copy">© 2025 Freaky Niggas. All rights reserved.</div>
+    <div class="foot-disclaimer">Not affiliated with Mojang Studios or Microsoft.<br/>"Minecraft" is a trademark of Mojang Studios.</div>
+  </footer>
 
-        themeToggle.checked = currentTheme === 'dark';
-
-        themeToggle.addEventListener('change', () => {
-            const newTheme = themeToggle.checked ? 'dark' : 'light';
-            document.body.classList.toggle('dark', themeToggle.checked);
-            localStorage.setItem('theme', newTheme);
-        });
-    </script>
 </body>
 </html>
