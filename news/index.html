@@ -1,0 +1,604 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover"/>
+  <meta name="description" content="Freaky News — your comprehensive source for real-time updates across sports, entertainment, and global affairs."/>
+  <meta name="theme-color" content="#080808"/>
+  <meta name="color-scheme" content="dark"/>
+  <meta property="og:type" content="website"/>
+  <meta property="og:site_name" content="Freaky Niggas"/>
+  <meta property="og:title" content="FN | Freaky News"/>
+  <meta property="og:description" content="Real-time updates across sports, entertainment, and global affairs. Curated by FreakyN."/>
+  <meta property="og:url" content="https://faizzzlol.github.io/freakyniggas/news/"/>
+  <meta property="og:image" content="https://faizzzlol.github.io/freakyniggas/FreakyNiggasLogo.png"/>
+  <link rel="icon" type="image/gif" href="https://faizzzlol.github.io/freakyniggas/FreakyNiggasLogo.gif"/>
+  <link rel="apple-touch-icon" href="https://faizzzlol.github.io/freakyniggas/FreakyNiggasLogo.png"/>
+  <title>FN | Freaky News</title>
+  <link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:ital,wght@0,700;0,900;1,900&family=DM+Mono:wght@400;500&family=Barlow:wght@400;600&display=swap" rel="stylesheet"/>
+  <style>
+    :root {
+      --bg: #080808;
+      --surface: #0f0f0f;
+      --surface2: #161616;
+      --border: #222;
+      --text: #f5f5f5;
+      --muted: #555;
+      --muted2: #888;
+      --white: #ffffff;
+      --font-display: 'Barlow Condensed', sans-serif;
+      --font-body: 'Barlow', sans-serif;
+      --font-mono: 'DM Mono', monospace;
+    }
+
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    html { scroll-behavior: smooth; }
+
+    body {
+      background: var(--bg);
+      color: var(--text);
+      font-family: var(--font-body);
+      font-size: 17px;
+      overflow-x: hidden;
+    }
+
+    /* grain overlay */
+    body::before {
+      content: '';
+      position: fixed; inset: 0;
+      background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='300' height='300'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.75' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='300' height='300' filter='url(%23n)' opacity='0.06'/%3E%3C/svg%3E");
+      pointer-events: none; z-index: 9999; mix-blend-mode: overlay;
+    }
+
+    /* ── NAV ── */
+    nav {
+      position: fixed; top: 0; left: 0; right: 0; z-index: 100;
+      display: flex; align-items: center; justify-content: space-between;
+      padding: 1.1rem 2.5rem;
+      background: rgba(8,8,8,0.92);
+      backdrop-filter: blur(10px);
+      border-bottom: 1px solid var(--border);
+    }
+
+    .nav-logo {
+      display: flex; align-items: center; gap: 0.7rem;
+      text-decoration: none;
+    }
+
+    .nav-logo img {
+      width: 36px; height: 36px;
+      border-radius: 5px; object-fit: cover;
+    }
+
+    .nav-wordmark {
+      font-family: var(--font-display);
+      font-weight: 900; font-size: 1.25rem;
+      letter-spacing: 0.08em; color: var(--white);
+      text-transform: uppercase;
+    }
+
+    .nav-links {
+      display: flex; gap: 2rem; list-style: none; align-items: center;
+    }
+
+    .nav-links a {
+      color: var(--muted2); text-decoration: none;
+      font-family: var(--font-mono); font-size: 0.72rem;
+      letter-spacing: 0.14em; text-transform: uppercase;
+      transition: color 0.2s;
+    }
+
+    .nav-links a:hover { color: var(--white); }
+    .nav-links a.active { color: var(--white); }
+
+    .nav-cta {
+      background: var(--white) !important;
+      color: #000 !important;
+      padding: 0.42rem 1.05rem;
+      border-radius: 3px;
+    }
+
+    .nav-cta:hover { background: #ddd !important; }
+
+    /* ── DIVIDER ── */
+    hr { border: none; border-top: 1px solid var(--border); }
+
+    /* ── PAGE HERO ── */
+    .page-hero {
+      padding: 9rem 2.5rem 4rem;
+      max-width: 1060px; margin: 0 auto;
+      animation: fadeUp 0.5s ease both;
+    }
+
+    .page-eyebrow {
+      font-family: var(--font-mono); font-size: 0.67rem;
+      letter-spacing: 0.22em; color: var(--muted);
+      text-transform: uppercase; margin-bottom: 0.7rem;
+    }
+
+    .page-title {
+      font-family: var(--font-display);
+      font-weight: 900; font-style: italic;
+      font-size: clamp(4rem, 10vw, 7.5rem);
+      line-height: 0.88; letter-spacing: 0.01em;
+      text-transform: uppercase; color: var(--white);
+    }
+
+    /* ── SECTIONS ── */
+    .section {
+      padding: 3rem 2.5rem 5rem;
+      max-width: 1060px; margin: 0 auto;
+    }
+
+    /* ── NEWS CHANNEL CARD ── */
+    .news-card {
+      border: 1px solid var(--border);
+      border-radius: 6px; overflow: hidden;
+      background: var(--surface);
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      animation: fadeUp 0.5s 0.1s ease both;
+    }
+
+    .news-card-left {
+      padding: 2.2rem;
+      display: flex; flex-direction: column; gap: 1.1rem;
+      border-right: 1px solid var(--border);
+    }
+
+    .news-badge {
+      display: inline-flex; align-items: center; gap: 0.5rem;
+      font-family: var(--font-mono); font-size: 0.65rem;
+      letter-spacing: 0.18em; color: #25D366;
+      text-transform: uppercase;
+    }
+
+    .news-badge-dot {
+      width: 5px; height: 5px;
+      background: #25D366; border-radius: 50%;
+      animation: blink 2s infinite;
+    }
+
+    .news-name {
+      font-family: var(--font-display); font-weight: 900; font-style: italic;
+      font-size: 2.6rem; line-height: 0.95; text-transform: uppercase;
+    }
+
+    .news-name span {
+      font-style: normal; font-weight: 700;
+      font-size: 1.5rem; color: var(--muted2);
+      display: block; margin-top: 0.2rem;
+    }
+
+    .news-desc {
+      color: var(--muted2); font-size: 0.88rem;
+      line-height: 1.6;
+    }
+
+    .news-tags {
+      display: flex; flex-wrap: wrap; gap: 0.45rem;
+      margin-top: 0.3rem;
+    }
+
+    .news-tag {
+      font-family: var(--font-mono); font-size: 0.62rem;
+      letter-spacing: 0.1em; text-transform: uppercase;
+      padding: 0.22rem 0.6rem;
+      border: 1px solid var(--border); border-radius: 2px;
+      color: var(--muted2);
+    }
+
+    .btn-wa-channel {
+      background: #25D366; color: #000;
+      display: inline-flex; align-items: center; gap: 0.5rem;
+      padding: 0.68rem 1.5rem;
+      font-family: var(--font-mono); font-size: 0.76rem;
+      letter-spacing: 0.12em; text-transform: uppercase;
+      text-decoration: none; border-radius: 3px;
+      border: none; cursor: pointer; transition: all 0.2s;
+      align-self: flex-start; margin-top: 0.5rem;
+    }
+    .btn-wa-channel:hover { background: #1eb85a; transform: translateY(-2px); }
+
+    .news-card-right {
+      padding: 2.2rem;
+      display: flex; flex-direction: column; gap: 0.9rem;
+    }
+
+    .news-coverage-label {
+      font-family: var(--font-mono); font-size: 0.65rem;
+      letter-spacing: 0.2em; color: var(--muted); text-transform: uppercase;
+      margin-bottom: 0.2rem;
+    }
+
+    .news-coverage-items {
+      display: flex; flex-direction: column; gap: 0;
+    }
+
+    .news-cov-item {
+      display: flex; align-items: flex-start; gap: 1rem;
+      padding: 0.9rem 0;
+      border-bottom: 1px solid var(--border);
+    }
+
+    .news-cov-item:last-child { border-bottom: none; }
+
+    .news-cov-icon {
+      font-size: 1rem; flex-shrink: 0;
+      width: 28px; text-align: center;
+      margin-top: 0.05rem;
+    }
+
+    .news-cov-title {
+      font-family: var(--font-display); font-weight: 700;
+      font-size: 1rem; letter-spacing: 0.04em; text-transform: uppercase;
+      color: var(--text); line-height: 1.1;
+    }
+
+    .news-cov-sub {
+      font-family: var(--font-mono); font-size: 0.68rem;
+      color: var(--muted); margin-top: 0.22rem;
+      letter-spacing: 0.06em;
+    }
+
+    .news-disclaimer {
+      font-family: var(--font-mono); font-size: 0.63rem;
+      color: var(--muted); line-height: 1.6;
+      padding-top: 1rem;
+      border-top: 1px solid var(--border);
+      margin-top: auto;
+    }
+
+    /* ── LATEST POSTS ── */
+    .section-label {
+      font-family: var(--font-mono); font-size: 0.67rem;
+      letter-spacing: 0.22em; color: var(--muted);
+      text-transform: uppercase; margin-bottom: 0.7rem;
+    }
+
+    .section-title {
+      font-family: var(--font-display);
+      font-weight: 900; font-style: italic;
+      font-size: clamp(2.6rem, 5vw, 4.2rem);
+      line-height: 0.9; letter-spacing: 0.02em;
+      text-transform: uppercase; margin-bottom: 2.2rem;
+    }
+
+    .posts-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+      gap: 1px; background: var(--border);
+      border: 1px solid var(--border); border-radius: 6px; overflow: hidden;
+    }
+
+    .post-card {
+      background: var(--surface);
+      padding: 1.6rem;
+      display: flex; flex-direction: column; gap: 0.5rem;
+      text-decoration: none; color: var(--text);
+      transition: background 0.2s;
+    }
+
+    .post-card:hover { background: var(--surface2); }
+    .post-card:hover .post-arrow { transform: translate(3px, -3px); }
+
+    .post-cat {
+      font-family: var(--font-mono); font-size: 0.62rem;
+      letter-spacing: 0.18em; text-transform: uppercase;
+      color: #25D366;
+    }
+
+    .post-title {
+      font-family: var(--font-display); font-weight: 900; font-style: italic;
+      font-size: 1.5rem; line-height: 1.05;
+      letter-spacing: 0.02em; text-transform: uppercase;
+    }
+
+    .post-desc {
+      color: var(--muted2); font-size: 0.84rem;
+      line-height: 1.6; flex: 1;
+    }
+
+    .post-foot {
+      display: flex; align-items: center; justify-content: space-between;
+      padding-top: 0.8rem;
+      border-top: 1px solid var(--border);
+      margin-top: 0.4rem;
+    }
+
+    .post-time {
+      font-family: var(--font-mono); font-size: 0.62rem;
+      letter-spacing: 0.1em; text-transform: uppercase;
+      color: var(--muted);
+    }
+
+    .post-arrow { color: var(--muted); transition: transform 0.2s; font-size: 1rem; }
+
+    /* ── TICKER ── */
+    .ticker-wrap {
+      overflow: hidden; border-top: 1px solid var(--border);
+      border-bottom: 1px solid var(--border);
+      background: var(--surface);
+      padding: 0.6rem 0;
+    }
+
+    .ticker-track {
+      display: flex; white-space: nowrap;
+      animation: ticker 32s linear infinite;
+    }
+
+    .ticker-track:hover { animation-play-state: paused; }
+
+    .ticker-item {
+      font-family: var(--font-mono); font-size: 0.68rem;
+      letter-spacing: 0.12em; text-transform: uppercase;
+      color: var(--muted2); padding: 0 2.5rem;
+      flex-shrink: 0;
+    }
+
+    .ticker-sep { color: var(--muted); }
+
+    @keyframes ticker {
+      from { transform: translateX(0); }
+      to   { transform: translateX(-50%); }
+    }
+
+    /* ── FOOTER ── */
+    footer {
+      border-top: 1px solid var(--border);
+      padding: 1.8rem 2.5rem;
+      display: flex; align-items: center; justify-content: space-between;
+      flex-wrap: wrap; gap: 1rem;
+    }
+
+    .foot-logo {
+      display: flex; align-items: center; gap: 0.55rem;
+    }
+
+    .foot-logo img { width: 26px; height: 26px; border-radius: 4px; object-fit: cover; }
+
+    .foot-wordmark {
+      font-family: var(--font-display); font-weight: 900;
+      font-size: 1.05rem; letter-spacing: 0.08em; color: var(--white);
+    }
+
+    .foot-copy { font-family: var(--font-mono); font-size: 0.67rem; color: var(--muted); }
+
+    .foot-link {
+      font-family: var(--font-mono); font-size: 0.67rem;
+      color: var(--muted); text-decoration: none; transition: color 0.2s;
+    }
+    .foot-link:hover { color: var(--white); }
+
+    /* ── ANIMS ── */
+    @keyframes fadeUp {
+      from { opacity: 0; transform: translateY(16px); }
+      to   { opacity: 1; transform: translateY(0); }
+    }
+
+    @keyframes blink {
+      0%,100% { opacity: 1; } 50% { opacity: 0.3; }
+    }
+
+    @media (max-width: 760px) {
+      .news-card { grid-template-columns: 1fr; }
+      .news-card-left { border-right: none; border-bottom: 1px solid var(--border); }
+      nav { padding: 1rem 1.2rem; }
+      .nav-links { gap: 0.8rem; }
+      footer { flex-direction: column; }
+    }
+  </style>
+</head>
+<body>
+
+  <nav>
+    <a class="nav-logo" href="https://faizzzlol.github.io/freakyniggas/">
+      <img src="https://faizzzlol.github.io/freakyniggas/FreakyNiggasLogo.gif" alt="FN"/>
+      <span class="nav-wordmark">Freaky Niggas</span>
+    </a>
+    <ul class="nav-links">
+      <li><a href="https://faizzzlol.github.io/freakyniggas/#games">Games</a></li>
+      <li><a href="#" class="active">News</a></li>
+      <li><a href="https://faizzzlol.github.io/freakyniggas/#community">Community</a></li>
+      <li><a href="https://chat.whatsapp.com/E0Z4puJdXR8HhRcjoce3h6" target="_blank" class="nav-cta">Join Now</a></li>
+    </ul>
+  </nav>
+
+  <!-- TICKER -->
+  <div style="margin-top:64px;">
+    <div class="ticker-wrap">
+      <div class="ticker-track">
+        <span class="ticker-item">F1 2025 Season Live <span class="ticker-sep">◆</span></span>
+        <span class="ticker-item">MotoGP Round 3 Results <span class="ticker-sep">◆</span></span>
+        <span class="ticker-item">Marvel Phase 6 Announced <span class="ticker-sep">◆</span></span>
+        <span class="ticker-item">Valorant Act II Patch <span class="ticker-sep">◆</span></span>
+        <span class="ticker-item">Netflix Q1 Top Picks <span class="ticker-sep">◆</span></span>
+        <span class="ticker-item">Roblox UGC Update <span class="ticker-sep">◆</span></span>
+        <span class="ticker-item">Global Football Transfers <span class="ticker-sep">◆</span></span>
+        <span class="ticker-item">Disney+ New Releases <span class="ticker-sep">◆</span></span>
+        <!-- duplicate for seamless loop -->
+        <span class="ticker-item">F1 2025 Season Live <span class="ticker-sep">◆</span></span>
+        <span class="ticker-item">MotoGP Round 3 Results <span class="ticker-sep">◆</span></span>
+        <span class="ticker-item">Marvel Phase 6 Announced <span class="ticker-sep">◆</span></span>
+        <span class="ticker-item">Valorant Act II Patch <span class="ticker-sep">◆</span></span>
+        <span class="ticker-item">Netflix Q1 Top Picks <span class="ticker-sep">◆</span></span>
+        <span class="ticker-item">Roblox UGC Update <span class="ticker-sep">◆</span></span>
+        <span class="ticker-item">Global Football Transfers <span class="ticker-sep">◆</span></span>
+        <span class="ticker-item">Disney+ New Releases <span class="ticker-sep">◆</span></span>
+      </div>
+    </div>
+  </div>
+
+  <!-- PAGE HERO -->
+  <div class="page-hero">
+    <div class="page-eyebrow">// Stay in the loop</div>
+    <h1 class="page-title">Freaky News</h1>
+  </div>
+
+  <hr/>
+
+  <!-- CHANNEL CARD -->
+  <div class="section">
+    <div class="news-card">
+
+      <div class="news-card-left">
+        <div class="news-badge">
+          <span class="news-badge-dot"></span>
+          WhatsApp Channel · Live
+        </div>
+
+        <div class="news-name">
+          FN
+          <span>Freaky News</span>
+        </div>
+
+        <p class="news-desc">
+          Your comprehensive source for real-time updates across sports, entertainment, and global affairs. Curated by FreakyN.
+        </p>
+
+        <div class="news-tags">
+          <span class="news-tag">F1</span>
+          <span class="news-tag">MotoGP</span>
+          <span class="news-tag">Football</span>
+          <span class="news-tag">Marvel</span>
+          <span class="news-tag">Netflix</span>
+          <span class="news-tag">Anime</span>
+          <span class="news-tag">Valorant</span>
+          <span class="news-tag">Roblox</span>
+        </div>
+
+        <a href="https://whatsapp.com/channel/0029VaofEGQCcW4rLi3dgk1A" target="_blank" class="btn-wa-channel">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413Z"/></svg>
+          Follow Channel
+        </a>
+      </div>
+
+      <div class="news-card-right">
+        <div class="news-coverage-label">// Coverage areas</div>
+        <div class="news-coverage-items">
+
+          <div class="news-cov-item">
+            <div class="news-cov-icon">🏎️</div>
+            <div>
+              <div class="news-cov-title">Motorsports & Athletics</div>
+              <div class="news-cov-sub">F1 · MotoGP · Global Football</div>
+            </div>
+          </div>
+
+          <div class="news-cov-item">
+            <div class="news-cov-icon">🌍</div>
+            <div>
+              <div class="news-cov-title">Global Affairs</div>
+              <div class="news-cov-sub">International · National · Economic Trends</div>
+            </div>
+          </div>
+
+          <div class="news-cov-item">
+            <div class="news-cov-icon">🎬</div>
+            <div>
+              <div class="news-cov-title">Entertainment & Media</div>
+              <div class="news-cov-sub">Marvel · Sony · Warner · Netflix · Disney · Anime</div>
+            </div>
+          </div>
+
+          <div class="news-cov-item">
+            <div class="news-cov-icon">🎮</div>
+            <div>
+              <div class="news-cov-title">Gaming & Hobbies</div>
+              <div class="news-cov-sub">Valorant · Roblox · Hot Wheels · Industry News</div>
+            </div>
+          </div>
+
+        </div>
+
+        <div class="news-disclaimer">
+          📌 Content is for informational purposes only. Not intended to satirize, promote, or endorse any specific individuals, corporations, or ideologies.
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+  <hr/>
+
+  <!-- LATEST POSTS -->
+  <div class="section">
+    <div class="section-label">// Recent posts</div>
+    <div class="section-title">Latest Updates</div>
+
+    <div class="posts-grid">
+
+      <a class="post-card" href="https://whatsapp.com/channel/0029VaofEGQCcW4rLi3dgk1A" target="_blank">
+        <div class="post-cat">Motorsports & Athletics</div>
+        <div class="post-title">F1 2025 — Race Calendar & Team Lineups Confirmed</div>
+        <p class="post-desc">All 10 constructors have locked in their driver pairings for the new season. Key changes across the grid set the stage for another intense championship fight.</p>
+        <div class="post-foot">
+          <span class="post-time">Today</span>
+          <span class="post-arrow">↗</span>
+        </div>
+      </a>
+
+      <a class="post-card" href="https://whatsapp.com/channel/0029VaofEGQCcW4rLi3dgk1A" target="_blank">
+        <div class="post-cat">Entertainment & Media</div>
+        <div class="post-title">Marvel Phase 6 — Full Release Schedule Revealed</div>
+        <p class="post-desc">Marvel Studios officially announced the Phase 6 slate, including release windows for Avengers: Doomsday and several new solo projects hitting theatres in 2025–2026.</p>
+        <div class="post-foot">
+          <span class="post-time">Yesterday</span>
+          <span class="post-arrow">↗</span>
+        </div>
+      </a>
+
+      <a class="post-card" href="https://whatsapp.com/channel/0029VaofEGQCcW4rLi3dgk1A" target="_blank">
+        <div class="post-cat">Gaming & Hobbies</div>
+        <div class="post-title">Valorant Act II — New Agent & Map Changes Drop</div>
+        <p class="post-desc">Riot Games drops the Act II update with a brand-new duelist, significant map pool adjustments, and ranked system tweaks affecting all competitive players.</p>
+        <div class="post-foot">
+          <span class="post-time">2 days ago</span>
+          <span class="post-arrow">↗</span>
+        </div>
+      </a>
+
+      <a class="post-card" href="https://whatsapp.com/channel/0029VaofEGQCcW4rLi3dgk1A" target="_blank">
+        <div class="post-cat">Global Affairs</div>
+        <div class="post-title">Southeast Asia Economic Forum — Key Takeaways</div>
+        <p class="post-desc">Regional leaders gathered to address trade imbalances, digital infrastructure investments, and climate resilience goals heading into 2026.</p>
+        <div class="post-foot">
+          <span class="post-time">3 days ago</span>
+          <span class="post-arrow">↗</span>
+        </div>
+      </a>
+
+      <a class="post-card" href="https://whatsapp.com/channel/0029VaofEGQCcW4rLi3dgk1A" target="_blank">
+        <div class="post-cat">Entertainment & Media</div>
+        <div class="post-title">Netflix Q1 2025 — Top Releases & Viewership Stats</div>
+        <p class="post-desc">Netflix reveals its most-watched titles for Q1, with several anime originals and a Korean thriller dominating global charts across all regions.</p>
+        <div class="post-foot">
+          <span class="post-time">4 days ago</span>
+          <span class="post-arrow">↗</span>
+        </div>
+      </a>
+
+      <a class="post-card" href="https://whatsapp.com/channel/0029VaofEGQCcW4rLi3dgk1A" target="_blank">
+        <div class="post-cat">Motorsports & Athletics</div>
+        <div class="post-title">MotoGP Round 3 — Race Report & Standings Update</div>
+        <p class="post-desc">A dramatic final lap delivered an unexpected podium, shaking up the early-season standings as the championship heads into the European leg of the calendar.</p>
+        <div class="post-foot">
+          <span class="post-time">5 days ago</span>
+          <span class="post-arrow">↗</span>
+        </div>
+      </a>
+
+    </div>
+  </div>
+
+  <footer>
+    <div class="foot-logo">
+      <img src="https://faizzzlol.github.io/freakyniggas/FreakyNiggasLogo.gif" alt="FN"/>
+      <span class="foot-wordmark">Freaky Niggas</span>
+    </div>
+    <div class="foot-copy">© 2025 Freaky Niggas. All rights reserved.</div>
+    <a class="foot-link" href="https://faizzzlol.github.io/freakyniggas/feedback">Feedback →</a>
+  </footer>
+
+</body>
+</html>
