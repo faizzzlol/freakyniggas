@@ -10,7 +10,7 @@
   <meta property="og:site_name" content="Freaky Niggas"/>
   <meta property="og:title" content="FN | Freaky News"/>
   <meta property="og:description" content="Real-time updates across sports, entertainment, and global affairs. Curated by FreakyN."/>
-  <meta property="og:url" content="https://faizzzlol.github.io/freakyniggas/news/"/>
+  <meta property="og:url" content="https://faizzzlol.github.io/freakyniggas/news"/>
   <meta property="og:image" content="https://faizzzlol.github.io/freakyniggas/FreakyNiggasLogo.png"/>
   <link rel="icon" type="image/gif" href="https://faizzzlol.github.io/freakyniggas/FreakyNiggasLogo.gif"/>
   <link rel="apple-touch-icon" href="https://faizzzlol.github.io/freakyniggas/FreakyNiggasLogo.png"/>
@@ -42,7 +42,6 @@
       overflow-x: hidden;
     }
 
-    /* grain overlay */
     body::before {
       content: '';
       position: fixed; inset: 0;
@@ -58,11 +57,12 @@
       background: rgba(8,8,8,0.92);
       backdrop-filter: blur(10px);
       border-bottom: 1px solid var(--border);
+      gap: 1rem;
     }
 
     .nav-logo {
       display: flex; align-items: center; gap: 0.7rem;
-      text-decoration: none;
+      text-decoration: none; flex-shrink: 0;
     }
 
     .nav-logo img {
@@ -79,6 +79,7 @@
 
     .nav-links {
       display: flex; gap: 2rem; list-style: none; align-items: center;
+      flex: 1; justify-content: center;
     }
 
     .nav-links a {
@@ -97,8 +98,44 @@
       padding: 0.42rem 1.05rem;
       border-radius: 3px;
     }
-
     .nav-cta:hover { background: #ddd !important; }
+
+    /* ── LANG SWITCHER ── */
+    .lang-switcher {
+      display: flex; align-items: center;
+      background: var(--surface2);
+      border: 1px solid var(--border);
+      border-radius: 3px;
+      overflow: hidden;
+      flex-shrink: 0;
+    }
+
+    .lang-btn {
+      font-family: var(--font-mono);
+      font-size: 0.66rem;
+      letter-spacing: 0.14em;
+      text-transform: uppercase;
+      color: var(--muted);
+      background: transparent;
+      border: none;
+      padding: 0.38rem 0.78rem;
+      cursor: pointer;
+      transition: all 0.18s;
+      line-height: 1;
+    }
+
+    .lang-btn:hover { color: var(--white); }
+
+    .lang-btn.active {
+      background: var(--white);
+      color: #000;
+    }
+
+    .lang-divider {
+      width: 1px; height: 16px;
+      background: var(--border);
+      flex-shrink: 0;
+    }
 
     /* ── DIVIDER ── */
     hr { border: none; border-top: 1px solid var(--border); }
@@ -171,13 +208,11 @@
     }
 
     .news-desc {
-      color: var(--muted2); font-size: 0.88rem;
-      line-height: 1.6;
+      color: var(--muted2); font-size: 0.88rem; line-height: 1.6;
     }
 
     .news-tags {
-      display: flex; flex-wrap: wrap; gap: 0.45rem;
-      margin-top: 0.3rem;
+      display: flex; flex-wrap: wrap; gap: 0.45rem; margin-top: 0.3rem;
     }
 
     .news-tag {
@@ -211,22 +246,18 @@
       margin-bottom: 0.2rem;
     }
 
-    .news-coverage-items {
-      display: flex; flex-direction: column; gap: 0;
-    }
+    .news-coverage-items { display: flex; flex-direction: column; gap: 0; }
 
     .news-cov-item {
       display: flex; align-items: flex-start; gap: 1rem;
       padding: 0.9rem 0;
       border-bottom: 1px solid var(--border);
     }
-
     .news-cov-item:last-child { border-bottom: none; }
 
     .news-cov-icon {
       font-size: 1rem; flex-shrink: 0;
-      width: 28px; text-align: center;
-      margin-top: 0.05rem;
+      width: 28px; text-align: center; margin-top: 0.05rem;
     }
 
     .news-cov-title {
@@ -237,8 +268,7 @@
 
     .news-cov-sub {
       font-family: var(--font-mono); font-size: 0.68rem;
-      color: var(--muted); margin-top: 0.22rem;
-      letter-spacing: 0.06em;
+      color: var(--muted); margin-top: 0.22rem; letter-spacing: 0.06em;
     }
 
     .news-disclaimer {
@@ -284,8 +314,7 @@
 
     .post-cat {
       font-family: var(--font-mono); font-size: 0.62rem;
-      letter-spacing: 0.18em; text-transform: uppercase;
-      color: #25D366;
+      letter-spacing: 0.18em; text-transform: uppercase; color: #25D366;
     }
 
     .post-title {
@@ -295,8 +324,7 @@
     }
 
     .post-desc {
-      color: var(--muted2); font-size: 0.84rem;
-      line-height: 1.6; flex: 1;
+      color: var(--muted2); font-size: 0.84rem; line-height: 1.6; flex: 1;
     }
 
     .post-foot {
@@ -308,15 +336,15 @@
 
     .post-time {
       font-family: var(--font-mono); font-size: 0.62rem;
-      letter-spacing: 0.1em; text-transform: uppercase;
-      color: var(--muted);
+      letter-spacing: 0.1em; text-transform: uppercase; color: var(--muted);
     }
 
     .post-arrow { color: var(--muted); transition: transform 0.2s; font-size: 1rem; }
 
     /* ── TICKER ── */
     .ticker-wrap {
-      overflow: hidden; border-top: 1px solid var(--border);
+      overflow: hidden;
+      border-top: 1px solid var(--border);
       border-bottom: 1px solid var(--border);
       background: var(--surface);
       padding: 0.6rem 0;
@@ -332,8 +360,7 @@
     .ticker-item {
       font-family: var(--font-mono); font-size: 0.68rem;
       letter-spacing: 0.12em; text-transform: uppercase;
-      color: var(--muted2); padding: 0 2.5rem;
-      flex-shrink: 0;
+      color: var(--muted2); padding: 0 2.5rem; flex-shrink: 0;
     }
 
     .ticker-sep { color: var(--muted); }
@@ -351,10 +378,7 @@
       flex-wrap: wrap; gap: 1rem;
     }
 
-    .foot-logo {
-      display: flex; align-items: center; gap: 0.55rem;
-    }
-
+    .foot-logo { display: flex; align-items: center; gap: 0.55rem; }
     .foot-logo img { width: 26px; height: 26px; border-radius: 4px; object-fit: cover; }
 
     .foot-wordmark {
@@ -387,79 +411,83 @@
       .nav-links { gap: 0.8rem; }
       footer { flex-direction: column; }
     }
+
+    @media (max-width: 560px) {
+      .nav-links li:not(:last-child) { display: none; }
+    }
   </style>
 </head>
 <body>
 
+  <!-- ── NAV ── -->
   <nav>
     <a class="nav-logo" href="https://faizzzlol.github.io/freakyniggas/">
       <img src="https://faizzzlol.github.io/freakyniggas/FreakyNiggasLogo.gif" alt="FN"/>
       <span class="nav-wordmark">Freaky Niggas</span>
     </a>
+
     <ul class="nav-links">
-      <li><a href="https://faizzzlol.github.io/freakyniggas/#games">Games</a></li>
-      <li><a href="#" class="active">News</a></li>
-      <li><a href="https://faizzzlol.github.io/freakyniggas/#community">Community</a></li>
-      <li><a href="https://chat.whatsapp.com/E0Z4puJdXR8HhRcjoce3h6" target="_blank" class="nav-cta">Join Now</a></li>
+      <li><a href="https://faizzzlol.github.io/freakyniggas/#games"
+             data-en="Games" data-bm="Permainan">Games</a></li>
+      <li><a href="#" class="active"
+             data-en="News" data-bm="Berita">News</a></li>
+      <li><a href="https://faizzzlol.github.io/freakyniggas/#community"
+             data-en="Community" data-bm="Komuniti">Community</a></li>
+      <li><a href="https://chat.whatsapp.com/E0Z4puJdXR8HhRcjoce3h6" target="_blank" class="nav-cta"
+             data-en="Join Now" data-bm="Sertai Sekarang">Join Now</a></li>
     </ul>
+
+    <!-- LANG SWITCHER -->
+    <div class="lang-switcher">
+      <button class="lang-btn active" id="btn-en" onclick="setLang('en')">ENG</button>
+      <div class="lang-divider"></div>
+      <button class="lang-btn" id="btn-bm" onclick="setLang('bm')">BM</button>
+    </div>
   </nav>
 
-  <!-- TICKER -->
+  <!-- ── TICKER ── -->
   <div style="margin-top:64px;">
     <div class="ticker-wrap">
-      <div class="ticker-track">
-        <span class="ticker-item">F1 2025 Season Live <span class="ticker-sep">◆</span></span>
-        <span class="ticker-item">MotoGP Round 3 Results <span class="ticker-sep">◆</span></span>
-        <span class="ticker-item">Marvel Phase 6 Announced <span class="ticker-sep">◆</span></span>
-        <span class="ticker-item">Valorant Act II Patch <span class="ticker-sep">◆</span></span>
-        <span class="ticker-item">Netflix Q1 Top Picks <span class="ticker-sep">◆</span></span>
-        <span class="ticker-item">Roblox UGC Update <span class="ticker-sep">◆</span></span>
-        <span class="ticker-item">Global Football Transfers <span class="ticker-sep">◆</span></span>
-        <span class="ticker-item">Disney+ New Releases <span class="ticker-sep">◆</span></span>
-        <!-- duplicate for seamless loop -->
-        <span class="ticker-item">F1 2025 Season Live <span class="ticker-sep">◆</span></span>
-        <span class="ticker-item">MotoGP Round 3 Results <span class="ticker-sep">◆</span></span>
-        <span class="ticker-item">Marvel Phase 6 Announced <span class="ticker-sep">◆</span></span>
-        <span class="ticker-item">Valorant Act II Patch <span class="ticker-sep">◆</span></span>
-        <span class="ticker-item">Netflix Q1 Top Picks <span class="ticker-sep">◆</span></span>
-        <span class="ticker-item">Roblox UGC Update <span class="ticker-sep">◆</span></span>
-        <span class="ticker-item">Global Football Transfers <span class="ticker-sep">◆</span></span>
-        <span class="ticker-item">Disney+ New Releases <span class="ticker-sep">◆</span></span>
-      </div>
+      <div class="ticker-track" id="ticker-track"></div>
     </div>
   </div>
 
-  <!-- PAGE HERO -->
+  <!-- ── PAGE HERO ── -->
   <div class="page-hero">
-    <div class="page-eyebrow">// Stay in the loop</div>
+    <div class="page-eyebrow"
+         data-en="// Stay in the loop"
+         data-bm="// Ikuti Perkembangan Terkini">// Stay in the loop</div>
     <h1 class="page-title">Freaky News</h1>
   </div>
 
   <hr/>
 
-  <!-- CHANNEL CARD -->
+  <!-- ── CHANNEL CARD ── -->
   <div class="section">
     <div class="news-card">
 
       <div class="news-card-left">
         <div class="news-badge">
           <span class="news-badge-dot"></span>
-          WhatsApp Channel · Live
+          <span data-en="WhatsApp Channel · Live"
+                data-bm="Saluran WhatsApp · Langsung">WhatsApp Channel · Live</span>
         </div>
 
         <div class="news-name">
           FN
-          <span>Freaky News</span>
+          <span data-en="Freaky News" data-bm="Berita Freaky">Freaky News</span>
         </div>
 
-        <p class="news-desc">
+        <p class="news-desc"
+           data-en="Your comprehensive source for real-time updates across sports, entertainment, and global affairs. Curated by FreakyN."
+           data-bm="Sumber lengkap anda untuk berita terkini merangkumi sukan, hiburan, dan hal ehwal global. Dikurasi oleh FreakyN.">
           Your comprehensive source for real-time updates across sports, entertainment, and global affairs. Curated by FreakyN.
         </p>
 
         <div class="news-tags">
           <span class="news-tag">F1</span>
           <span class="news-tag">MotoGP</span>
-          <span class="news-tag">Football</span>
+          <span class="news-tag" data-en="Football" data-bm="Bola Sepak">Football</span>
           <span class="news-tag">Marvel</span>
           <span class="news-tag">Netflix</span>
           <span class="news-tag">Anime</span>
@@ -469,49 +497,69 @@
 
         <a href="https://whatsapp.com/channel/0029VaofEGQCcW4rLi3dgk1A" target="_blank" class="btn-wa-channel">
           <svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413Z"/></svg>
-          Follow Channel
+          <span data-en="Follow Channel" data-bm="Ikuti Saluran">Follow Channel</span>
         </a>
       </div>
 
       <div class="news-card-right">
-        <div class="news-coverage-label">// Coverage areas</div>
+        <div class="news-coverage-label"
+             data-en="// Coverage areas"
+             data-bm="// Kawasan Liputan">// Coverage areas</div>
         <div class="news-coverage-items">
 
           <div class="news-cov-item">
             <div class="news-cov-icon">🏎️</div>
             <div>
-              <div class="news-cov-title">Motorsports & Athletics</div>
-              <div class="news-cov-sub">F1 · MotoGP · Global Football</div>
+              <div class="news-cov-title"
+                   data-en="Motorsports & Athletics"
+                   data-bm="Sukan Motor & Atletik">Motorsports & Athletics</div>
+              <div class="news-cov-sub"
+                   data-en="F1 · MotoGP · Global Football"
+                   data-bm="F1 · MotoGP · Bola Sepak Global">F1 · MotoGP · Global Football</div>
             </div>
           </div>
 
           <div class="news-cov-item">
             <div class="news-cov-icon">🌍</div>
             <div>
-              <div class="news-cov-title">Global Affairs</div>
-              <div class="news-cov-sub">International · National · Economic Trends</div>
+              <div class="news-cov-title"
+                   data-en="Global Affairs"
+                   data-bm="Hal Ehwal Global">Global Affairs</div>
+              <div class="news-cov-sub"
+                   data-en="International · National · Economic Trends"
+                   data-bm="Antarabangsa · Nasional · Trend Ekonomi">International · National · Economic Trends</div>
             </div>
           </div>
 
           <div class="news-cov-item">
             <div class="news-cov-icon">🎬</div>
             <div>
-              <div class="news-cov-title">Entertainment & Media</div>
-              <div class="news-cov-sub">Marvel · Sony · Warner · Netflix · Disney · Anime</div>
+              <div class="news-cov-title"
+                   data-en="Entertainment & Media"
+                   data-bm="Hiburan & Media">Entertainment & Media</div>
+              <div class="news-cov-sub"
+                   data-en="Marvel · Sony · Warner · Netflix · Disney · Anime"
+                   data-bm="Marvel · Sony · Warner · Netflix · Disney · Anime">Marvel · Sony · Warner · Netflix · Disney · Anime</div>
             </div>
           </div>
 
           <div class="news-cov-item">
             <div class="news-cov-icon">🎮</div>
             <div>
-              <div class="news-cov-title">Gaming & Hobbies</div>
-              <div class="news-cov-sub">Valorant · Roblox · Hot Wheels · Industry News</div>
+              <div class="news-cov-title"
+                   data-en="Gaming & Hobbies"
+                   data-bm="Permainan & Hobi">Gaming & Hobbies</div>
+              <div class="news-cov-sub"
+                   data-en="Valorant · Roblox · Hot Wheels · Industry News"
+                   data-bm="Valorant · Roblox · Hot Wheels · Berita Industri">Valorant · Roblox · Hot Wheels · Industry News</div>
             </div>
           </div>
 
         </div>
 
-        <div class="news-disclaimer">
+        <div class="news-disclaimer"
+             data-en="📌 Content is for informational purposes only. Not intended to satirize, promote, or endorse any specific individuals, corporations, or ideologies."
+             data-bm="📌 Kandungan ini adalah untuk tujuan maklumat sahaja. Tidak bertujuan untuk menyindir, mempromosi, atau menyokong mana-mana individu, syarikat, atau ideologi tertentu.">
           📌 Content is for informational purposes only. Not intended to satirize, promote, or endorse any specific individuals, corporations, or ideologies.
         </div>
       </div>
@@ -521,69 +569,97 @@
 
   <hr/>
 
-  <!-- LATEST POSTS -->
+  <!-- ── LATEST POSTS ── -->
   <div class="section">
-    <div class="section-label">// Recent posts</div>
-    <div class="section-title">Latest Updates</div>
+    <div class="section-label"
+         data-en="// Recent posts"
+         data-bm="// Siaran Terkini">// Recent posts</div>
+    <div class="section-title"
+         data-en="Latest Updates"
+         data-bm="Kemas Kini Terbaru">Latest Updates</div>
 
     <div class="posts-grid">
 
       <a class="post-card" href="https://whatsapp.com/channel/0029VaofEGQCcW4rLi3dgk1A" target="_blank">
-        <div class="post-cat">Motorsports & Athletics</div>
-        <div class="post-title">F1 2025 — Race Calendar & Team Lineups Confirmed</div>
-        <p class="post-desc">All 10 constructors have locked in their driver pairings for the new season. Key changes across the grid set the stage for another intense championship fight.</p>
+        <div class="post-cat" data-en="Motorsports & Athletics" data-bm="Sukan Motor & Atletik">Motorsports & Athletics</div>
+        <div class="post-title"
+             data-en="F1 2025 — Race Calendar & Team Lineups Confirmed"
+             data-bm="F1 2025 — Kalendar Perlumbaan & Susunan Pasukan Disahkan">F1 2025 — Race Calendar & Team Lineups Confirmed</div>
+        <p class="post-desc"
+           data-en="All 10 constructors have locked in their driver pairings for the new season. Key changes across the grid set the stage for another intense championship fight."
+           data-bm="Kesemua 10 pembina telah mengesahkan pasangan pemandu mereka untuk musim baharu. Perubahan ketara di seluruh grid membuka jalan kepada pertarungan kejuaraan yang sengit.">All 10 constructors have locked in their driver pairings for the new season. Key changes across the grid set the stage for another intense championship fight.</p>
         <div class="post-foot">
-          <span class="post-time">Today</span>
+          <span class="post-time" data-en="Today" data-bm="Hari Ini">Today</span>
           <span class="post-arrow">↗</span>
         </div>
       </a>
 
       <a class="post-card" href="https://whatsapp.com/channel/0029VaofEGQCcW4rLi3dgk1A" target="_blank">
-        <div class="post-cat">Entertainment & Media</div>
-        <div class="post-title">Marvel Phase 6 — Full Release Schedule Revealed</div>
-        <p class="post-desc">Marvel Studios officially announced the Phase 6 slate, including release windows for Avengers: Doomsday and several new solo projects hitting theatres in 2025–2026.</p>
+        <div class="post-cat" data-en="Entertainment & Media" data-bm="Hiburan & Media">Entertainment & Media</div>
+        <div class="post-title"
+             data-en="Marvel Phase 6 — Full Release Schedule Revealed"
+             data-bm="Marvel Fasa 6 — Jadual Tayangan Penuh Didedahkan">Marvel Phase 6 — Full Release Schedule Revealed</div>
+        <p class="post-desc"
+           data-en="Marvel Studios officially announced the Phase 6 slate, including release windows for Avengers: Doomsday and several new solo projects hitting theatres in 2025–2026."
+           data-bm="Marvel Studios secara rasmi mengumumkan senarai Fasa 6, termasuk tarikh tayangan Avengers: Doomsday dan beberapa projek solo baharu yang akan ke pawagam pada 2025–2026.">Marvel Studios officially announced the Phase 6 slate, including release windows for Avengers: Doomsday and several new solo projects hitting theatres in 2025–2026.</p>
         <div class="post-foot">
-          <span class="post-time">Yesterday</span>
+          <span class="post-time" data-en="Yesterday" data-bm="Semalam">Yesterday</span>
           <span class="post-arrow">↗</span>
         </div>
       </a>
 
       <a class="post-card" href="https://whatsapp.com/channel/0029VaofEGQCcW4rLi3dgk1A" target="_blank">
-        <div class="post-cat">Gaming & Hobbies</div>
-        <div class="post-title">Valorant Act II — New Agent & Map Changes Drop</div>
-        <p class="post-desc">Riot Games drops the Act II update with a brand-new duelist, significant map pool adjustments, and ranked system tweaks affecting all competitive players.</p>
+        <div class="post-cat" data-en="Gaming & Hobbies" data-bm="Permainan & Hobi">Gaming & Hobbies</div>
+        <div class="post-title"
+             data-en="Valorant Act II — New Agent & Map Changes Drop"
+             data-bm="Valorant Akta II — Ejen Baharu & Perubahan Peta">Valorant Act II — New Agent & Map Changes Drop</div>
+        <p class="post-desc"
+           data-en="Riot Games drops the Act II update with a brand-new duelist, significant map pool adjustments, and ranked system tweaks affecting all competitive players."
+           data-bm="Riot Games melancarkan kemaskini Akta II dengan duelist baharu, pelarasan kolam peta yang ketara, dan penambahbaikan sistem peringkat yang memberi kesan kepada semua pemain kompetitif.">Riot Games drops the Act II update with a brand-new duelist, significant map pool adjustments, and ranked system tweaks affecting all competitive players.</p>
         <div class="post-foot">
-          <span class="post-time">2 days ago</span>
+          <span class="post-time" data-en="2 days ago" data-bm="2 hari lepas">2 days ago</span>
           <span class="post-arrow">↗</span>
         </div>
       </a>
 
       <a class="post-card" href="https://whatsapp.com/channel/0029VaofEGQCcW4rLi3dgk1A" target="_blank">
-        <div class="post-cat">Global Affairs</div>
-        <div class="post-title">Southeast Asia Economic Forum — Key Takeaways</div>
-        <p class="post-desc">Regional leaders gathered to address trade imbalances, digital infrastructure investments, and climate resilience goals heading into 2026.</p>
+        <div class="post-cat" data-en="Global Affairs" data-bm="Hal Ehwal Global">Global Affairs</div>
+        <div class="post-title"
+             data-en="Southeast Asia Economic Forum — Key Takeaways"
+             data-bm="Forum Ekonomi Asia Tenggara — Intipati Utama">Southeast Asia Economic Forum — Key Takeaways</div>
+        <p class="post-desc"
+           data-en="Regional leaders gathered to address trade imbalances, digital infrastructure investments, and climate resilience goals heading into 2026."
+           data-bm="Pemimpin serantau berkumpul untuk membincangkan ketidakseimbangan perdagangan, pelaburan infrastruktur digital, dan matlamat ketahanan iklim menjelang 2026.">Regional leaders gathered to address trade imbalances, digital infrastructure investments, and climate resilience goals heading into 2026.</p>
         <div class="post-foot">
-          <span class="post-time">3 days ago</span>
+          <span class="post-time" data-en="3 days ago" data-bm="3 hari lepas">3 days ago</span>
           <span class="post-arrow">↗</span>
         </div>
       </a>
 
       <a class="post-card" href="https://whatsapp.com/channel/0029VaofEGQCcW4rLi3dgk1A" target="_blank">
-        <div class="post-cat">Entertainment & Media</div>
-        <div class="post-title">Netflix Q1 2025 — Top Releases & Viewership Stats</div>
-        <p class="post-desc">Netflix reveals its most-watched titles for Q1, with several anime originals and a Korean thriller dominating global charts across all regions.</p>
+        <div class="post-cat" data-en="Entertainment & Media" data-bm="Hiburan & Media">Entertainment & Media</div>
+        <div class="post-title"
+             data-en="Netflix Q1 2025 — Top Releases & Viewership Stats"
+             data-bm="Netflix S1 2025 — Tayangan Terbaik & Statistik Penonton">Netflix Q1 2025 — Top Releases & Viewership Stats</div>
+        <p class="post-desc"
+           data-en="Netflix reveals its most-watched titles for Q1, with several anime originals and a Korean thriller dominating global charts across all regions."
+           data-bm="Netflix mendedahkan tajuk-tajuk paling ditonton untuk S1, dengan beberapa anime orijinal dan sebuah thriller Korea menguasai carta global di semua rantau.">Netflix reveals its most-watched titles for Q1, with several anime originals and a Korean thriller dominating global charts across all regions.</p>
         <div class="post-foot">
-          <span class="post-time">4 days ago</span>
+          <span class="post-time" data-en="4 days ago" data-bm="4 hari lepas">4 days ago</span>
           <span class="post-arrow">↗</span>
         </div>
       </a>
 
       <a class="post-card" href="https://whatsapp.com/channel/0029VaofEGQCcW4rLi3dgk1A" target="_blank">
-        <div class="post-cat">Motorsports & Athletics</div>
-        <div class="post-title">MotoGP Round 3 — Race Report & Standings Update</div>
-        <p class="post-desc">A dramatic final lap delivered an unexpected podium, shaking up the early-season standings as the championship heads into the European leg of the calendar.</p>
+        <div class="post-cat" data-en="Motorsports & Athletics" data-bm="Sukan Motor & Atletik">Motorsports & Athletics</div>
+        <div class="post-title"
+             data-en="MotoGP Round 3 — Race Report & Standings Update"
+             data-bm="MotoGP Pusingan 3 — Laporan Perlumbaan & Kemas Kini Kedudukan">MotoGP Round 3 — Race Report & Standings Update</div>
+        <p class="post-desc"
+           data-en="A dramatic final lap delivered an unexpected podium, shaking up the early-season standings as the championship heads into the European leg of the calendar."
+           data-bm="Pusingan akhir yang dramatik menghasilkan podium mengejut, menggoncang kedudukan awal musim apabila kejuaraan menuju ke peringkat Eropah dalam kalendar.">A dramatic final lap delivered an unexpected podium, shaking up the early-season standings as the championship heads into the European leg of the calendar.</p>
         <div class="post-foot">
-          <span class="post-time">5 days ago</span>
+          <span class="post-time" data-en="5 days ago" data-bm="5 hari lepas">5 days ago</span>
           <span class="post-arrow">↗</span>
         </div>
       </a>
@@ -591,14 +667,80 @@
     </div>
   </div>
 
+  <!-- ── FOOTER ── -->
   <footer>
     <div class="foot-logo">
       <img src="https://faizzzlol.github.io/freakyniggas/FreakyNiggasLogo.gif" alt="FN"/>
       <span class="foot-wordmark">Freaky Niggas</span>
     </div>
-    <div class="foot-copy">© 2025 Freaky Niggas. All rights reserved.</div>
-    <a class="foot-link" href="https://faizzzlol.github.io/freakyniggas/feedback">Feedback →</a>
+    <div class="foot-copy"
+         data-en="© 2025 Freaky Niggas. All rights reserved."
+         data-bm="© 2025 Freaky Niggas. Hak cipta terpelihara.">© 2025 Freaky Niggas. All rights reserved.</div>
+    <a class="foot-link" href="https://faizzzlol.github.io/freakyniggas/feedback"
+       data-en="Feedback →" data-bm="Maklum Balas →">Feedback →</a>
   </footer>
+
+  <script>
+    /* ─────────────────────────────
+       TRANSLATION STRINGS
+    ───────────────────────────── */
+    const TICKER_ITEMS = {
+      en: [
+        'F1 2025 Season Live', 'MotoGP Round 3 Results',
+        'Marvel Phase 6 Announced', 'Valorant Act II Patch',
+        'Netflix Q1 Top Picks', 'Roblox UGC Update',
+        'Global Football Transfers', 'Disney+ New Releases'
+      ],
+      bm: [
+        'Musim F1 2025 Bermula', 'Keputusan MotoGP Pusingan 3',
+        'Marvel Fasa 6 Diumumkan', 'Tampalan Valorant Akta II',
+        'Pilihan Terbaik Netflix S1', 'Kemaskini UGC Roblox',
+        'Pindahan Bola Sepak Global', 'Tayangan Baharu Disney+'
+      ]
+    };
+
+    /* ─────────────────────────────
+       CORE SWITCHER
+    ───────────────────────────── */
+    let currentLang = localStorage.getItem('fn-lang') || 'en';
+
+    function buildTicker(lang) {
+      const items = [...TICKER_ITEMS[lang], ...TICKER_ITEMS[lang]];
+      return items.map(t =>
+        `<span class="ticker-item">${t} <span class="ticker-sep">◆</span></span>`
+      ).join('');
+    }
+
+    function setLang(lang) {
+      currentLang = lang;
+      localStorage.setItem('fn-lang', lang);
+
+      // toggle button active states
+      document.getElementById('btn-en').classList.toggle('active', lang === 'en');
+      document.getElementById('btn-bm').classList.toggle('active', lang === 'bm');
+
+      // swap every tagged element
+      document.querySelectorAll('[data-en]').forEach(el => {
+        el.textContent = (lang === 'bm') ? el.dataset.bm : el.dataset.en;
+      });
+
+      // rebuild ticker
+      document.getElementById('ticker-track').innerHTML = buildTicker(lang);
+
+      // update html lang attribute
+      document.documentElement.lang = (lang === 'bm') ? 'ms' : 'en';
+    }
+
+    /* ─────────────────────────────
+       INIT
+    ───────────────────────────── */
+    document.addEventListener('DOMContentLoaded', () => {
+      // always build ticker first
+      document.getElementById('ticker-track').innerHTML = buildTicker(currentLang);
+      // apply saved language (will re-render if bm)
+      if (currentLang === 'bm') setLang('bm');
+    });
+  </script>
 
 </body>
 </html>
