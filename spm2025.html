@@ -3,15 +3,25 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>SPM Result Countdown</title>
+  <title>SPM Result Countdown | Danny Ric Edition</title>
 
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;500;700&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;500;800&display=swap" rel="stylesheet">
 
   <style>
+    :root {
+      --f1-red: #e10600;
+      --f1-green: #00ff41;
+      --f1-blue: #4da3ff;
+      --bg: #05070a;
+    }
+
     body {
       margin: 0;
       font-family: "Inter", sans-serif;
-      background: #0b0f1a;
+      background: var(--bg);
+      background-image: 
+        radial-gradient(circle at 50% -20%, #1a1f2e 0%, var(--bg) 80%),
+        repeating-linear-gradient(45deg, rgba(255,255,255,0.02) 0px, rgba(255,255,255,0.02) 1px, transparent 1px, transparent 15px);
       color: #ffffff;
       display: flex;
       flex-direction: column;
@@ -19,54 +29,93 @@
       justify-content: center;
       min-height: 100vh;
       text-align: center;
+      overflow: hidden;
     }
 
-    .container {
-      max-width: 900px;
-      padding: 20px;
+    .container { max-width: 900px; padding: 20px; z-index: 1; }
+
+    /* F1 LIGHTS */
+    .f1-lights-container {
+      display: flex; gap: 15px; justify-content: center; margin-bottom: 25px;
+      background: #111; padding: 15px 25px; border-radius: 12px; border: 2px solid #222;
     }
+    .light-unit { display: flex; flex-direction: column; gap: 5px; }
+    .bulb { width: 25px; height: 25px; border-radius: 50%; background: #222; transition: all 0.4s ease; }
+
+    body.state-waiting .bulb { background: var(--f1-red); box-shadow: 0 0 20px var(--f1-red); }
+    body.state-green .bulb { background: var(--f1-green); box-shadow: 0 0 25px var(--f1-green); }
 
     h1 {
-      font-size: 2.2rem;
-      margin-bottom: 10px;
-      letter-spacing: 1px;
+      font-size: 2.8rem; font-weight: 800; margin: 10px 0; letter-spacing: -2px;
+      text-transform: uppercase; font-style: italic;
+      background: linear-gradient(to bottom, #fff 50%, #888);
+      -webkit-background-clip: text; -webkit-text-fill-color: transparent;
     }
 
-    p {
-      color: #9aa4b2;
-      margin-bottom: 30px;
+    .status-badge {
+      display: inline-block; padding: 4px 12px; border-radius: 4px;
+      font-size: 10px; font-weight: 700; letter-spacing: 2px; margin-bottom: 20px;
+      border: 1px solid var(--f1-blue); color: var(--f1-blue);
     }
 
     .card {
-      background: rgba(255, 255, 255, 0.05);
-      border: 1px solid rgba(255, 255, 255, 0.1);
-      border-radius: 16px;
-      padding: 20px;
-      backdrop-filter: blur(10px);
+      background: rgba(255, 255, 255, 0.03); border: 1px solid rgba(255, 255, 255, 0.08);
+      border-radius: 16px; padding: 40px 20px; backdrop-filter: blur(20px);
+      box-shadow: 0 40px 100px rgba(0,0,0,0.6); position: relative;
     }
 
-    .footer {
-      margin-top: 20px;
-      font-size: 12px;
-      color: #6b7280;
+    /* HONEY BADGER POPUP */
+    #ric-popup {
+      display: none; position: fixed; top: 50%; left: 50%; transform: translate(-50%, -50%);
+      background: #fff; color: #000; padding: 30px; border-radius: 20px; z-index: 100;
+      width: 300px; box-shadow: 0 0 50px rgba(77, 163, 255, 0.5);
+    }
+    #ric-popup h2 { margin: 0; font-weight: 800; color: var(--f1-red); }
+    #ric-popup button { 
+      margin-top: 20px; background: #000; color: #fff; border: none; 
+      padding: 10px 20px; border-radius: 10px; cursor: pointer; font-weight: 700;
     }
 
-    .glow {
-      color: #4da3ff;
-      text-shadow: 0 0 10px rgba(77,163,255,0.6);
+    /* NOTIFY BUTTON */
+    .btn-notify {
+      background: transparent; border: 1px solid var(--f1-green); color: var(--f1-green);
+      padding: 10px 20px; border-radius: 5px; cursor: pointer; font-size: 12px;
+      text-transform: uppercase; letter-spacing: 1px; margin-top: 20px; transition: 0.3s;
     }
+    .btn-notify:hover { background: var(--f1-green); color: #000; }
+
+    #session-end-overlay { display: none; font-weight: 800; font-size: 1.5rem; color: var(--f1-blue); }
+    body.state-ended #session-end-overlay { display: block; }
+    body.state-ended .tickcounter, body.state-ended .btn-notify { display: none !important; }
+
+    .footer { margin-top: 30px; font-size: 11px; color: #4b5563; text-transform: uppercase; letter-spacing: 2px; }
   </style>
 </head>
 
-<body>
+<body class="state-waiting">
+
+  <div id="ric-popup">
+    <h2>KI KI KI RR! 🏎️</h2>
+    <p>SWEAT RA! Enchante! Ready to send it? Notifications are now armed, Honey Badger style.</p>
+    <button onclick="closePopup()">FEELING GOOD!</button>
+  </div>
 
   <div class="container">
-    <h1>📊 SPM Result Countdown</h1>
-    <p>Stay strong. The moment is coming soon.</p>
+    <div class="f1-lights-container">
+      <div class="light-unit"><div class="bulb"></div><div class="bulb"></div></div>
+      <div class="light-unit"><div class="bulb"></div><div class="bulb"></div></div>
+      <div class="light-unit"><div class="bulb"></div><div class="bulb"></div></div>
+      <div class="light-unit"><div class="bulb"></div><div class="bulb"></div></div>
+      <div class="light-unit"><div class="bulb"></div><div class="bulb"></div></div>
+    </div>
+
+    <div class="status-badge" id="race-status">FORMATION LAP</div>
+    <h1>📊 SPM Grand Prix</h1>
+    <p id="dynamic-msg">Preparing for full send. Results landing March 31 2026.</p>
 
     <div class="card">
+      <div id="session-end-overlay">🏁 SESSION ENDED<br><span style="font-size: 0.8rem; font-weight: 300;">Parc Fermé: Season Complete</span></div>
 
-      <!-- TickCounter Embed -->
       <script>
         (function(d, s, id) {
           var js, pjs = d.getElementsByTagName(s)[0];
@@ -78,21 +127,64 @@
         }(document, "script", "tickcounter-sdk"));
       </script>
 
-      <a 
-        data-type="countdown" 
-        data-id="9837399" 
-        class="tickcounter" 
-        style="display:block; left:0; width:100%; height:0; position:relative; padding-bottom:25%; margin:0 auto;" 
-        title="SPM Result Countdown" 
-        href="//www.tickcounter.com/">
-      </a>
-
+      <a data-type="countdown" data-id="9837399" class="tickcounter" style="display:block; width:100%; position:relative; padding-bottom:25%; margin:0 auto;" href="//www.tickcounter.com/"></a>
+      
+      <button class="btn-notify" onclick="enableNotifications()">Set 1-Min Pit Alert</button>
     </div>
 
-    <p class="footer">
-      Built for focus • Stay calm • You got this <span class="glow">💙</span>
-    </p>
+    <p class="footer">"Just gonna send it" • Season 2025 • Daniel Ric Approved 🍯</p>
   </div>
+
+  <script>
+    let notificationSent = false;
+
+    function closePopup() { document.getElementById('ric-popup').style.display = 'none'; }
+
+    function enableNotifications() {
+      Notification.requestPermission().then(permission => {
+        if (permission === "granted") {
+          document.getElementById('ric-popup').style.display = 'block';
+        }
+      });
+    }
+
+    function updateRaceEngine() {
+      const now = new Date();
+      const greenLightTime = new Date('March 31, 2026 10:00:00');
+      const notifyTime = new Date('March 31, 2026 09:59:00'); // 1 minute before
+      const sessionEndTime = new Date('April 6, 2026 00:00:00');
+      
+      const body = document.body;
+      const status = document.getElementById('race-status');
+      const msg = document.getElementById('dynamic-msg');
+
+      // 1-MINUTE NOTIFICATION LOGIC
+      if (now >= notifyTime && now < greenLightTime && !notificationSent) {
+        if (Notification.permission === "granted") {
+          new Notification("SPM Grand Prix: 1 MINUTE TO START!", {
+            body: "KI KI KI RR! Sweat ra! Get to the pit wall, results are releasing!",
+            icon: "https://cdn-icons-png.flaticon.com/512/2554/2554930.png"
+          });
+          notificationSent = true;
+        }
+      }
+
+      if (now >= sessionEndTime) {
+        body.className = 'state-ended';
+        status.innerText = "SESSION ENDED";
+        msg.innerText = "The Grand Prix is over. All cars back to the garage.";
+      } else if (now >= greenLightTime) {
+        body.className = 'state-green';
+        status.innerText = "RACE START: LIGHTS OUT";
+        msg.innerText = "And it's lights out and away we go! Check your results.";
+      } else {
+        body.className = 'state-waiting';
+      }
+    }
+
+    setInterval(updateRaceEngine, 1000);
+    updateRaceEngine();
+  </script>
 
 </body>
 </html>
