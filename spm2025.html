@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>SPM Result Countdown | Danny Ric Edition</title>
+  <title>SPM Result Countdown</title>
 
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;500;800&display=swap" rel="stylesheet">
 
@@ -64,39 +64,50 @@
       box-shadow: 0 40px 100px rgba(0,0,0,0.6); position: relative;
     }
 
-    /* HONEY BADGER POPUP */
+    /* THE HONEY BADGER POPUP */
     #ric-popup {
       display: none; position: fixed; top: 50%; left: 50%; transform: translate(-50%, -50%);
-      background: #fff; color: #000; padding: 30px; border-radius: 20px; z-index: 100;
-      width: 300px; box-shadow: 0 0 50px rgba(77, 163, 255, 0.5);
+      background: #ffffff; color: #000; padding: 35px; border-radius: 24px; z-index: 100;
+      width: 320px; box-shadow: 0 0 80px rgba(77, 163, 255, 0.4); border: 4px solid #000;
     }
-    #ric-popup h2 { margin: 0; font-weight: 800; color: var(--f1-red); }
+    #ric-popup h2 { margin: 0; font-weight: 800; color: var(--f1-red); font-style: italic; font-size: 1.8rem; }
+    #ric-popup p { color: #333; font-weight: 500; margin: 15px 0; }
     #ric-popup button { 
-      margin-top: 20px; background: #000; color: #fff; border: none; 
-      padding: 10px 20px; border-radius: 10px; cursor: pointer; font-weight: 700;
+      width: 100%; background: #000; color: #fff; border: none; padding: 12px; 
+      border-radius: 12px; cursor: pointer; font-weight: 800; text-transform: uppercase;
     }
 
     /* NOTIFY BUTTON */
     .btn-notify {
       background: transparent; border: 1px solid var(--f1-green); color: var(--f1-green);
-      padding: 10px 20px; border-radius: 5px; cursor: pointer; font-size: 12px;
-      text-transform: uppercase; letter-spacing: 1px; margin-top: 20px; transition: 0.3s;
+      padding: 12px 24px; border-radius: 8px; cursor: pointer; font-size: 12px;
+      text-transform: uppercase; font-weight: 800; letter-spacing: 1px; margin-top: 25px;
     }
-    .btn-notify:hover { background: var(--f1-green); color: #000; }
 
     #session-end-overlay { display: none; font-weight: 800; font-size: 1.5rem; color: var(--f1-blue); }
     body.state-ended #session-end-overlay { display: block; }
     body.state-ended .tickcounter, body.state-ended .btn-notify { display: none !important; }
 
+    /* Chequered Background for Session End */
+    body.state-ended {
+      background-image: 
+        linear-gradient(45deg, #111 25%, transparent 25%), 
+        linear-gradient(-45deg, #111 25%, transparent 25%), 
+        linear-gradient(45deg, transparent 75%, #111 75%), 
+        linear-gradient(-45deg, transparent 75%, #111 75%);
+      background-size: 40px 40px;
+    }
+
     .footer { margin-top: 30px; font-size: 11px; color: #4b5563; text-transform: uppercase; letter-spacing: 2px; }
+    #meme-quote { color: #8a95a5; font-style: italic; }
   </style>
 </head>
 
 <body class="state-waiting">
 
   <div id="ric-popup">
-    <h2>KI KI KI RR! 🏎️</h2>
-    <p>SWEAT RA! Enchante! Ready to send it? Notifications are now armed, Honey Badger style.</p>
+    <h2>KI KI KI KI KI! 🏎️</h2>
+    <p><b>SWEET RA!</b> Enchante! Pit wall alert armed. The Honey Badger is ready to send it at 10 AM March 31 2026!</p>
     <button onclick="closePopup()">FEELING GOOD!</button>
   </div>
 
@@ -111,7 +122,7 @@
 
     <div class="status-badge" id="race-status">FORMATION LAP</div>
     <h1>📊 SPM Grand Prix</h1>
-    <p id="dynamic-msg">Preparing for full send. Results landing March 31 2026.</p>
+    <p id="dynamic-msg">Maintaining tire temps. Standby for release at 10:00 AM March 31 2026.</p>
 
     <div class="card">
       <div id="session-end-overlay">🏁 SESSION ENDED<br><span style="font-size: 0.8rem; font-weight: 300;">Parc Fermé: Season Complete</span></div>
@@ -132,11 +143,32 @@
       <button class="btn-notify" onclick="enableNotifications()">Set 1-Min Pit Alert</button>
     </div>
 
-    <p class="footer">"SIMPLY LOVELY" • SEASON 2026 • PURPLE SECTOR ACHIEVED 📈</p>
+    <p class="footer">
+      <span id="meme-quote">"SMOOTH OPERATOR..."</span><br>
+      SEASON 2026 • TOTO WOLFF APPROVED 🍯
+    </p>
   </div>
 
   <script>
     let notificationSent = false;
+    const memes = [
+      '"JUST GONNA SEND IT"',
+      '"SMOOTH OPERATOR..."',
+      '"LEAVE ME ALONE, I KNOW WHAT I\'M DOING"',
+      '"SIMPLY LOVELY!"',
+      '"INSPECTOR SEB APPROVED"',
+      '"FEELING GOOD, ENCHANTE!"',
+      '"EVERYONE IS A FERRARI FAN"',
+      '"WE ARE CHECKING..."',
+      '"P1, WHAT A DRIVE!"'
+    ];
+
+    // Cycle through memes every 5 seconds
+    let memeIndex = 0;
+    setInterval(() => {
+      memeIndex = (memeIndex + 1) % memes.length;
+      document.getElementById('meme-quote').innerText = memes[memeIndex];
+    }, 5000);
 
     function closePopup() { document.getElementById('ric-popup').style.display = 'none'; }
 
@@ -151,18 +183,17 @@
     function updateRaceEngine() {
       const now = new Date();
       const greenLightTime = new Date('March 31, 2026 10:00:00');
-      const notifyTime = new Date('March 31, 2026 09:59:00'); // 1 minute before
+      const notifyTime = new Date('March 31, 2026 09:59:00'); 
       const sessionEndTime = new Date('April 6, 2026 00:00:00');
       
       const body = document.body;
       const status = document.getElementById('race-status');
       const msg = document.getElementById('dynamic-msg');
 
-      // 1-MINUTE NOTIFICATION LOGIC
       if (now >= notifyTime && now < greenLightTime && !notificationSent) {
         if (Notification.permission === "granted") {
-          new Notification("SPM Grand Prix: 1 MINUTE TO START!", {
-            body: "KI KI KI RR! Sweat ra! Get to the pit wall, results are releasing!",
+          new Notification("SPM GRAND PRIX: 1 MINUTE TO START!", {
+            body: "KI KI KI KI KI! SWEET RA! Results are dropping. Get to the pit wall!",
             icon: "https://cdn-icons-png.flaticon.com/512/2554/2554930.png"
           });
           notificationSent = true;
@@ -171,12 +202,12 @@
 
       if (now >= sessionEndTime) {
         body.className = 'state-ended';
-        status.innerText = "SESSION ENDED";
-        msg.innerText = "The Grand Prix is over. All cars back to the garage.";
+        status.innerText = "CHECKERED FLAG";
+        msg.innerText = "The session has ended. All cars in Parc Fermé.";
       } else if (now >= greenLightTime) {
         body.className = 'state-green';
         status.innerText = "RACE START: LIGHTS OUT";
-        msg.innerText = "And it's lights out and away we go! Check your results.";
+        msg.innerText = "And it's lights out and away we go! Check your results now.";
       } else {
         body.className = 'state-waiting';
       }
