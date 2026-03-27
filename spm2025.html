@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>SPM Result Countdown</title>
+  <title>SPM Result Countdown | Danny Ric Edition</title>
 
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;500;800&display=swap" rel="stylesheet">
 
@@ -29,21 +29,23 @@
       justify-content: center;
       min-height: 100vh;
       text-align: center;
-      overflow: hidden;
+      overflow-x: hidden;
     }
 
-    .container { max-width: 900px; padding: 20px; z-index: 1; }
+    .container { width: 90%; max-width: 900px; padding: 20px 0; z-index: 1; }
 
-    /* F1 LIGHTS */
+    /* F1 LIGHTS GANTRY */
     .f1-lights-container {
       display: flex; gap: 15px; justify-content: center; margin-bottom: 25px;
       background: #111; padding: 15px 25px; border-radius: 12px; border: 2px solid #222;
+      box-shadow: 0 10px 30px rgba(0,0,0,0.5);
     }
     .light-unit { display: flex; flex-direction: column; gap: 5px; }
     .bulb { width: 25px; height: 25px; border-radius: 50%; background: #222; transition: all 0.4s ease; }
 
-    body.state-waiting .bulb { background: var(--f1-red); box-shadow: 0 0 20px var(--f1-red); }
-    body.state-green .bulb { background: var(--f1-green); box-shadow: 0 0 25px var(--f1-green); }
+    body.state-waiting .bulb { background: var(--f1-red); box-shadow: 0 0 20px var(--f1-red), inset 0 0 5px rgba(255,255,255,0.5); }
+    body.state-green .bulb { background: var(--f1-green); box-shadow: 0 0 25px var(--f1-green), inset 0 0 5px rgba(255,255,255,0.5); }
+    body.state-ended .bulb { background: #111; box-shadow: none; border: 1px solid #333; }
 
     h1 {
       font-size: 2.8rem; font-weight: 800; margin: 10px 0; letter-spacing: -2px;
@@ -62,27 +64,32 @@
       background: rgba(255, 255, 255, 0.03); border: 1px solid rgba(255, 255, 255, 0.08);
       border-radius: 16px; padding: 40px 20px; backdrop-filter: blur(20px);
       box-shadow: 0 40px 100px rgba(0,0,0,0.6); position: relative;
+      width: 100%; box-sizing: border-box;
     }
 
     /* THE HONEY BADGER POPUP */
     #ric-popup {
       display: none; position: fixed; top: 50%; left: 50%; transform: translate(-50%, -50%);
       background: #ffffff; color: #000; padding: 35px; border-radius: 24px; z-index: 100;
-      width: 320px; box-shadow: 0 0 80px rgba(77, 163, 255, 0.4); border: 4px solid #000;
+      width: 85%; max-width: 320px; box-shadow: 0 0 80px rgba(77, 163, 255, 0.4);
+      border: 4px solid #000;
     }
     #ric-popup h2 { margin: 0; font-weight: 800; color: var(--f1-red); font-style: italic; font-size: 1.8rem; }
     #ric-popup p { color: #333; font-weight: 500; margin: 15px 0; }
     #ric-popup button { 
-      width: 100%; background: #000; color: #fff; border: none; padding: 12px; 
-      border-radius: 12px; cursor: pointer; font-weight: 800; text-transform: uppercase;
+      width: 100%; background: #000; color: #fff; border: none; 
+      padding: 12px; border-radius: 12px; cursor: pointer; font-weight: 800;
+      text-transform: uppercase; transition: 0.2s;
     }
+    #ric-popup button:hover { background: var(--f1-blue); }
 
     /* NOTIFY BUTTON */
     .btn-notify {
       background: transparent; border: 1px solid var(--f1-green); color: var(--f1-green);
       padding: 12px 24px; border-radius: 8px; cursor: pointer; font-size: 12px;
-      text-transform: uppercase; font-weight: 800; letter-spacing: 1px; margin-top: 25px;
+      text-transform: uppercase; font-weight: 800; letter-spacing: 1px; margin-top: 25px; transition: 0.3s;
     }
+    .btn-notify:hover { background: var(--f1-green); color: #000; box-shadow: 0 0 20px rgba(0, 255, 65, 0.3); }
 
     #session-end-overlay { display: none; font-weight: 800; font-size: 1.5rem; color: var(--f1-blue); }
     body.state-ended #session-end-overlay { display: block; }
@@ -96,10 +103,21 @@
         linear-gradient(45deg, transparent 75%, #111 75%), 
         linear-gradient(-45deg, transparent 75%, #111 75%);
       background-size: 40px 40px;
+      background-color: #05070a;
     }
 
     .footer { margin-top: 30px; font-size: 11px; color: #4b5563; text-transform: uppercase; letter-spacing: 2px; }
     #meme-quote { color: #8a95a5; font-style: italic; }
+
+    /* MOBILE RESPONSIVENESS FIXES */
+    @media (max-width: 600px) {
+      h1 { font-size: 2.2rem; }
+      .bulb { width: 20px; height: 20px; }
+      .f1-lights-container { padding: 10px 15px; gap: 10px; }
+      .card { padding: 25px 15px; }
+      /* Give tickcounter more vertical room on mobile */
+      .tickcounter-container { padding-bottom: 50% !important; } 
+    }
   </style>
 </head>
 
@@ -107,7 +125,7 @@
 
   <div id="ric-popup">
     <h2>KI KI KI KI KI! 🏎️</h2>
-    <p><b>SWEET RA!</b> Enchante! Pit wall alert armed. The Honey Badger is ready to send it at 10 AM March 31 2026!</p>
+    <p><b>SWEET RA!</b> Enchante! Pit wall alert armed. The Honey Badger is ready to send it at 10 AM!</p>
     <button onclick="closePopup()">FEELING GOOD!</button>
   </div>
 
@@ -122,7 +140,7 @@
 
     <div class="status-badge" id="race-status">FORMATION LAP</div>
     <h1>📊 SPM Grand Prix</h1>
-    <p id="dynamic-msg">Maintaining tire temps. Standby for release at 10:00 AM March 31 2026.</p>
+    <p id="dynamic-msg">Maintaining tire temps. Standby for release at 10:00 AM.</p>
 
     <div class="card">
       <div id="session-end-overlay">🏁 SESSION ENDED<br><span style="font-size: 0.8rem; font-weight: 300;">Parc Fermé: Season Complete</span></div>
@@ -138,13 +156,20 @@
         }(document, "script", "tickcounter-sdk"));
       </script>
 
-      <a data-type="countdown" data-id="9837399" class="tickcounter" style="display:block; width:100%; position:relative; padding-bottom:25%; margin:0 auto;" href="//www.tickcounter.com/"></a>
+      <a 
+        data-type="countdown" 
+        data-id="9837399" 
+        class="tickcounter tickcounter-container" 
+        style="display:block; left:0; width:100%; height:0; position:relative; padding-bottom:25%; margin:0 auto;" 
+        title="SPM Result Countdown" 
+        href="//www.tickcounter.com/">
+      </a>
       
       <button class="btn-notify" onclick="enableNotifications()">Set 1-Min Pit Alert</button>
     </div>
 
     <p class="footer">
-      <span id="meme-quote">"SMOOTH OPERATOR..."</span><br>
+      <span id="meme-quote">"SMOOTH OPERATOR..."</span><br><br>
       SEASON 2026 • TOTO WOLFF APPROVED 🍯
     </p>
   </div>
@@ -163,7 +188,6 @@
       '"P1, WHAT A DRIVE!"'
     ];
 
-    // Cycle through memes every 5 seconds
     let memeIndex = 0;
     setInterval(() => {
       memeIndex = (memeIndex + 1) % memes.length;
@@ -173,6 +197,10 @@
     function closePopup() { document.getElementById('ric-popup').style.display = 'none'; }
 
     function enableNotifications() {
+      if (!("Notification" in window)) {
+        alert("This browser does not support notifications.");
+        return;
+      }
       Notification.requestPermission().then(permission => {
         if (permission === "granted") {
           document.getElementById('ric-popup').style.display = 'block';
@@ -203,10 +231,14 @@
       if (now >= sessionEndTime) {
         body.className = 'state-ended';
         status.innerText = "CHECKERED FLAG";
+        status.style.color = "#fff";
+        status.style.borderColor = "#fff";
         msg.innerText = "The session has ended. All cars in Parc Fermé.";
       } else if (now >= greenLightTime) {
         body.className = 'state-green';
         status.innerText = "RACE START: LIGHTS OUT";
+        status.style.color = "var(--f1-green)";
+        status.style.borderColor = "var(--f1-green)";
         msg.innerText = "And it's lights out and away we go! Check your results now.";
       } else {
         body.className = 'state-waiting';
