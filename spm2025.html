@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>SPM Result Countdown</title>
+
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;500;700&display=swap" rel="stylesheet">
+
+  <style>
+    body {
+      margin: 0;
+      font-family: "Inter", sans-serif;
+      background: #0b0f1a;
+      color: #ffffff;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      min-height: 100vh;
+      text-align: center;
+    }
+
+    .container {
+      max-width: 900px;
+      padding: 20px;
+    }
+
+    h1 {
+      font-size: 2.2rem;
+      margin-bottom: 10px;
+      letter-spacing: 1px;
+    }
+
+    p {
+      color: #9aa4b2;
+      margin-bottom: 30px;
+    }
+
+    .card {
+      background: rgba(255, 255, 255, 0.05);
+      border: 1px solid rgba(255, 255, 255, 0.1);
+      border-radius: 16px;
+      padding: 20px;
+      backdrop-filter: blur(10px);
+    }
+
+    .footer {
+      margin-top: 20px;
+      font-size: 12px;
+      color: #6b7280;
+    }
+
+    .glow {
+      color: #4da3ff;
+      text-shadow: 0 0 10px rgba(77,163,255,0.6);
+    }
+  </style>
+</head>
+
+<body>
+
+  <div class="container">
+    <h1>📊 SPM Result Countdown</h1>
+    <p>Stay strong. The moment is coming soon.</p>
+
+    <div class="card">
+
+      <!-- TickCounter Embed -->
+      <script>
+        (function(d, s, id) {
+          var js, pjs = d.getElementsByTagName(s)[0];
+          if (d.getElementById(id)) return;
+          js = d.createElement(s);
+          js.id = id;
+          js.src = "//www.tickcounter.com/static/js/loader.js";
+          pjs.parentNode.insertBefore(js, pjs);
+        }(document, "script", "tickcounter-sdk"));
+      </script>
+
+      <a 
+        data-type="countdown" 
+        data-id="9837399" 
+        class="tickcounter" 
+        style="display:block; left:0; width:100%; height:0; position:relative; padding-bottom:25%; margin:0 auto;" 
+        title="SPM Result Countdown" 
+        href="//www.tickcounter.com/">
+      </a>
+
+    </div>
+
+    <p class="footer">
+      Built for focus • Stay calm • You got this <span class="glow">💙</span>
+    </p>
+  </div>
+
+</body>
+</html>
