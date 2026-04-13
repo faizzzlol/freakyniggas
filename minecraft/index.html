@@ -81,6 +81,17 @@
 
     .nav-cta:hover { background: #ddd !important; }
 
+    /* Hamburger */
+    .hamburger {
+      display: none;
+      background: none; border: none; cursor: pointer;
+      flex-direction: column; gap: 5px; padding: 4px;
+    }
+    .hamburger span {
+      display: block; width: 22px; height: 2px;
+      background: var(--white); border-radius: 2px;
+    }
+
     /* PAGE HERO */
     .page-hero {
       padding: 7rem 2rem 3rem;
@@ -107,7 +118,7 @@
     }
 
     .page-sub {
-      color: var(--muted2); font-size: 0.95rem;
+      color: var(--muted2);
       margin-top: 0.9rem; font-family: var(--font-mono);
       font-size: 0.72rem; letter-spacing: 0.1em;
     }
@@ -140,17 +151,14 @@
 
     .server-card:hover .server-banner { filter: grayscale(0) contrast(1.05); }
 
-    /* FN SMP special banner with logo overlay */
+    /* FN SMP banner with logo overlay */
     .banner-wrapper {
       position: relative;
-      width: 100%;
-      height: 220px;
+      width: 100%; height: 220px;
       overflow: hidden;
     }
 
-    .banner-wrapper .server-banner {
-      height: 100%;
-    }
+    .banner-wrapper .server-banner { height: 100%; }
 
     .banner-logo-overlay {
       position: absolute;
@@ -218,7 +226,7 @@
       color: var(--text);
     }
 
-    /* Dual IP block for FN SMP */
+    /* Dual IP block */
     .ip-block {
       display: flex;
       flex-direction: column;
@@ -226,36 +234,21 @@
       margin-bottom: 1rem;
     }
 
-    .ip-platform-row {
-      display: flex;
-      flex-direction: column;
-      gap: 0.4rem;
-    }
+    .ip-platform-row { display: flex; flex-direction: column; gap: 0.4rem; }
 
     .ip-platform-label {
-      font-family: var(--font-mono);
-      font-size: 0.62rem;
-      letter-spacing: 0.2em;
-      text-transform: uppercase;
+      font-family: var(--font-mono); font-size: 0.62rem;
+      letter-spacing: 0.2em; text-transform: uppercase;
       color: var(--muted);
-      display: flex;
-      align-items: center;
-      gap: 0.4rem;
+      display: flex; align-items: center; gap: 0.4rem;
     }
 
-    .ip-platform-label .platform-dot {
-      width: 6px; height: 6px;
-      border-radius: 50%;
-      background: var(--white);
-      opacity: 0.3;
-    }
-
-    .ip-platform-label.java .platform-dot  { background: #f5a623; opacity: 1; }
-    .ip-platform-label.bedrock .platform-dot { background: #4ade80; opacity: 1; }
+    .platform-dot { width: 6px; height: 6px; border-radius: 50%; flex-shrink: 0; }
+    .ip-platform-label.java .platform-dot  { background: #f5a623; }
+    .ip-platform-label.bedrock .platform-dot { background: var(--green); }
 
     .ip-row {
-      display: flex; align-items: center; gap: 0.6rem;
-      flex-wrap: wrap;
+      display: flex; align-items: center; gap: 0.6rem; flex-wrap: wrap;
     }
 
     .ip-chip {
@@ -282,38 +275,28 @@
     .copy-btn:hover { background: #ddd; transform: translateY(-1px); }
     .copy-btn:active { transform: translateY(0); }
 
-    /* Divider between Java and Bedrock */
     .ip-divider {
-      height: 1px;
-      background: var(--border);
+      height: 1px; background: var(--border);
       margin: 0.25rem 0;
     }
 
     /* Launch button */
     .launch-btn-wrapper {
       margin-top: 1.1rem;
-      display: flex;
-      align-items: center;
-      gap: 0.8rem;
-      flex-wrap: wrap;
+      display: flex; align-items: center; gap: 0.8rem; flex-wrap: wrap;
     }
 
     .launch-btn {
-      display: inline-flex;
-      align-items: center;
-      gap: 0.55rem;
+      display: inline-flex; align-items: center; gap: 0.55rem;
       background: transparent;
       border: 1px solid #333;
       color: var(--text);
       padding: 0.55rem 1.2rem;
       border-radius: 4px;
       font-family: var(--font-mono);
-      font-size: 0.72rem;
-      letter-spacing: 0.12em;
-      text-transform: uppercase;
-      text-decoration: none;
-      cursor: pointer;
-      transition: all 0.2s;
+      font-size: 0.72rem; letter-spacing: 0.12em;
+      text-transform: uppercase; text-decoration: none;
+      cursor: pointer; transition: all 0.2s;
     }
 
     .launch-btn:hover {
@@ -322,17 +305,37 @@
       background: rgba(74,222,128,0.05);
     }
 
-    .launch-btn svg {
-      width: 14px; height: 14px;
-      fill: currentColor;
-      flex-shrink: 0;
+    .launch-btn svg { width: 14px; height: 14px; fill: currentColor; flex-shrink: 0; }
+    .launch-hint { font-family: var(--font-mono); font-size: 0.62rem; color: var(--muted); letter-spacing: 0.08em; }
+
+    /* Card action row */
+    .card-actions {
+      display: flex;
+      align-items: center;
+      gap: 1rem;
+      flex-wrap: wrap;
+      margin-top: 1rem;
+      padding-top: 1rem;
+      border-top: 1px solid var(--border);
     }
 
-    .launch-hint {
+    .explore-btn {
+      display: inline-flex; align-items: center; gap: 0.45rem;
+      background: var(--surface2);
+      border: 1px solid var(--border);
+      color: var(--text);
+      padding: 0.5rem 1.1rem;
+      border-radius: 4px;
       font-family: var(--font-mono);
-      font-size: 0.62rem;
-      color: var(--muted);
-      letter-spacing: 0.08em;
+      font-size: 0.72rem; letter-spacing: 0.12em;
+      text-transform: uppercase; text-decoration: none;
+      transition: all 0.2s;
+    }
+
+    .explore-btn:hover {
+      border-color: var(--white);
+      color: var(--white);
+      background: #1a1a1a;
     }
 
     .access-link {
@@ -340,7 +343,7 @@
       color: var(--muted2); text-decoration: none;
       font-family: var(--font-mono); font-size: 0.72rem;
       letter-spacing: 0.1em; text-transform: uppercase;
-      transition: color 0.2s; margin-top: 0.8rem;
+      transition: color 0.2s;
     }
 
     .access-link:hover { color: var(--white); }
@@ -366,9 +369,16 @@
       to   { opacity:1; transform:translateY(0); }
     }
 
-    @media (max-width: 680px) {
+    @media (max-width: 740px) {
       nav { padding: 1rem 1.2rem; }
-      .nav-links { gap: 0.8rem; }
+      .nav-links { display: none; flex-direction: column; gap: 1rem;
+        position: absolute; top: 100%; left: 0; right: 0;
+        background: rgba(8,8,8,0.97);
+        border-bottom: 1px solid var(--border);
+        padding: 1.5rem 1.2rem;
+      }
+      .nav-links.open { display: flex; }
+      .hamburger { display: flex; }
       .server-body { padding: 1.2rem; }
       footer { flex-direction: column; }
       .foot-disclaimer { text-align: left; }
@@ -383,9 +393,13 @@
       <img src="https://faizzzlol.github.io/freakyniggas/FreakyNiggasLogo.gif" alt="FN"/>
       <span class="nav-wordmark">Freaky Niggas</span>
     </a>
-    <ul class="nav-links">
+    <button class="hamburger" id="hamburger" aria-label="Menu">
+      <span></span><span></span><span></span>
+    </button>
+    <ul class="nav-links" id="nav-links">
       <li><a href="https://faizzzlol.github.io/freakyniggas/">Home</a></li>
       <li><a href="https://faizzzlol.github.io/freakyniggas/minecraft" class="active">Minecraft</a></li>
+      <li><a href="https://faizzzlol.github.io/freakyniggas/minecraft/fnsmp/">FN SMP</a></li>
       <li><a href="https://faizzzlol.github.io/freakyniggas/valorant">Valorant</a></li>
       <li><a href="https://chat.whatsapp.com/E0Z4puJdXR8HhRcjoce3h6" target="_blank" class="nav-cta">Join Now</a></li>
     </ul>
@@ -406,7 +420,7 @@
     <!-- FN SMP -->
     <div class="server-card">
       <div class="banner-wrapper">
-        <img class="server-banner" src="https://faizzzlol.github.io/freakyniggas/FreakyNiggasBanner.gif" alt="FN SMP Banner"/>
+        <img class="server-banner" src="https://faizzzlol.github.io/freakyniggas/minecraft/Freaky_Niggas_SMP.jpg" alt="FN SMP Banner"/>
         <div class="banner-logo-overlay">
           <img src="https://faizzzlol.github.io/freakyniggas/minecraft/FN_SMP_LOGO.png" alt="FN SMP Logo"/>
         </div>
@@ -433,8 +447,6 @@
 
         <!-- Dual IP block -->
         <div class="ip-block">
-
-          <!-- Java -->
           <div class="ip-platform-row">
             <div class="ip-platform-label java">
               <span class="platform-dot"></span>
@@ -452,7 +464,6 @@
 
           <div class="ip-divider"></div>
 
-          <!-- Bedrock -->
           <div class="ip-platform-row">
             <div class="ip-platform-label bedrock">
               <span class="platform-dot"></span>
@@ -467,21 +478,29 @@
               ">Copy IP</button>
             </div>
           </div>
-
         </div>
 
-        <!-- Launch in Minecraft (Bedrock deep link) -->
+        <!-- Launch button -->
         <div class="launch-btn-wrapper">
           <a class="launch-btn"
-             href="minecraft://?addExternalServer=FN SMP|freakynsmp.bedrock.minekeep.gg:19132"
-             title="Opens Minecraft and auto-fills server address (Bedrock only)">
-            <!-- Minecraft creeper-ish icon via simple SVG -->
+             href="minecraft://?addExternalServer=FN SMP|freakynsmp.bedrock.minekeep.gg:19132">
             <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
-              <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-1 14H9V8h2v8zm4 0h-2V8h2v8z"/>
+              <rect x="2" y="2" width="9" height="9" rx="1"/><rect x="13" y="2" width="9" height="9" rx="1"/>
+              <rect x="2" y="13" width="9" height="9" rx="1"/><rect x="13" y="13" width="9" height="9" rx="1"/>
             </svg>
             Launch in Minecraft
           </a>
           <span class="launch-hint">Auto-adds server · Bedrock only · Windows 10 / Mobile</span>
+        </div>
+
+        <!-- Card action row -->
+        <div class="card-actions">
+          <a class="explore-btn" href="https://faizzzlol.github.io/freakyniggas/minecraft/fnsmp/">
+            Explore FN SMP ↗
+          </a>
+          <a class="access-link" href="https://mcsrvstat.us/server/freakynsmp.minekeep.gg" target="_blank">
+            Server Status ↗
+          </a>
         </div>
 
       </div>
@@ -531,6 +550,12 @@
     <div class="foot-copy">© 2025 Freaky Niggas. All rights reserved.</div>
     <div class="foot-disclaimer">Not affiliated with Mojang Studios or Microsoft.<br/>"Minecraft" is a trademark of Mojang Studios.</div>
   </footer>
+
+  <script>
+    const hamburger = document.getElementById('hamburger');
+    const navLinks  = document.getElementById('nav-links');
+    hamburger.addEventListener('click', () => navLinks.classList.toggle('open'));
+  </script>
 
 </body>
 </html>
