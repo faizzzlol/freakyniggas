@@ -1,0 +1,816 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>FN SMP — Freaky Niggas</title>
+  <meta name="description" content="FN SMP × The Legend of Legiona. Join the Freaky Niggas SMP — Java & Bedrock cross-play."/>
+  <link rel="icon" type="image/gif" href="https://faizzzlol.github.io/freakyniggas/FreakyNiggasLogo.gif"/>
+  <link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:ital,wght@0,700;0,900;1,900&family=DM+Mono:wght@400;500&family=Barlow:wght@400;600&display=swap" rel="stylesheet"/>
+  <style>
+    :root {
+      --bg: #080808;
+      --surface: #0f0f0f;
+      --surface2: #161616;
+      --border: #222;
+      --text: #f5f5f5;
+      --muted: #555;
+      --muted2: #888;
+      --white: #ffffff;
+      --green: #4ade80;
+      --red: #f87171;
+      --font-display: 'Barlow Condensed', sans-serif;
+      --font-body: 'Barlow', sans-serif;
+      --font-mono: 'DM Mono', monospace;
+    }
+
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    html { scroll-behavior: smooth; }
+
+    body {
+      background: var(--bg);
+      color: var(--text);
+      font-family: var(--font-body);
+      font-size: 17px;
+      overflow-x: hidden;
+    }
+
+    /* Noise overlay */
+    body::before {
+      content: '';
+      position: fixed; inset: 0;
+      background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='300' height='300'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.75' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='300' height='300' filter='url(%23n)' opacity='0.06'/%3E%3C/svg%3E");
+      pointer-events: none; z-index: 9999; mix-blend-mode: overlay;
+    }
+
+    /* ── NAV ── */
+    nav {
+      position: fixed; top: 0; left: 0; right: 0; z-index: 100;
+      display: flex; align-items: center; justify-content: space-between;
+      padding: 1.1rem 2.5rem;
+      background: rgba(8,8,8,0.85);
+      backdrop-filter: blur(12px);
+      border-bottom: 1px solid var(--border);
+    }
+
+    .nav-logo {
+      display: flex; align-items: center; gap: 0.7rem;
+      text-decoration: none;
+    }
+    .nav-logo img { width: 36px; height: 36px; border-radius: 5px; object-fit: cover; }
+    .nav-wordmark {
+      font-family: var(--font-display); font-weight: 900;
+      font-size: 1.25rem; letter-spacing: 0.08em;
+      color: var(--white); text-transform: uppercase;
+    }
+
+    .nav-links { display: flex; gap: 2rem; list-style: none; align-items: center; }
+    .nav-links a {
+      color: var(--muted2); text-decoration: none;
+      font-family: var(--font-mono); font-size: 0.72rem;
+      letter-spacing: 0.14em; text-transform: uppercase;
+      transition: color 0.2s;
+    }
+    .nav-links a:hover { color: var(--white); }
+    .nav-links a.active { color: var(--white); }
+    .nav-cta {
+      background: var(--white) !important; color: #000 !important;
+      padding: 0.42rem 1.05rem; border-radius: 3px;
+    }
+    .nav-cta:hover { background: #ddd !important; }
+
+    /* Hamburger (mobile) */
+    .hamburger {
+      display: none;
+      background: none; border: none; cursor: pointer;
+      flex-direction: column; gap: 5px; padding: 4px;
+    }
+    .hamburger span {
+      display: block; width: 22px; height: 2px;
+      background: var(--white); border-radius: 2px;
+      transition: all 0.3s;
+    }
+
+    /* ── HERO ── */
+    .hero {
+      position: relative;
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      justify-content: flex-end;
+      overflow: hidden;
+    }
+
+    .hero-bg {
+      position: absolute; inset: 0;
+      background-image: url('https://faizzzlol.github.io/freakyniggas/minecraft/Freaky_Niggas_SMP.jpg');
+      background-size: cover;
+      background-position: center;
+      filter: grayscale(0.4) brightness(0.35);
+      transform: scale(1.04);
+      transition: transform 8s ease;
+    }
+
+    .hero-bg.loaded { transform: scale(1); }
+
+    /* Gradient fade bottom */
+    .hero::after {
+      content: '';
+      position: absolute; inset: 0;
+      background: linear-gradient(
+        to bottom,
+        rgba(8,8,8,0.2) 0%,
+        rgba(8,8,8,0.1) 40%,
+        rgba(8,8,8,0.7) 70%,
+        rgba(8,8,8,1) 100%
+      );
+      pointer-events: none;
+    }
+
+    .hero-content {
+      position: relative; z-index: 2;
+      padding: 0 2.5rem 4.5rem;
+      max-width: 1060px;
+      margin: 0 auto;
+      width: 100%;
+    }
+
+    .breadcrumb {
+      font-family: var(--font-mono); font-size: 0.68rem;
+      letter-spacing: 0.14em; color: var(--muted);
+      text-transform: uppercase; margin-bottom: 1.5rem;
+      display: flex; align-items: center; gap: 0.5rem;
+    }
+    .breadcrumb a { color: var(--muted); text-decoration: none; transition: color 0.2s; }
+    .breadcrumb a:hover { color: var(--white); }
+    .breadcrumb-sep { color: var(--muted2); }
+
+    /* Status badge */
+    .status-pill {
+      display: inline-flex; align-items: center; gap: 0.55rem;
+      background: rgba(15,15,15,0.85);
+      border: 1px solid var(--border);
+      padding: 0.35rem 0.85rem;
+      border-radius: 99px;
+      font-family: var(--font-mono);
+      font-size: 0.65rem;
+      letter-spacing: 0.14em;
+      text-transform: uppercase;
+      margin-bottom: 1.1rem;
+      backdrop-filter: blur(8px);
+    }
+
+    .status-dot {
+      width: 7px; height: 7px; border-radius: 50%;
+      background: var(--muted);
+      flex-shrink: 0;
+    }
+    .status-dot.online {
+      background: var(--green);
+      box-shadow: 0 0 0 0 rgba(74,222,128,0.4);
+      animation: pulse-green 2s ease infinite;
+    }
+    .status-dot.offline { background: var(--red); }
+
+    @keyframes pulse-green {
+      0%   { box-shadow: 0 0 0 0 rgba(74,222,128,0.5); }
+      70%  { box-shadow: 0 0 0 8px rgba(74,222,128,0); }
+      100% { box-shadow: 0 0 0 0 rgba(74,222,128,0); }
+    }
+
+    .status-text { color: var(--text); }
+    .status-players { color: var(--muted2); }
+
+    /* Hero title */
+    .hero-title {
+      font-family: var(--font-display);
+      font-weight: 900;
+      font-style: italic;
+      font-size: clamp(5.5rem, 18vw, 14rem);
+      line-height: 0.84;
+      letter-spacing: -0.01em;
+      text-transform: uppercase;
+      color: var(--white);
+      margin-bottom: 1.2rem;
+    }
+
+    .hero-title span {
+      display: block;
+    }
+
+    /* Small logo mark in hero */
+    .hero-logo-mark {
+      width: 48px; height: 48px;
+      background: rgba(15,15,15,0.9);
+      border: 1px solid var(--border);
+      border-radius: 7px;
+      display: flex; align-items: center; justify-content: center;
+      padding: 9px;
+      margin-bottom: 1.4rem;
+    }
+    .hero-logo-mark img {
+      width: 100%; height: 100%;
+      object-fit: contain;
+      filter: invert(1);
+    }
+
+    .hero-meta {
+      display: flex;
+      align-items: center;
+      gap: 2rem;
+      flex-wrap: wrap;
+    }
+
+    .hero-tagline {
+      font-family: var(--font-mono);
+      font-size: 0.72rem;
+      letter-spacing: 0.15em;
+      text-transform: uppercase;
+      color: var(--muted2);
+    }
+
+    .hero-badges {
+      display: flex; gap: 0.5rem; flex-wrap: wrap;
+    }
+
+    .hero-badge {
+      background: rgba(22,22,22,0.9);
+      border: 1px solid var(--border);
+      padding: 0.28rem 0.7rem;
+      border-radius: 3px;
+      font-family: var(--font-mono);
+      font-size: 0.6rem;
+      letter-spacing: 0.15em;
+      color: var(--muted2);
+      text-transform: uppercase;
+      backdrop-filter: blur(6px);
+    }
+
+    /* Scroll cue */
+    .scroll-cue {
+      position: absolute;
+      bottom: 2rem; right: 2.5rem;
+      z-index: 2;
+      display: flex; flex-direction: column;
+      align-items: center; gap: 0.4rem;
+      font-family: var(--font-mono);
+      font-size: 0.6rem;
+      letter-spacing: 0.2em;
+      color: var(--muted);
+      text-transform: uppercase;
+      animation: fadeBob 3s ease infinite;
+    }
+    .scroll-cue svg {
+      width: 14px; height: 14px;
+      stroke: var(--muted); fill: none;
+      stroke-width: 1.5;
+    }
+
+    @keyframes fadeBob {
+      0%, 100% { opacity: 0.5; transform: translateY(0); }
+      50% { opacity: 1; transform: translateY(4px); }
+    }
+
+    /* ── SECTIONS ── */
+    .section {
+      padding: 5rem 2.5rem;
+      max-width: 1060px;
+      margin: 0 auto;
+    }
+
+    .section-label {
+      font-family: var(--font-mono);
+      font-size: 0.62rem;
+      letter-spacing: 0.22em;
+      color: var(--muted);
+      text-transform: uppercase;
+      margin-bottom: 0.8rem;
+    }
+
+    .section-title {
+      font-family: var(--font-display);
+      font-weight: 900;
+      font-style: italic;
+      font-size: clamp(2.4rem, 5vw, 4rem);
+      line-height: 0.9;
+      text-transform: uppercase;
+      margin-bottom: 2.5rem;
+    }
+
+    /* ── JOIN SECTION ── */
+    .join-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 1px;
+      background: var(--border);
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      overflow: hidden;
+      margin-bottom: 1.2rem;
+    }
+
+    .join-panel {
+      background: var(--surface);
+      padding: 1.8rem;
+    }
+
+    .join-panel-label {
+      font-family: var(--font-mono);
+      font-size: 0.62rem;
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+      margin-bottom: 1rem;
+      display: flex; align-items: center; gap: 0.5rem;
+    }
+
+    .java-dot  { width: 7px; height: 7px; border-radius: 50%; background: #f5a623; flex-shrink:0; }
+    .bedrock-dot { width: 7px; height: 7px; border-radius: 50%; background: var(--green); flex-shrink:0; }
+
+    .join-panel-label span { color: var(--muted2); }
+
+    .ip-chip {
+      background: var(--surface2);
+      border: 1px solid var(--border);
+      padding: 0.65rem 1rem;
+      border-radius: 4px;
+      font-family: var(--font-mono);
+      font-size: 0.85rem;
+      color: var(--white);
+      letter-spacing: 0.04em;
+      margin-bottom: 0.75rem;
+      word-break: break-all;
+    }
+
+    .join-meta {
+      font-family: var(--font-mono);
+      font-size: 0.62rem;
+      color: var(--muted);
+      letter-spacing: 0.1em;
+      margin-bottom: 0.9rem;
+    }
+
+    .copy-btn {
+      background: var(--white); border: none;
+      color: #000; padding: 0.5rem 1.1rem;
+      border-radius: 4px; font-family: var(--font-mono);
+      font-size: 0.72rem; letter-spacing: 0.1em;
+      text-transform: uppercase; cursor: pointer;
+      transition: all 0.2s; width: 100%;
+      display: flex; align-items: center; justify-content: center; gap: 0.5rem;
+    }
+    .copy-btn:hover { background: #e0e0e0; transform: translateY(-1px); }
+    .copy-btn:active { transform: translateY(0); }
+    .copy-btn svg { width: 13px; height: 13px; fill: currentColor; }
+
+    /* Launch button row */
+    .launch-row {
+      display: flex; align-items: center; gap: 1rem;
+      flex-wrap: wrap;
+    }
+
+    .launch-btn {
+      display: inline-flex; align-items: center; gap: 0.6rem;
+      background: transparent;
+      border: 1px solid #2e2e2e;
+      color: var(--muted2);
+      padding: 0.6rem 1.3rem;
+      border-radius: 4px;
+      font-family: var(--font-mono);
+      font-size: 0.72rem;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      text-decoration: none;
+      cursor: pointer;
+      transition: all 0.25s;
+    }
+    .launch-btn:hover {
+      border-color: var(--green);
+      color: var(--green);
+      background: rgba(74,222,128,0.06);
+    }
+    .launch-btn svg { width: 14px; height: 14px; fill: currentColor; flex-shrink: 0; }
+
+    .launch-hint {
+      font-family: var(--font-mono);
+      font-size: 0.6rem;
+      color: var(--muted);
+      letter-spacing: 0.08em;
+      line-height: 1.5;
+    }
+
+    /* ── BENTO GRID ── */
+    .bento {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      grid-template-rows: auto auto auto;
+      gap: 1px;
+      background: var(--border);
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      overflow: hidden;
+    }
+
+    .bento-cell {
+      background: var(--surface);
+      padding: 1.8rem;
+      transition: background 0.2s;
+    }
+
+    .bento-cell:hover { background: var(--surface2); }
+
+    .bento-cell.wide {
+      grid-column: 1 / -1;
+    }
+
+    .bento-cell-label {
+      font-family: var(--font-mono);
+      font-size: 0.58rem;
+      letter-spacing: 0.22em;
+      color: var(--muted);
+      text-transform: uppercase;
+      margin-bottom: 0.6rem;
+    }
+
+    .bento-cell-value {
+      font-family: var(--font-display);
+      font-weight: 900;
+      font-style: italic;
+      font-size: 2rem;
+      text-transform: uppercase;
+      color: var(--white);
+      line-height: 1;
+      margin-bottom: 0.4rem;
+    }
+
+    .bento-cell-sub {
+      font-family: var(--font-mono);
+      font-size: 0.68rem;
+      color: var(--muted2);
+      letter-spacing: 0.08em;
+      line-height: 1.5;
+    }
+
+    /* Community cell special */
+    .bento-cell.community {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 1rem;
+      flex-wrap: wrap;
+    }
+
+    .community-left {}
+    .community-logos {
+      display: flex; align-items: center; gap: 1rem;
+    }
+    .community-logo-item {
+      display: flex; align-items: center; gap: 0.5rem;
+      font-family: var(--font-mono);
+      font-size: 0.65rem;
+      letter-spacing: 0.12em;
+      color: var(--muted2);
+      text-transform: uppercase;
+    }
+    .community-logo-item img {
+      width: 28px; height: 28px;
+      border-radius: 4px;
+      object-fit: cover;
+    }
+    .community-logo-item .fn-logo {
+      filter: grayscale(1) brightness(1.5);
+    }
+    .community-logo-item .lol-text {
+      font-family: var(--font-display);
+      font-weight: 900;
+      font-style: italic;
+      font-size: 1rem;
+      color: var(--white);
+    }
+    .community-x {
+      font-family: var(--font-display);
+      font-weight: 700;
+      font-size: 1.2rem;
+      color: var(--muted);
+    }
+
+    /* Divider */
+    .section-divider {
+      border: none;
+      border-top: 1px solid var(--border);
+      margin: 0;
+    }
+
+    /* ── FOOTER ── */
+    footer {
+      border-top: 1px solid var(--border);
+      padding: 1.8rem 2.5rem;
+      display: flex; align-items: center; justify-content: space-between;
+      flex-wrap: wrap; gap: 1rem;
+    }
+    .foot-logo { display: flex; align-items: center; gap: 0.55rem; }
+    .foot-logo img { width: 26px; height: 26px; border-radius: 4px; object-fit: cover; }
+    .foot-wordmark { font-family: var(--font-display); font-weight: 900; font-size: 1.05rem; letter-spacing: 0.08em; color: var(--white); }
+    .foot-copy { font-family: var(--font-mono); font-size: 0.67rem; color: var(--muted); }
+    .foot-disclaimer { font-family: var(--font-mono); font-size: 0.6rem; color: var(--muted); max-width: 400px; text-align: right; line-height: 1.5; }
+
+    /* Animations */
+    @keyframes fadeUp {
+      from { opacity:0; transform:translateY(20px); }
+      to   { opacity:1; transform:translateY(0); }
+    }
+
+    .anim { opacity: 0; }
+    .anim.visible { animation: fadeUp 0.65s ease both; }
+    .anim-d1 { animation-delay: 0.05s; }
+    .anim-d2 { animation-delay: 0.12s; }
+    .anim-d3 { animation-delay: 0.2s; }
+    .anim-d4 { animation-delay: 0.28s; }
+
+    /* ── RESPONSIVE ── */
+    @media (max-width: 740px) {
+      nav { padding: 1rem 1.2rem; }
+      .nav-links { display: none; flex-direction: column; gap: 1rem;
+        position: absolute; top: 100%; left: 0; right: 0;
+        background: rgba(8,8,8,0.97);
+        border-bottom: 1px solid var(--border);
+        padding: 1.5rem 1.2rem;
+      }
+      .nav-links.open { display: flex; }
+      .hamburger { display: flex; }
+      .hero-content { padding: 0 1.2rem 3.5rem; }
+      .section { padding: 3.5rem 1.2rem; }
+      .join-grid { grid-template-columns: 1fr; }
+      .bento { grid-template-columns: 1fr; }
+      .bento-cell.wide { grid-column: auto; }
+      footer { flex-direction: column; }
+      .foot-disclaimer { text-align: left; }
+      .community-logos { flex-wrap: wrap; }
+      .scroll-cue { display: none; }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- NAV -->
+  <nav>
+    <a class="nav-logo" href="https://faizzzlol.github.io/freakyniggas/">
+      <img src="https://faizzzlol.github.io/freakyniggas/FreakyNiggasLogo.gif" alt="FN"/>
+      <span class="nav-wordmark">Freaky Niggas</span>
+    </a>
+    <button class="hamburger" id="hamburger" aria-label="Menu">
+      <span></span><span></span><span></span>
+    </button>
+    <ul class="nav-links" id="nav-links">
+      <li><a href="https://faizzzlol.github.io/freakyniggas/">Home</a></li>
+      <li><a href="https://faizzzlol.github.io/freakyniggas/minecraft">Minecraft</a></li>
+      <li><a href="#" class="active">FN SMP</a></li>
+      <li><a href="https://faizzzlol.github.io/freakyniggas/valorant">Valorant</a></li>
+      <li><a href="https://chat.whatsapp.com/E0Z4puJdXR8HhRcjoce3h6" target="_blank" class="nav-cta">Join Now</a></li>
+    </ul>
+  </nav>
+
+  <!-- ── HERO ── -->
+  <section class="hero">
+    <div class="hero-bg" id="heroBg"></div>
+
+    <div class="hero-content">
+      <div class="breadcrumb">
+        <a href="https://faizzzlol.github.io/freakyniggas/">FN</a>
+        <span class="breadcrumb-sep">/</span>
+        <a href="https://faizzzlol.github.io/freakyniggas/minecraft">Minecraft</a>
+        <span class="breadcrumb-sep">/</span>
+        <span>FN SMP</span>
+      </div>
+
+      <div class="hero-logo-mark">
+        <img src="https://faizzzlol.github.io/freakyniggas/minecraft/FN_SMP_LOGO.png" alt="FN SMP"/>
+      </div>
+
+      <!-- Live status pill -->
+      <div class="status-pill" id="statusPill">
+        <span class="status-dot" id="statusDot"></span>
+        <span class="status-text" id="statusText">Checking...</span>
+        <span class="status-players" id="statusPlayers"></span>
+      </div>
+
+      <div class="hero-title">
+        <span>FN</span>
+        <span>SMP</span>
+      </div>
+
+      <div class="hero-meta">
+        <div class="hero-tagline">// FN SMP × The Legend of Legiona · by FreakyNiggas</div>
+        <div class="hero-badges">
+          <span class="hero-badge">Java & Bedrock</span>
+          <span class="hero-badge">Semi-Vanilla</span>
+          <span class="hero-badge">10 Slots</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="scroll-cue">
+      <span>Scroll</span>
+      <svg viewBox="0 0 24 24"><polyline points="6 9 12 15 18 9"/></svg>
+    </div>
+  </section>
+
+  <hr class="section-divider"/>
+
+  <!-- ── JOIN SECTION ── -->
+  <div class="section anim anim-d1">
+    <div class="section-label">// 01 — How to Join</div>
+    <div class="section-title">Connect</div>
+
+    <div class="join-grid">
+
+      <!-- Java -->
+      <div class="join-panel">
+        <div class="join-panel-label">
+          <span class="java-dot"></span>
+          <span>Java Edition</span>
+        </div>
+        <div class="ip-chip" id="javaIp">freakynsmp.minekeep.gg</div>
+        <div class="join-meta">Port: Default (25565) &nbsp;·&nbsp; 1.14 – Latest</div>
+        <button class="copy-btn" id="copyJava" onclick="copyIP('freakynsmp.minekeep.gg', 'copyJava')">
+          <svg viewBox="0 0 24 24"><path d="M8 4H6a2 2 0 00-2 2v12a2 2 0 002 2h8a2 2 0 002-2v-2M8 4a2 2 0 002 2h4a2 2 0 002-2M8 4a2 2 0 012-2h4a2 2 0 012 2v0M16 8v8a2 2 0 01-2 2H8"/></svg>
+          Copy Java IP
+        </button>
+      </div>
+
+      <!-- Bedrock -->
+      <div class="join-panel">
+        <div class="join-panel-label">
+          <span class="bedrock-dot"></span>
+          <span>Bedrock Edition</span>
+        </div>
+        <div class="ip-chip" id="bedrockIp">freakynsmp.bedrock.minekeep.gg</div>
+        <div class="join-meta">Port: 19132 &nbsp;·&nbsp; Win 10 · Mobile · Console</div>
+        <button class="copy-btn" id="copyBedrock" onclick="copyIP('freakynsmp.bedrock.minekeep.gg', 'copyBedrock')">
+          <svg viewBox="0 0 24 24"><path d="M8 4H6a2 2 0 00-2 2v12a2 2 0 002 2h8a2 2 0 002-2v-2M8 4a2 2 0 002 2h4a2 2 0 002-2M8 4a2 2 0 012-2h4a2 2 0 012 2v0M16 8v8a2 2 0 01-2 2H8"/></svg>
+          Copy Bedrock IP
+        </button>
+      </div>
+
+    </div>
+
+    <!-- Launch button -->
+    <div class="launch-row">
+      <a class="launch-btn"
+         href="minecraft://?addExternalServer=FN SMP|freakynsmp.bedrock.minekeep.gg:19132">
+        <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+          <rect x="2" y="2" width="9" height="9" rx="1"/><rect x="13" y="2" width="9" height="9" rx="1"/>
+          <rect x="2" y="13" width="9" height="9" rx="1"/><rect x="13" y="13" width="9" height="9" rx="1"/>
+        </svg>
+        Launch in Minecraft
+      </a>
+      <div class="launch-hint">
+        Auto-adds server to your list<br/>
+        Bedrock only · Windows 10 / Mobile
+      </div>
+    </div>
+  </div>
+
+  <hr class="section-divider"/>
+
+  <!-- ── SERVER INFO BENTO ── -->
+  <div class="section anim anim-d2">
+    <div class="section-label">// 02 — Server Info</div>
+    <div class="section-title">Details</div>
+
+    <div class="bento">
+
+      <!-- Platform -->
+      <div class="bento-cell">
+        <div class="bento-cell-label">Platform</div>
+        <div class="bento-cell-value">Cross-Play</div>
+        <div class="bento-cell-sub">Java Edition & Bedrock Edition<br/>Both supported simultaneously</div>
+      </div>
+
+      <!-- Capacity -->
+      <div class="bento-cell">
+        <div class="bento-cell-label">Capacity</div>
+        <div class="bento-cell-value" id="bentoCapacity">— / 10</div>
+        <div class="bento-cell-sub" id="bentoCapacitySub">Checking live player count...</div>
+      </div>
+
+      <!-- Server Type -->
+      <div class="bento-cell">
+        <div class="bento-cell-label">Server Type</div>
+        <div class="bento-cell-value">Semi-Vanilla</div>
+        <div class="bento-cell-sub">Survival gameplay · minimal plugin interference<br/>Play the game the way it was meant</div>
+      </div>
+
+      <!-- Host -->
+      <div class="bento-cell">
+        <div class="bento-cell-label">Hosting</div>
+        <div class="bento-cell-value">minekeep.gg</div>
+        <div class="bento-cell-sub">Dedicated server hosting<br/>Java IP: freakynsmp.minekeep.gg</div>
+      </div>
+
+      <!-- Community — full width -->
+      <div class="bento-cell wide community">
+        <div class="community-left">
+          <div class="bento-cell-label">Community</div>
+          <div class="bento-cell-value">FN × The LoL</div>
+          <div class="bento-cell-sub">A joint server between Freaky Niggas and The Legend of Legiona<br/>Two communities, one world.</div>
+        </div>
+        <div class="community-logos">
+          <div class="community-logo-item">
+            <img class="fn-logo" src="https://faizzzlol.github.io/freakyniggas/FreakyNiggasLogo.gif" alt="FN"/>
+            <span>FreakyNiggas</span>
+          </div>
+          <span class="community-x">×</span>
+          <div class="community-logo-item">
+            <img src="https://faizzzlol.github.io/freakyniggas/minecraft/FN_SMP_LOGO.png" alt="The LoL"
+                 style="filter:invert(1); background:#111; border-radius:3px; padding:3px;"/>
+            <span>The Legend of Legiona</span>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+  <hr class="section-divider"/>
+
+  <!-- FOOTER -->
+  <footer>
+    <div class="foot-logo">
+      <img src="https://faizzzlol.github.io/freakyniggas/FreakyNiggasLogo.gif" alt="FN"/>
+      <span class="foot-wordmark">Freaky Niggas</span>
+    </div>
+    <div class="foot-copy">© 2025 Freaky Niggas. All rights reserved.</div>
+    <div class="foot-disclaimer">Not affiliated with Mojang Studios or Microsoft.<br/>"Minecraft" is a trademark of Mojang Studios.</div>
+  </footer>
+
+  <script>
+    // ── Hamburger ──
+    const hamburger = document.getElementById('hamburger');
+    const navLinks  = document.getElementById('nav-links');
+    hamburger.addEventListener('click', () => navLinks.classList.toggle('open'));
+
+    // ── Hero BG pan trigger ──
+    window.addEventListener('load', () => {
+      document.getElementById('heroBg').classList.add('loaded');
+    });
+
+    // ── Scroll reveal ──
+    const observer = new IntersectionObserver(entries => {
+      entries.forEach(e => { if (e.isIntersecting) { e.target.classList.add('visible'); observer.unobserve(e.target); } });
+    }, { threshold: 0.08 });
+    document.querySelectorAll('.anim').forEach(el => observer.observe(el));
+
+    // ── Copy IP ──
+    function copyIP(ip, btnId) {
+      navigator.clipboard.writeText(ip).then(() => {
+        const btn = document.getElementById(btnId);
+        const orig = btn.innerHTML;
+        btn.textContent = 'Copied!';
+        setTimeout(() => btn.innerHTML = orig, 1600);
+      });
+    }
+
+    // ── Live Server Status ──
+    async function fetchServerStatus() {
+      const dot   = document.getElementById('statusDot');
+      const text  = document.getElementById('statusText');
+      const pills = document.getElementById('statusPlayers');
+      const cap   = document.getElementById('bentoCapacity');
+      const capSub= document.getElementById('bentoCapacitySub');
+
+      try {
+        const res  = await fetch('https://api.mcsrvstat.us/3/freakynsmp.minekeep.gg');
+        const data = await res.json();
+
+        if (data.online) {
+          const online = data.players?.online ?? 0;
+          const max    = data.players?.max    ?? 10;
+
+          dot.classList.add('online');
+          text.textContent  = 'Online';
+          pills.textContent = `· ${online} / ${max} players`;
+
+          cap.textContent    = `${online} / ${max}`;
+          capSub.textContent = online === 0
+            ? 'Server is empty — be the first to join!'
+            : `${online} player${online !== 1 ? 's' : ''} currently online`;
+        } else {
+          dot.classList.add('offline');
+          text.textContent  = 'Offline';
+          pills.textContent = '';
+          cap.textContent   = '— / 10';
+          capSub.textContent = 'Server is currently offline';
+        }
+      } catch {
+        dot.style.background = 'var(--muted)';
+        text.textContent = 'Status unknown';
+        cap.textContent  = '— / 10';
+        capSub.textContent = 'Could not fetch server status';
+      }
+    }
+
+    fetchServerStatus();
+  </script>
+
+</body>
+</html>
