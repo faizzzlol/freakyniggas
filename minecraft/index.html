@@ -130,7 +130,7 @@
 
     .server-card:hover { border-color: #333; }
 
-    /* server banner — each server's own image */
+    /* server banner */
     .server-banner {
       width: 100%; height: 220px;
       object-fit: cover; display: block;
@@ -139,6 +139,38 @@
     }
 
     .server-card:hover .server-banner { filter: grayscale(0) contrast(1.05); }
+
+    /* FN SMP special banner with logo overlay */
+    .banner-wrapper {
+      position: relative;
+      width: 100%;
+      height: 220px;
+      overflow: hidden;
+    }
+
+    .banner-wrapper .server-banner {
+      height: 100%;
+    }
+
+    .banner-logo-overlay {
+      position: absolute;
+      top: 50%; left: 50%;
+      transform: translate(-50%, -50%);
+      width: 110px; height: 110px;
+      background: rgba(8,8,8,0.85);
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      display: flex; align-items: center; justify-content: center;
+      padding: 12px;
+      backdrop-filter: blur(6px);
+      box-shadow: 0 4px 30px rgba(0,0,0,0.6);
+    }
+
+    .banner-logo-overlay img {
+      width: 100%; height: 100%;
+      object-fit: contain;
+      filter: invert(1);
+    }
 
     .server-body { padding: 1.8rem 2rem; }
 
@@ -186,7 +218,41 @@
       color: var(--text);
     }
 
-    /* IP row */
+    /* Dual IP block for FN SMP */
+    .ip-block {
+      display: flex;
+      flex-direction: column;
+      gap: 0.75rem;
+      margin-bottom: 1rem;
+    }
+
+    .ip-platform-row {
+      display: flex;
+      flex-direction: column;
+      gap: 0.4rem;
+    }
+
+    .ip-platform-label {
+      font-family: var(--font-mono);
+      font-size: 0.62rem;
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+      color: var(--muted);
+      display: flex;
+      align-items: center;
+      gap: 0.4rem;
+    }
+
+    .ip-platform-label .platform-dot {
+      width: 6px; height: 6px;
+      border-radius: 50%;
+      background: var(--white);
+      opacity: 0.3;
+    }
+
+    .ip-platform-label.java .platform-dot  { background: #f5a623; opacity: 1; }
+    .ip-platform-label.bedrock .platform-dot { background: #4ade80; opacity: 1; }
+
     .ip-row {
       display: flex; align-items: center; gap: 0.6rem;
       flex-wrap: wrap;
@@ -214,6 +280,60 @@
     }
 
     .copy-btn:hover { background: #ddd; transform: translateY(-1px); }
+    .copy-btn:active { transform: translateY(0); }
+
+    /* Divider between Java and Bedrock */
+    .ip-divider {
+      height: 1px;
+      background: var(--border);
+      margin: 0.25rem 0;
+    }
+
+    /* Launch button */
+    .launch-btn-wrapper {
+      margin-top: 1.1rem;
+      display: flex;
+      align-items: center;
+      gap: 0.8rem;
+      flex-wrap: wrap;
+    }
+
+    .launch-btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.55rem;
+      background: transparent;
+      border: 1px solid #333;
+      color: var(--text);
+      padding: 0.55rem 1.2rem;
+      border-radius: 4px;
+      font-family: var(--font-mono);
+      font-size: 0.72rem;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      text-decoration: none;
+      cursor: pointer;
+      transition: all 0.2s;
+    }
+
+    .launch-btn:hover {
+      border-color: var(--green);
+      color: var(--green);
+      background: rgba(74,222,128,0.05);
+    }
+
+    .launch-btn svg {
+      width: 14px; height: 14px;
+      fill: currentColor;
+      flex-shrink: 0;
+    }
+
+    .launch-hint {
+      font-family: var(--font-mono);
+      font-size: 0.62rem;
+      color: var(--muted);
+      letter-spacing: 0.08em;
+    }
 
     .access-link {
       display: inline-flex; align-items: center; gap: 0.4rem;
@@ -224,37 +344,6 @@
     }
 
     .access-link:hover { color: var(--white); }
-
-    /* COMING SOON card */
-    .server-card.soon {
-      border-style: dashed;
-    }
-
-    .soon-body {
-      padding: 3rem 2rem;
-      display: flex; flex-direction: column;
-      align-items: center; justify-content: center;
-      text-align: center; gap: 0.7rem;
-    }
-
-    .soon-label {
-      font-family: var(--font-mono); font-size: 0.68rem;
-      letter-spacing: 0.22em; color: var(--muted);
-      text-transform: uppercase;
-    }
-
-    .soon-name {
-      font-family: var(--font-display); font-weight: 900; font-style: italic;
-      font-size: 2.4rem; text-transform: uppercase; color: var(--muted2);
-    }
-
-    .soon-badge {
-      background: var(--surface2); border: 1px solid var(--border);
-      padding: 0.3rem 0.8rem; border-radius: 99px;
-      font-family: var(--font-mono); font-size: 0.65rem;
-      letter-spacing: 0.15em; color: var(--muted);
-      text-transform: uppercase;
-    }
 
     /* FOOTER */
     hr { border: none; border-top: 1px solid var(--border); }
@@ -283,6 +372,7 @@
       .server-body { padding: 1.2rem; }
       footer { flex-direction: column; }
       .foot-disclaimer { text-align: left; }
+      .launch-btn-wrapper { flex-direction: column; align-items: flex-start; }
     }
   </style>
 </head>
@@ -308,18 +398,23 @@
       <span>Minecraft</span>
     </div>
     <div class="page-title">Minecraft<br/>Servers</div>
-    <div class="page-sub">// 3 servers · Java & Bedrock</div>
+    <div class="page-sub">// 2 servers · Java & Bedrock</div>
   </div>
 
   <div class="section">
 
-    <!-- Niggas SMP -->
+    <!-- FN SMP -->
     <div class="server-card">
-      <img class="server-banner" src="https://faizzzlol.github.io/freakyniggas/minecraft/Freaky_Niggas_SMP.jpg" alt="Niggas SMP Banner"/>
+      <div class="banner-wrapper">
+        <img class="server-banner" src="https://faizzzlol.github.io/freakyniggas/minecraft/Freaky_Niggas_SMP.jpg" alt="FN SMP Banner"/>
+        <div class="banner-logo-overlay">
+          <img src="https://faizzzlol.github.io/freakyniggas/minecraft/FN_SMP_LOGO.png" alt="FN SMP Logo"/>
+        </div>
+      </div>
       <div class="server-body">
         <div class="server-tag">// Server 01</div>
-        <div class="server-name">Niggas SMP</div>
-        <div class="server-desc">Semi-Vanilla survival with the Aurelium Skills plugin. Level up your stats while causing chaos.</div>
+        <div class="server-name">FN SMP</div>
+        <div class="server-desc">Semi-Vanilla survival — FN SMP × The Legend of Legiona, hosted by FreakyNiggas. Java & Bedrock cross-play supported.</div>
 
         <div class="server-info">
           <div class="info-item">
@@ -327,24 +422,68 @@
             <div class="info-value">Java & Bedrock</div>
           </div>
           <div class="info-item">
-            <div class="info-label">Version</div>
-            <div class="info-value">1.14 – 1.21.3</div>
+            <div class="info-label">Capacity</div>
+            <div class="info-value">10 Players</div>
           </div>
           <div class="info-item">
-            <div class="info-label">Type</div>
-            <div class="info-value">Semi-Vanilla</div>
+            <div class="info-label">Host</div>
+            <div class="info-value">minekeep.gg</div>
           </div>
         </div>
 
-        <div class="ip-row">
-          <div class="ip-chip">freakyniggas.enderman.cloud</div>
-          <button class="copy-btn" onclick="
-            navigator.clipboard.writeText('freakyniggas.enderman.cloud');
-            this.textContent='Copied!';
-            setTimeout(()=>this.textContent='Copy IP',1500)
-          ">Copy IP</button>
+        <!-- Dual IP block -->
+        <div class="ip-block">
+
+          <!-- Java -->
+          <div class="ip-platform-row">
+            <div class="ip-platform-label java">
+              <span class="platform-dot"></span>
+              Java Edition
+            </div>
+            <div class="ip-row">
+              <div class="ip-chip">freakynsmp.minekeep.gg</div>
+              <button class="copy-btn" onclick="
+                navigator.clipboard.writeText('freakynsmp.minekeep.gg');
+                this.textContent='Copied!';
+                setTimeout(()=>this.textContent='Copy IP',1500)
+              ">Copy IP</button>
+            </div>
+          </div>
+
+          <div class="ip-divider"></div>
+
+          <!-- Bedrock -->
+          <div class="ip-platform-row">
+            <div class="ip-platform-label bedrock">
+              <span class="platform-dot"></span>
+              Bedrock Edition &nbsp;<span style="font-size:0.58rem;color:var(--muted)">(Windows 10 · Mobile · Console)</span>
+            </div>
+            <div class="ip-row">
+              <div class="ip-chip">freakynsmp.bedrock.minekeep.gg</div>
+              <button class="copy-btn" onclick="
+                navigator.clipboard.writeText('freakynsmp.bedrock.minekeep.gg');
+                this.textContent='Copied!';
+                setTimeout(()=>this.textContent='Copy IP',1500)
+              ">Copy IP</button>
+            </div>
+          </div>
+
         </div>
-        <a class="access-link" href="https://freemcserver.net/server/1506969" target="_blank">Access Server Page ↗</a>
+
+        <!-- Launch in Minecraft (Bedrock deep link) -->
+        <div class="launch-btn-wrapper">
+          <a class="launch-btn"
+             href="minecraft://?addExternalServer=FN SMP|freakynsmp.bedrock.minekeep.gg:19132"
+             title="Opens Minecraft and auto-fills server address (Bedrock only)">
+            <!-- Minecraft creeper-ish icon via simple SVG -->
+            <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+              <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-1 14H9V8h2v8zm4 0h-2V8h2v8z"/>
+            </svg>
+            Launch in Minecraft
+          </a>
+          <span class="launch-hint">Auto-adds server · Bedrock only · Windows 10 / Mobile</span>
+        </div>
+
       </div>
     </div>
 
@@ -379,15 +518,6 @@
             setTimeout(()=>this.textContent='Copy IP',1500)
           ">Copy IP</button>
         </div>
-      </div>
-    </div>
-
-    <!-- Niggas Foundation — coming soon -->
-    <div class="server-card soon">
-      <div class="soon-body">
-        <div class="soon-label">// Server 03</div>
-        <div class="soon-name">Niggas Foundation</div>
-        <div class="soon-badge">Coming Soon</div>
       </div>
     </div>
 
