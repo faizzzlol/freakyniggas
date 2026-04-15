@@ -602,7 +602,7 @@
         <div class="hero-tagline">// FN SMP × The Legend of Legiona · by FreakyNiggas</div>
         <div class="hero-badges">
           <span class="hero-badge">Java & Bedrock</span>
-          <span class="hero-badge">Vanilla Survival</span>
+          <span class="hero-badge">Semi-Vanilla</span>
           <span class="hero-badge">10 Slots</span>
         </div>
       </div>
@@ -629,9 +629,9 @@
           <span class="java-dot"></span>
           <span>Java Edition</span>
         </div>
-        <div class="ip-chip" id="javaIp">freakyniggassmp.minefort.com</div>
-        <div class="join-meta">Port: Default (25565) &nbsp;·&nbsp; 1.20 – Latest</div>
-        <button class="copy-btn" id="copyJava" onclick="copyIP('freakyniggassmp.minefort.com', 'copyJava')">
+        <div class="ip-chip" id="javaIp">51.161.208.84:4280</div>
+        <div class="join-meta">Port: 4280 &nbsp;·&nbsp; 1.20 – Latest</div>
+        <button class="copy-btn" id="copyJava" onclick="copyIP('51.161.208.84:4280', 'copyJava')">
           <svg viewBox="0 0 24 24"><path d="M8 4H6a2 2 0 00-2 2v12a2 2 0 002 2h8a2 2 0 002-2v-2M8 4a2 2 0 002 2h4a2 2 0 002-2M8 4a2 2 0 012-2h4a2 2 0 012 2v0M16 8v8a2 2 0 01-2 2H8"/></svg>
           Copy Java IP
         </button>
@@ -643,9 +643,9 @@
           <span class="bedrock-dot"></span>
           <span>Bedrock Edition</span>
         </div>
-        <div class="ip-chip" id="bedrockIp">freakyniggassmp.minefort.com</div>
-        <div class="join-meta">Port: 19132 &nbsp;·&nbsp; Win 10 · Mobile · Console</div>
-        <button class="copy-btn" id="copyBedrock" onclick="copyIP('freakyniggassmp.minefort.com', 'copyBedrock')">
+        <div class="ip-chip" id="bedrockIp">51.161.208.84</div>
+        <div class="join-meta">Port: 4280 &nbsp;·&nbsp; Win 10 · Mobile · Console</div>
+        <button class="copy-btn" id="copyBedrock" onclick="copyIP('51.161.208.84:4280', 'copyBedrock')">
           <svg viewBox="0 0 24 24"><path d="M8 4H6a2 2 0 00-2 2v12a2 2 0 002 2h8a2 2 0 002-2v-2M8 4a2 2 0 002 2h4a2 2 0 002-2M8 4a2 2 0 012-2h4a2 2 0 012 2v0M16 8v8a2 2 0 01-2 2H8"/></svg>
           Copy Bedrock IP
         </button>
@@ -656,7 +656,7 @@
     <!-- Launch button -->
     <div class="launch-row">
       <a class="launch-btn"
-         href="minecraft://?addExternalServer=FN SMP|freakyniggassmp.minefort.com:19132">
+         href="minecraft://?addExternalServer=FN SMP|51.161.208.84:4280">
         <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
           <rect x="2" y="2" width="9" height="9" rx="1"/><rect x="13" y="2" width="9" height="9" rx="1"/>
           <rect x="2" y="13" width="9" height="9" rx="1"/><rect x="13" y="13" width="9" height="9" rx="1"/>
@@ -696,7 +696,7 @@
       <!-- Server Type -->
       <div class="bento-cell">
         <div class="bento-cell-label">Server Type</div>
-        <div class="bento-cell-value">Vanilla</div>
+        <div class="bento-cell-value">Semi-Vanilla</div>
         <div class="bento-cell-sub">Survival gameplay · minimal plugin interference<br/>Play the game the way it was meant</div>
       </div>
 
@@ -704,7 +704,7 @@
       <div class="bento-cell">
         <div class="bento-cell-label">Hosting</div>
         <div class="bento-cell-value">minefort.com</div>
-        <div class="bento-cell-sub">Dedicated server hosting<br/>Java IP: freakyniggassmp.minefort.com</div>
+        <div class="bento-cell-sub">Dedicated server hosting<br/>Java IP: 51.161.208.84:4280</div>
       </div>
 
       <!-- Community — full width -->
@@ -779,7 +779,7 @@
       const capSub= document.getElementById('bentoCapacitySub');
 
       try {
-        const res  = await fetch('https://api.mcsrvstat.us/3/freakyniggassmp.minefort.com');
+        const res  = await fetch('https://api.mcsrvstat.us/3/51.161.208.84:4280');
         const data = await res.json();
 
         if (data.online) {
