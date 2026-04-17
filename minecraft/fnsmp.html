@@ -4,21 +4,31 @@
   <meta charset="UTF-8"/>
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>FN SMP — Freaky Niggas</title>
-  <meta name="description" content="FN SMP × The Legend of Legiona. Join the Freaky Niggas SMP — Java & Bedrock cross-play."/>
+  <meta name="description" content="FN SMP × The Legend of Legiona. Join the Freaky Niggas SMP — Java & Bedrock cross-play. Semi-vanilla survival, crossplay enabled."/>
   <link rel="icon" type="image/gif" href="https://faizzzlol.github.io/freakyniggas/minecraft/FN_SMP_LOGO.png"/>
-  <link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:ital,wght@0,700;0,900;1,900&family=DM+Mono:wght@400;500&family=Barlow:wght@400;600&display=swap" rel="stylesheet"/>
+  <link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:ital,wght@0,400;0,700;0,900;1,700;1,900&family=DM+Mono:wght@400;500&family=Barlow:wght@400;500;600&display=swap" rel="stylesheet"/>
   <style>
     :root {
       --bg: #080808;
       --surface: #0f0f0f;
       --surface2: #161616;
-      --border: #222;
-      --text: #f5f5f5;
-      --muted: #555;
-      --muted2: #888;
+      --surface3: #1e1e1e;
+      --border: #1f1f1f;
+      --border2: #2a2a2a;
+      --text: #f0f0f0;
+      --muted: #4a4a4a;
+      --muted2: #7a7a7a;
       --white: #ffffff;
       --green: #4ade80;
+      --green-dim: rgba(74,222,128,0.08);
       --red: #f87171;
+      --red-dim: rgba(248,113,113,0.08);
+      --orange: #fb923c;
+      --orange-dim: rgba(251,146,60,0.08);
+      --blue: #60a5fa;
+      --blue-dim: rgba(96,165,250,0.08);
+      --yellow: #fbbf24;
+      --yellow-dim: rgba(251,191,36,0.08);
       --font-display: 'Barlow Condensed', sans-serif;
       --font-body: 'Barlow', sans-serif;
       --font-mono: 'DM Mono', monospace;
@@ -31,55 +41,120 @@
       background: var(--bg);
       color: var(--text);
       font-family: var(--font-body);
-      font-size: 17px;
+      font-size: 16px;
       overflow-x: hidden;
+      cursor: none;
+    }
+
+    /* ── SCROLL PROGRESS ── */
+    #scroll-progress {
+      position: fixed;
+      top: 0; left: 0;
+      height: 2px;
+      width: 0%;
+      background: var(--white);
+      z-index: 9999;
+      transition: width 0.05s linear;
+    }
+
+    /* ── CUSTOM CURSOR ── */
+    #cursor-dot {
+      position: fixed;
+      width: 6px; height: 6px;
+      background: var(--white);
+      border-radius: 50%;
+      pointer-events: none;
+      z-index: 99999;
+      transform: translate(-50%, -50%);
+      transition: opacity 0.2s;
+    }
+    #cursor-ring {
+      position: fixed;
+      width: 28px; height: 28px;
+      border: 1px solid rgba(255,255,255,0.35);
+      border-radius: 50%;
+      pointer-events: none;
+      z-index: 99998;
+      transform: translate(-50%, -50%);
+      transition: width 0.2s, height 0.2s, border-color 0.2s;
+    }
+    body.cursor-hover #cursor-ring {
+      width: 44px; height: 44px;
+      border-color: rgba(255,255,255,0.6);
+    }
+    body.cursor-active #cursor-dot {
+      transform: translate(-50%, -50%) scale(1.6);
     }
 
     /* Noise overlay */
     body::before {
       content: '';
       position: fixed; inset: 0;
-      background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='300' height='300'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.75' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='300' height='300' filter='url(%23n)' opacity='0.06'/%3E%3C/svg%3E");
-      pointer-events: none; z-index: 9999; mix-blend-mode: overlay;
+      background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='300' height='300'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.75' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='300' height='300' filter='url(%23n)' opacity='0.055'/%3E%3C/svg%3E");
+      pointer-events: none; z-index: 9998; mix-blend-mode: overlay;
     }
 
     /* ── NAV ── */
     nav {
-      position: fixed; top: 0; left: 0; right: 0; z-index: 100;
+      position: fixed; top: 0; left: 0; right: 0; z-index: 200;
       display: flex; align-items: center; justify-content: space-between;
-      padding: 1.1rem 2.5rem;
-      background: rgba(8,8,8,0.85);
-      backdrop-filter: blur(12px);
+      padding: 1rem 2.5rem;
+      background: rgba(8,8,8,0.9);
+      backdrop-filter: blur(16px);
+      -webkit-backdrop-filter: blur(16px);
       border-bottom: 1px solid var(--border);
+      transition: padding 0.3s;
     }
+    nav.scrolled { padding: 0.7rem 2.5rem; }
 
     .nav-logo {
-      display: flex; align-items: center; gap: 0.7rem;
+      display: flex; align-items: center; gap: 0.65rem;
       text-decoration: none;
     }
-    .nav-logo img { width: 36px; height: 36px; border-radius: 5px; object-fit: cover; }
+    .nav-logo img { width: 32px; height: 32px; border-radius: 5px; object-fit: cover; }
     .nav-wordmark {
       font-family: var(--font-display); font-weight: 900;
-      font-size: 1.25rem; letter-spacing: 0.08em;
+      font-size: 1.15rem; letter-spacing: 0.08em;
       color: var(--white); text-transform: uppercase;
     }
 
-    .nav-links { display: flex; gap: 2rem; list-style: none; align-items: center; }
-    .nav-links a {
+    .nav-center {
+      display: flex; gap: 0; list-style: none; align-items: center;
+      background: var(--surface);
+      border: 1px solid var(--border2);
+      border-radius: 6px;
+      overflow: hidden;
+    }
+    .nav-center li a {
+      display: block;
       color: var(--muted2); text-decoration: none;
-      font-family: var(--font-mono); font-size: 0.72rem;
-      letter-spacing: 0.14em; text-transform: uppercase;
-      transition: color 0.2s;
+      font-family: var(--font-mono); font-size: 0.67rem;
+      letter-spacing: 0.12em; text-transform: uppercase;
+      padding: 0.42rem 0.85rem;
+      transition: color 0.2s, background 0.2s;
+      border-right: 1px solid var(--border);
     }
-    .nav-links a:hover { color: var(--white); }
-    .nav-links a.active { color: var(--white); }
-    .nav-cta {
-      background: var(--white) !important; color: #000 !important;
-      padding: 0.42rem 1.05rem; border-radius: 3px;
-    }
-    .nav-cta:hover { background: #ddd !important; }
+    .nav-center li:last-child a { border-right: none; }
+    .nav-center li a:hover { color: var(--white); background: var(--surface2); }
+    .nav-center li a.active { color: var(--white); background: var(--surface2); }
 
-    /* Hamburger (mobile) */
+    .nav-right { display: flex; align-items: center; gap: 0.8rem; }
+    .nav-version {
+      font-family: var(--font-mono); font-size: 0.6rem;
+      color: var(--muted); letter-spacing: 0.1em;
+      border: 1px solid var(--border2);
+      padding: 0.3rem 0.65rem; border-radius: 4px;
+    }
+    .nav-cta {
+      background: var(--white); color: #000;
+      padding: 0.4rem 1rem; border-radius: 4px;
+      font-family: var(--font-mono); font-size: 0.67rem;
+      letter-spacing: 0.12em; text-transform: uppercase;
+      text-decoration: none;
+      transition: background 0.2s;
+    }
+    .nav-cta:hover { background: #ddd; }
+
     .hamburger {
       display: none;
       background: none; border: none; cursor: pointer;
@@ -106,74 +181,83 @@
       background-image: url('https://faizzzlol.github.io/freakyniggas/FreakyNiggasBanner.gif');
       background-size: cover;
       background-position: center;
-      filter: grayscale(0.4) brightness(0.35);
-      transform: scale(1.04);
-      transition: transform 8s ease;
+      filter: grayscale(0.45) brightness(0.3);
+      transform: scale(1.06);
+      transition: transform 10s ease;
     }
-
     .hero-bg.loaded { transform: scale(1); }
 
-    /* Gradient fade bottom */
     .hero::after {
       content: '';
       position: absolute; inset: 0;
       background: linear-gradient(
         to bottom,
-        rgba(8,8,8,0.2) 0%,
-        rgba(8,8,8,0.1) 40%,
-        rgba(8,8,8,0.7) 70%,
+        rgba(8,8,8,0.15) 0%,
+        rgba(8,8,8,0.05) 35%,
+        rgba(8,8,8,0.65) 65%,
         rgba(8,8,8,1) 100%
       );
       pointer-events: none;
     }
 
+    /* Corner lines */
+    .hero::before {
+      content: '';
+      position: absolute;
+      top: 80px; left: 2.5rem;
+      width: 1px; height: calc(100% - 160px);
+      background: linear-gradient(to bottom, transparent, var(--border2) 20%, var(--border2) 80%, transparent);
+      z-index: 1;
+    }
+
     .hero-content {
       position: relative; z-index: 2;
-      padding: 0 2.5rem 4.5rem;
-      max-width: 1060px;
+      padding: 0 2.5rem 5rem;
+      max-width: 1100px;
       margin: 0 auto;
       width: 100%;
     }
 
     .breadcrumb {
-      font-family: var(--font-mono); font-size: 0.68rem;
+      font-family: var(--font-mono); font-size: 0.65rem;
       letter-spacing: 0.14em; color: var(--muted);
-      text-transform: uppercase; margin-bottom: 1.5rem;
+      text-transform: uppercase; margin-bottom: 2rem;
       display: flex; align-items: center; gap: 0.5rem;
     }
     .breadcrumb a { color: var(--muted); text-decoration: none; transition: color 0.2s; }
     .breadcrumb a:hover { color: var(--white); }
-    .breadcrumb-sep { color: var(--muted2); }
+    .breadcrumb-sep { color: var(--border2); }
 
-    /* Status badge */
+    .hero-top-row {
+      display: flex; align-items: center; gap: 1rem;
+      margin-bottom: 1.5rem;
+      flex-wrap: wrap;
+    }
+
     .status-pill {
       display: inline-flex; align-items: center; gap: 0.55rem;
-      background: rgba(15,15,15,0.85);
-      border: 1px solid var(--border);
+      background: rgba(8,8,8,0.8);
+      border: 1px solid var(--border2);
       padding: 0.35rem 0.85rem;
       border-radius: 99px;
       font-family: var(--font-mono);
-      font-size: 0.65rem;
-      letter-spacing: 0.14em;
+      font-size: 0.62rem;
+      letter-spacing: 0.12em;
       text-transform: uppercase;
-      margin-bottom: 1.1rem;
-      backdrop-filter: blur(8px);
+      backdrop-filter: blur(10px);
     }
-
     .status-dot {
-      width: 7px; height: 7px; border-radius: 50%;
-      background: var(--muted);
-      flex-shrink: 0;
+      width: 6px; height: 6px; border-radius: 50%;
+      background: var(--muted); flex-shrink: 0;
     }
     .status-dot.online {
       background: var(--green);
-      box-shadow: 0 0 0 0 rgba(74,222,128,0.4);
       animation: pulse-green 2s ease infinite;
     }
     .status-dot.offline { background: var(--red); }
 
     @keyframes pulse-green {
-      0%   { box-shadow: 0 0 0 0 rgba(74,222,128,0.5); }
+      0%   { box-shadow: 0 0 0 0 rgba(74,222,128,0.6); }
       70%  { box-shadow: 0 0 0 8px rgba(74,222,128,0); }
       100% { box-shadow: 0 0 0 0 rgba(74,222,128,0); }
     }
@@ -181,120 +265,165 @@
     .status-text { color: var(--text); }
     .status-players { color: var(--muted2); }
 
-    /* Hero title */
+    .version-badge {
+      display: inline-flex; align-items: center; gap: 0.4rem;
+      background: rgba(8,8,8,0.8);
+      border: 1px solid var(--border2);
+      padding: 0.35rem 0.85rem;
+      border-radius: 99px;
+      font-family: var(--font-mono);
+      font-size: 0.62rem;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      backdrop-filter: blur(10px);
+      color: var(--muted2);
+    }
+    .version-badge .ver-num { color: var(--white); }
+
     .hero-title {
       font-family: var(--font-display);
       font-weight: 900;
       font-style: italic;
-      font-size: clamp(5.5rem, 18vw, 14rem);
-      line-height: 0.84;
+      font-size: clamp(6rem, 19vw, 15rem);
+      line-height: 0.82;
       letter-spacing: -0.01em;
       text-transform: uppercase;
       color: var(--white);
-      margin-bottom: 1.2rem;
+      margin-bottom: 1.8rem;
     }
+    .hero-title span { display: block; }
 
-    .hero-title span {
-      display: block;
-    }
-
-    /* Small logo mark in hero */
-    .hero-logo-mark {
-      width: 48px; height: 48px;
-      background: rgba(15,15,15,0.9);
-      border: 1px solid var(--border);
-      border-radius: 7px;
-      display: flex; align-items: center; justify-content: center;
-      padding: 9px;
-      margin-bottom: 1.4rem;
-    }
-    .hero-logo-mark img {
-      width: 100%; height: 100%;
-      object-fit: contain;
-      filter: invert(1);
-    }
-
-    .hero-meta {
+    .hero-bottom {
       display: flex;
-      align-items: center;
+      align-items: flex-end;
+      justify-content: space-between;
       gap: 2rem;
       flex-wrap: wrap;
     }
 
+    .hero-meta-left {}
     .hero-tagline {
       font-family: var(--font-mono);
-      font-size: 0.72rem;
-      letter-spacing: 0.15em;
+      font-size: 0.68rem;
+      letter-spacing: 0.14em;
       text-transform: uppercase;
       color: var(--muted2);
+      margin-bottom: 0.75rem;
     }
-
     .hero-badges {
-      display: flex; gap: 0.5rem; flex-wrap: wrap;
+      display: flex; gap: 0.4rem; flex-wrap: wrap;
     }
-
     .hero-badge {
       background: rgba(22,22,22,0.9);
-      border: 1px solid var(--border);
-      padding: 0.28rem 0.7rem;
+      border: 1px solid var(--border2);
+      padding: 0.25rem 0.65rem;
       border-radius: 3px;
       font-family: var(--font-mono);
-      font-size: 0.6rem;
+      font-size: 0.58rem;
       letter-spacing: 0.15em;
       color: var(--muted2);
       text-transform: uppercase;
       backdrop-filter: blur(6px);
     }
 
-    /* Scroll cue */
+    /* Hero stats */
+    .hero-stats {
+      display: flex; gap: 1.5rem;
+    }
+    .hero-stat {
+      text-align: right;
+    }
+    .hero-stat-val {
+      font-family: var(--font-display);
+      font-weight: 900; font-style: italic;
+      font-size: 2rem; line-height: 1;
+      color: var(--white);
+    }
+    .hero-stat-label {
+      font-family: var(--font-mono);
+      font-size: 0.58rem;
+      letter-spacing: 0.12em;
+      color: var(--muted);
+      text-transform: uppercase;
+      margin-top: 0.15rem;
+    }
+
     .scroll-cue {
       position: absolute;
-      bottom: 2rem; right: 2.5rem;
+      bottom: 2.2rem; right: 2.5rem;
       z-index: 2;
       display: flex; flex-direction: column;
       align-items: center; gap: 0.4rem;
       font-family: var(--font-mono);
-      font-size: 0.6rem;
+      font-size: 0.58rem;
       letter-spacing: 0.2em;
       color: var(--muted);
       text-transform: uppercase;
       animation: fadeBob 3s ease infinite;
     }
     .scroll-cue svg {
-      width: 14px; height: 14px;
+      width: 12px; height: 12px;
       stroke: var(--muted); fill: none;
       stroke-width: 1.5;
     }
-
     @keyframes fadeBob {
-      0%, 100% { opacity: 0.5; transform: translateY(0); }
-      50% { opacity: 1; transform: translateY(4px); }
+      0%, 100% { opacity: 0.4; transform: translateY(0); }
+      50% { opacity: 0.9; transform: translateY(5px); }
     }
 
-    /* ── SECTIONS ── */
+    /* ── SECTION BASE ── */
     .section {
       padding: 5rem 2.5rem;
-      max-width: 1060px;
+      max-width: 1100px;
       margin: 0 auto;
+    }
+
+    .section-header {
+      display: flex; align-items: flex-end;
+      justify-content: space-between;
+      margin-bottom: 2.5rem;
+      flex-wrap: wrap; gap: 1rem;
     }
 
     .section-label {
       font-family: var(--font-mono);
-      font-size: 0.62rem;
+      font-size: 0.6rem;
       letter-spacing: 0.22em;
       color: var(--muted);
       text-transform: uppercase;
-      margin-bottom: 0.8rem;
+      margin-bottom: 0.6rem;
     }
 
     .section-title {
       font-family: var(--font-display);
       font-weight: 900;
       font-style: italic;
-      font-size: clamp(2.4rem, 5vw, 4rem);
-      line-height: 0.9;
+      font-size: clamp(2.5rem, 5vw, 4.2rem);
+      line-height: 0.88;
       text-transform: uppercase;
-      margin-bottom: 2.5rem;
+      color: var(--white);
+    }
+
+    .section-title-small {
+      font-size: clamp(1.8rem, 3vw, 2.8rem);
+    }
+
+    .section-count {
+      font-family: var(--font-mono);
+      font-size: 0.6rem;
+      color: var(--muted);
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      border: 1px solid var(--border2);
+      padding: 0.3rem 0.7rem;
+      border-radius: 4px;
+      align-self: flex-end;
+    }
+
+    .section-divider {
+      border: none;
+      border-top: 1px solid var(--border);
+      margin: 0;
     }
 
     /* ── JOIN SECTION ── */
@@ -311,98 +440,171 @@
 
     .join-panel {
       background: var(--surface);
-      padding: 1.8rem;
+      padding: 2rem;
     }
 
     .join-panel-label {
       font-family: var(--font-mono);
-      font-size: 0.62rem;
+      font-size: 0.6rem;
       letter-spacing: 0.2em;
       text-transform: uppercase;
-      margin-bottom: 1rem;
+      margin-bottom: 1.2rem;
       display: flex; align-items: center; gap: 0.5rem;
     }
-
     .java-dot  { width: 7px; height: 7px; border-radius: 50%; background: #f5a623; flex-shrink:0; }
     .bedrock-dot { width: 7px; height: 7px; border-radius: 50%; background: var(--green); flex-shrink:0; }
-
     .join-panel-label span { color: var(--muted2); }
 
     .ip-chip {
       background: var(--surface2);
-      border: 1px solid var(--border);
-      padding: 0.65rem 1rem;
-      border-radius: 4px;
+      border: 1px solid var(--border2);
+      padding: 0.75rem 1rem;
+      border-radius: 5px;
       font-family: var(--font-mono);
-      font-size: 0.85rem;
+      font-size: 0.82rem;
       color: var(--white);
-      letter-spacing: 0.04em;
-      margin-bottom: 0.75rem;
+      letter-spacing: 0.03em;
+      margin-bottom: 0.6rem;
       word-break: break-all;
     }
 
     .join-meta {
       font-family: var(--font-mono);
-      font-size: 0.62rem;
+      font-size: 0.6rem;
       color: var(--muted);
-      letter-spacing: 0.1em;
-      margin-bottom: 0.9rem;
+      letter-spacing: 0.08em;
+      margin-bottom: 1rem;
     }
 
     .copy-btn {
       background: var(--white); border: none;
-      color: #000; padding: 0.5rem 1.1rem;
-      border-radius: 4px; font-family: var(--font-mono);
-      font-size: 0.72rem; letter-spacing: 0.1em;
+      color: #000; padding: 0.55rem 1.1rem;
+      border-radius: 5px; font-family: var(--font-mono);
+      font-size: 0.68rem; letter-spacing: 0.1em;
       text-transform: uppercase; cursor: pointer;
       transition: all 0.2s; width: 100%;
       display: flex; align-items: center; justify-content: center; gap: 0.5rem;
     }
-    .copy-btn:hover { background: #e0e0e0; transform: translateY(-1px); }
-    .copy-btn:active { transform: translateY(0); }
-    .copy-btn svg { width: 13px; height: 13px; fill: currentColor; }
+    .copy-btn:hover { background: #e8e8e8; transform: translateY(-1px); }
+    .copy-btn.copied { background: var(--green); color: #000; }
+    .copy-btn svg { width: 12px; height: 12px; fill: currentColor; flex-shrink: 0; }
 
-    /* Launch button row */
     .launch-row {
       display: flex; align-items: center; gap: 1rem;
       flex-wrap: wrap;
     }
-
     .launch-btn {
-      display: inline-flex; align-items: center; gap: 0.6rem;
+      display: inline-flex; align-items: center; gap: 0.55rem;
       background: transparent;
-      border: 1px solid #2e2e2e;
+      border: 1px solid var(--border2);
       color: var(--muted2);
       padding: 0.6rem 1.3rem;
-      border-radius: 4px;
+      border-radius: 5px;
       font-family: var(--font-mono);
-      font-size: 0.72rem;
-      letter-spacing: 0.12em;
+      font-size: 0.68rem;
+      letter-spacing: 0.1em;
       text-transform: uppercase;
       text-decoration: none;
-      cursor: pointer;
       transition: all 0.25s;
     }
     .launch-btn:hover {
       border-color: var(--green);
       color: var(--green);
-      background: rgba(74,222,128,0.06);
+      background: var(--green-dim);
     }
-    .launch-btn svg { width: 14px; height: 14px; fill: currentColor; flex-shrink: 0; }
-
+    .launch-btn svg { width: 13px; height: 13px; fill: currentColor; flex-shrink: 0; }
     .launch-hint {
       font-family: var(--font-mono);
-      font-size: 0.6rem;
+      font-size: 0.58rem;
       color: var(--muted);
-      letter-spacing: 0.08em;
-      line-height: 1.5;
+      letter-spacing: 0.07em;
+      line-height: 1.6;
     }
 
     /* ── BENTO GRID ── */
     .bento {
       display: grid;
       grid-template-columns: 1fr 1fr;
-      grid-template-rows: auto auto auto;
+      gap: 1px;
+      background: var(--border);
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      overflow: hidden;
+    }
+    .bento-cell {
+      background: var(--surface);
+      padding: 1.8rem;
+      transition: background 0.2s;
+      position: relative;
+    }
+    .bento-cell:hover { background: var(--surface2); }
+    .bento-cell.wide { grid-column: 1 / -1; }
+    .bento-cell-label {
+      font-family: var(--font-mono);
+      font-size: 0.57rem;
+      letter-spacing: 0.22em;
+      color: var(--muted);
+      text-transform: uppercase;
+      margin-bottom: 0.5rem;
+    }
+    .bento-cell-value {
+      font-family: var(--font-display);
+      font-weight: 900; font-style: italic;
+      font-size: 2.1rem;
+      text-transform: uppercase;
+      color: var(--white);
+      line-height: 1;
+      margin-bottom: 0.4rem;
+    }
+    .bento-cell-sub {
+      font-family: var(--font-mono);
+      font-size: 0.65rem;
+      color: var(--muted2);
+      letter-spacing: 0.07em;
+      line-height: 1.6;
+    }
+
+    /* Uptime cell special */
+    .uptime-bar-wrap {
+      margin-top: 0.8rem;
+      display: flex; gap: 3px;
+    }
+    .uptime-seg {
+      flex: 1; height: 4px; border-radius: 2px;
+      background: var(--green);
+      opacity: 0.7;
+    }
+    .uptime-seg.down { background: var(--red); opacity: 0.5; }
+
+    .community-wrap {
+      display: flex; align-items: center; justify-content: space-between;
+      gap: 2rem; flex-wrap: wrap;
+    }
+    .community-logos {
+      display: flex; align-items: center; gap: 1.2rem;
+    }
+    .community-logo-item {
+      display: flex; align-items: center; gap: 0.5rem;
+      font-family: var(--font-mono);
+      font-size: 0.63rem;
+      letter-spacing: 0.1em;
+      color: var(--muted2);
+      text-transform: uppercase;
+    }
+    .community-logo-item img {
+      width: 26px; height: 26px;
+      border-radius: 4px; object-fit: cover;
+    }
+    .community-x {
+      font-family: var(--font-display);
+      font-weight: 700; font-size: 1.1rem;
+      color: var(--muted);
+    }
+
+    /* ── PLUGINS ── */
+    .plugins-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
       gap: 1px;
       background: var(--border);
       border: 1px solid var(--border);
@@ -410,149 +612,547 @@
       overflow: hidden;
     }
 
-    .bento-cell {
+    .plugin-card {
       background: var(--surface);
-      padding: 1.8rem;
+      padding: 1.5rem;
       transition: background 0.2s;
+      position: relative;
+    }
+    .plugin-card:hover { background: var(--surface2); }
+
+    .plugin-header {
+      display: flex; align-items: flex-start;
+      justify-content: space-between;
+      margin-bottom: 0.75rem;
+      gap: 0.5rem;
     }
 
-    .bento-cell:hover { background: var(--surface2); }
-
-    .bento-cell.wide {
-      grid-column: 1 / -1;
-    }
-
-    .bento-cell-label {
-      font-family: var(--font-mono);
-      font-size: 0.58rem;
-      letter-spacing: 0.22em;
-      color: var(--muted);
-      text-transform: uppercase;
-      margin-bottom: 0.6rem;
-    }
-
-    .bento-cell-value {
+    .plugin-name {
       font-family: var(--font-display);
-      font-weight: 900;
-      font-style: italic;
-      font-size: 2rem;
+      font-weight: 900; font-style: italic;
+      font-size: 1.35rem;
       text-transform: uppercase;
       color: var(--white);
       line-height: 1;
-      margin-bottom: 0.4rem;
     }
 
-    .bento-cell-sub {
+    .plugin-status {
       font-family: var(--font-mono);
-      font-size: 0.68rem;
+      font-size: 0.55rem;
+      letter-spacing: 0.15em;
+      text-transform: uppercase;
+      padding: 0.22rem 0.55rem;
+      border-radius: 3px;
+      flex-shrink: 0;
+      margin-top: 0.1rem;
+    }
+    .plugin-status.new {
+      background: var(--green-dim);
+      color: var(--green);
+      border: 1px solid rgba(74,222,128,0.2);
+    }
+    .plugin-status.active {
+      background: var(--surface3);
       color: var(--muted2);
-      letter-spacing: 0.08em;
-      line-height: 1.5;
+      border: 1px solid var(--border2);
+    }
+    .plugin-status.updated {
+      background: var(--blue-dim);
+      color: var(--blue);
+      border: 1px solid rgba(96,165,250,0.2);
     }
 
-    /* Community cell special */
-    .bento-cell.community {
+    .plugin-category {
+      font-family: var(--font-mono);
+      font-size: 0.57rem;
+      letter-spacing: 0.15em;
+      color: var(--muted);
+      text-transform: uppercase;
+      margin-bottom: 0.5rem;
+    }
+
+    .plugin-desc {
+      font-family: var(--font-body);
+      font-size: 0.78rem;
+      color: var(--muted2);
+      line-height: 1.55;
+    }
+
+    /* ── CHANGELOG ── */
+    .changelog-list {
+      display: flex;
+      flex-direction: column;
+      gap: 1px;
+      background: var(--border);
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      overflow: hidden;
+    }
+
+    .changelog-entry {
+      background: var(--surface);
+      transition: background 0.2s;
+    }
+    .changelog-entry:hover { background: var(--surface2); }
+
+    .changelog-head {
       display: flex;
       align-items: center;
       justify-content: space-between;
+      padding: 1.5rem 1.8rem;
+      cursor: pointer;
       gap: 1rem;
       flex-wrap: wrap;
     }
 
-    .community-left {}
-    .community-logos {
+    .changelog-head-left {
       display: flex; align-items: center; gap: 1rem;
     }
-    .community-logo-item {
-      display: flex; align-items: center; gap: 0.5rem;
-      font-family: var(--font-mono);
-      font-size: 0.65rem;
-      letter-spacing: 0.12em;
-      color: var(--muted2);
+
+    .changelog-ver {
+      font-family: var(--font-display);
+      font-weight: 900; font-style: italic;
+      font-size: 1.8rem;
       text-transform: uppercase;
-    }
-    .community-logo-item img {
-      width: 28px; height: 28px;
-      border-radius: 4px;
-      object-fit: cover;
-    }
-    .community-logo-item .fn-logo {
-      filter: grayscale(1) brightness(1.5);
-    }
-    .community-logo-item .lol-text {
-      font-family: var(--font-display);
-      font-weight: 900;
-      font-style: italic;
-      font-size: 1rem;
       color: var(--white);
-    }
-    .community-x {
-      font-family: var(--font-display);
-      font-weight: 700;
-      font-size: 1.2rem;
-      color: var(--muted);
+      line-height: 1;
     }
 
-    /* Divider */
-    .section-divider {
-      border: none;
+    .changelog-latest {
+      font-family: var(--font-mono);
+      font-size: 0.55rem;
+      letter-spacing: 0.15em;
+      text-transform: uppercase;
+      padding: 0.22rem 0.55rem;
+      border-radius: 3px;
+      background: var(--green-dim);
+      color: var(--green);
+      border: 1px solid rgba(74,222,128,0.2);
+    }
+
+    .changelog-head-right {
+      display: flex; align-items: center; gap: 1rem;
+    }
+
+    .changelog-date {
+      font-family: var(--font-mono);
+      font-size: 0.62rem;
+      letter-spacing: 0.1em;
+      color: var(--muted);
+      text-transform: uppercase;
+    }
+
+    .changelog-toggle {
+      width: 20px; height: 20px;
+      display: flex; align-items: center; justify-content: center;
+      color: var(--muted);
+      transition: transform 0.3s;
+      flex-shrink: 0;
+    }
+    .changelog-toggle svg { width: 14px; height: 14px; stroke: currentColor; fill: none; stroke-width: 1.8; }
+    .changelog-entry.open .changelog-toggle { transform: rotate(180deg); }
+
+    .changelog-body {
+      max-height: 0;
+      overflow: hidden;
+      transition: max-height 0.4s ease;
+    }
+    .changelog-entry.open .changelog-body { max-height: 1000px; }
+
+    .changelog-inner {
+      padding: 0 1.8rem 1.8rem;
       border-top: 1px solid var(--border);
-      margin: 0;
+      padding-top: 1.5rem;
+    }
+
+    .changelog-subtitle {
+      font-family: var(--font-mono);
+      font-size: 0.6rem;
+      letter-spacing: 0.16em;
+      color: var(--muted);
+      text-transform: uppercase;
+      margin-bottom: 1rem;
+    }
+
+    .changelog-tags-row {
+      display: flex; gap: 0.4rem; flex-wrap: wrap;
+      margin-bottom: 1.4rem;
+    }
+
+    .cl-tag {
+      font-family: var(--font-mono);
+      font-size: 0.55rem;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      padding: 0.18rem 0.55rem;
+      border-radius: 3px;
+    }
+    .cl-tag.added { background: var(--green-dim); color: var(--green); border: 1px solid rgba(74,222,128,0.2); }
+    .cl-tag.removed { background: var(--red-dim); color: var(--red); border: 1px solid rgba(248,113,113,0.2); }
+    .cl-tag.updated { background: var(--blue-dim); color: var(--blue); border: 1px solid rgba(96,165,250,0.2); }
+    .cl-tag.optimized { background: var(--yellow-dim); color: var(--yellow); border: 1px solid rgba(251,191,36,0.2); }
+    .cl-tag.notice { background: var(--orange-dim); color: var(--orange); border: 1px solid rgba(251,146,60,0.2); }
+
+    .changelog-group { margin-bottom: 1.4rem; }
+    .changelog-group-title {
+      font-family: var(--font-mono);
+      font-size: 0.6rem;
+      letter-spacing: 0.16em;
+      text-transform: uppercase;
+      margin-bottom: 0.65rem;
+      display: flex; align-items: center; gap: 0.5rem;
+    }
+    .changelog-group-title::after {
+      content: '';
+      flex: 1;
+      height: 1px;
+      background: var(--border2);
+    }
+
+    .changelog-items {
+      display: flex; flex-direction: column; gap: 0.5rem;
+    }
+
+    .changelog-item {
+      display: flex; align-items: flex-start; gap: 0.7rem;
+      font-family: var(--font-body);
+      font-size: 0.82rem;
+      color: var(--muted2);
+      line-height: 1.5;
+    }
+    .changelog-item .item-icon {
+      width: 16px; height: 16px;
+      border-radius: 50%;
+      display: flex; align-items: center; justify-content: center;
+      font-size: 0.6rem;
+      flex-shrink: 0;
+      margin-top: 0.15rem;
+    }
+    .changelog-item.add .item-icon { background: var(--green-dim); color: var(--green); }
+    .changelog-item.rem .item-icon { background: var(--red-dim); color: var(--red); }
+    .changelog-item.upd .item-icon { background: var(--blue-dim); color: var(--blue); }
+    .changelog-item.opt .item-icon { background: var(--yellow-dim); color: var(--yellow); }
+    .changelog-item.warn .item-icon { background: var(--orange-dim); color: var(--orange); }
+    .changelog-item strong { color: var(--text); }
+
+    /* Notice box inside changelog */
+    .cl-notice {
+      background: var(--orange-dim);
+      border: 1px solid rgba(251,146,60,0.2);
+      border-radius: 5px;
+      padding: 1rem 1.2rem;
+      margin-top: 1rem;
+    }
+    .cl-notice-title {
+      font-family: var(--font-mono);
+      font-size: 0.6rem;
+      letter-spacing: 0.14em;
+      text-transform: uppercase;
+      color: var(--orange);
+      margin-bottom: 0.5rem;
+    }
+    .cl-notice-text {
+      font-family: var(--font-body);
+      font-size: 0.8rem;
+      color: var(--muted2);
+      line-height: 1.55;
+    }
+
+    /* ── KNOWN ISSUES ── */
+    .issues-list {
+      display: flex;
+      flex-direction: column;
+      gap: 1px;
+      background: var(--border);
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      overflow: hidden;
+    }
+
+    .issue-card {
+      background: var(--surface);
+      padding: 1.5rem 1.8rem;
+      display: grid;
+      grid-template-columns: auto 1fr auto;
+      gap: 1.5rem;
+      align-items: start;
+      transition: background 0.2s;
+    }
+    .issue-card:hover { background: var(--surface2); }
+
+    .issue-num {
+      font-family: var(--font-display);
+      font-weight: 900; font-style: italic;
+      font-size: 2.5rem;
+      color: var(--border2);
+      line-height: 1;
+      min-width: 36px;
+    }
+
+    .issue-main {}
+    .issue-title {
+      font-family: var(--font-display);
+      font-weight: 700;
+      font-size: 1.15rem;
+      text-transform: uppercase;
+      color: var(--white);
+      margin-bottom: 0.4rem;
+    }
+    .issue-desc {
+      font-family: var(--font-body);
+      font-size: 0.8rem;
+      color: var(--muted2);
+      line-height: 1.55;
+    }
+
+    .issue-solution {
+      min-width: 180px;
+      max-width: 220px;
+      background: var(--surface3);
+      border: 1px solid var(--border2);
+      border-radius: 5px;
+      padding: 0.8rem 1rem;
+    }
+    .issue-solution-label {
+      font-family: var(--font-mono);
+      font-size: 0.55rem;
+      letter-spacing: 0.16em;
+      text-transform: uppercase;
+      color: var(--muted);
+      margin-bottom: 0.35rem;
+    }
+    .issue-solution-text {
+      font-family: var(--font-body);
+      font-size: 0.75rem;
+      color: var(--text);
+      line-height: 1.5;
+    }
+
+    .issue-severity {
+      font-family: var(--font-mono);
+      font-size: 0.55rem;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      padding: 0.2rem 0.5rem;
+      border-radius: 3px;
+    }
+    .issue-severity.high { background: var(--red-dim); color: var(--red); border: 1px solid rgba(248,113,113,0.2); }
+    .issue-severity.med  { background: var(--orange-dim); color: var(--orange); border: 1px solid rgba(251,146,60,0.2); }
+    .issue-severity.low  { background: var(--yellow-dim); color: var(--yellow); border: 1px solid rgba(251,191,36,0.2); }
+
+    /* ── ROADMAP ── */
+    .roadmap-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 1px;
+      background: var(--border);
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      overflow: hidden;
+    }
+
+    .roadmap-card {
+      background: var(--surface);
+      padding: 1.8rem;
+      transition: background 0.2s;
+      position: relative;
+    }
+    .roadmap-card:hover { background: var(--surface2); }
+
+    .roadmap-num {
+      font-family: var(--font-display);
+      font-weight: 900; font-style: italic;
+      font-size: 4rem;
+      line-height: 1;
+      color: var(--border2);
+      margin-bottom: 1rem;
+      transition: color 0.3s;
+    }
+    .roadmap-card:hover .roadmap-num { color: var(--border); }
+
+    .roadmap-title {
+      font-family: var(--font-display);
+      font-weight: 900;
+      font-size: 1.35rem;
+      text-transform: uppercase;
+      color: var(--white);
+      margin-bottom: 0.5rem;
+    }
+
+    .roadmap-desc {
+      font-family: var(--font-body);
+      font-size: 0.78rem;
+      color: var(--muted2);
+      line-height: 1.6;
+      margin-bottom: 1rem;
+    }
+
+    .roadmap-tags {
+      display: flex; gap: 0.35rem; flex-wrap: wrap;
+    }
+    .roadmap-tag {
+      font-family: var(--font-mono);
+      font-size: 0.55rem;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      padding: 0.2rem 0.5rem;
+      border-radius: 3px;
+      background: var(--surface3);
+      color: var(--muted2);
+      border: 1px solid var(--border2);
+    }
+
+    .roadmap-status {
+      position: absolute;
+      top: 1.2rem; right: 1.2rem;
+      font-family: var(--font-mono);
+      font-size: 0.55rem;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      padding: 0.2rem 0.5rem;
+      border-radius: 3px;
+    }
+    .roadmap-status.planned {
+      background: var(--surface3);
+      color: var(--muted2);
+      border: 1px solid var(--border2);
+    }
+    .roadmap-status.indev {
+      background: var(--blue-dim);
+      color: var(--blue);
+      border: 1px solid rgba(96,165,250,0.2);
     }
 
     /* ── FOOTER ── */
     footer {
       border-top: 1px solid var(--border);
-      padding: 1.8rem 2.5rem;
+      padding: 2rem 2.5rem;
       display: flex; align-items: center; justify-content: space-between;
       flex-wrap: wrap; gap: 1rem;
+    }
+    .foot-left {
+      display: flex; flex-direction: column; gap: 0.5rem;
     }
     .foot-logo { display: flex; align-items: center; gap: 0.55rem; }
     .foot-logo img { width: 26px; height: 26px; border-radius: 4px; object-fit: cover; }
     .foot-wordmark { font-family: var(--font-display); font-weight: 900; font-size: 1.05rem; letter-spacing: 0.08em; color: var(--white); }
-    .foot-copy { font-family: var(--font-mono); font-size: 0.67rem; color: var(--muted); }
-    .foot-disclaimer { font-family: var(--font-mono); font-size: 0.6rem; color: var(--muted); max-width: 400px; text-align: right; line-height: 1.5; }
+    .foot-links {
+      display: flex; gap: 1.2rem; list-style: none;
+    }
+    .foot-links a {
+      font-family: var(--font-mono);
+      font-size: 0.6rem;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      color: var(--muted);
+      text-decoration: none;
+      transition: color 0.2s;
+    }
+    .foot-links a:hover { color: var(--white); }
+    .foot-right { text-align: right; }
+    .foot-copy { font-family: var(--font-mono); font-size: 0.62rem; color: var(--muted); margin-bottom: 0.3rem; }
+    .foot-disclaimer { font-family: var(--font-mono); font-size: 0.58rem; color: var(--muted); line-height: 1.5; max-width: 320px; }
 
-    /* Animations */
+    /* ── ANIMATIONS ── */
     @keyframes fadeUp {
-      from { opacity:0; transform:translateY(20px); }
+      from { opacity:0; transform:translateY(24px); }
       to   { opacity:1; transform:translateY(0); }
     }
-
     .anim { opacity: 0; }
-    .anim.visible { animation: fadeUp 0.65s ease both; }
+    .anim.visible { animation: fadeUp 0.7s cubic-bezier(0.16, 1, 0.3, 1) both; }
     .anim-d1 { animation-delay: 0.05s; }
     .anim-d2 { animation-delay: 0.12s; }
     .anim-d3 { animation-delay: 0.2s; }
-    .anim-d4 { animation-delay: 0.28s; }
+    .anim-d4 { animation-delay: 0.3s; }
+    .anim-d5 { animation-delay: 0.4s; }
+
+    /* ── KONAMI TOAST ── */
+    #konami-toast {
+      position: fixed;
+      bottom: 2rem; left: 50%;
+      transform: translateX(-50%) translateY(80px);
+      background: var(--surface);
+      border: 1px solid var(--border2);
+      padding: 0.7rem 1.4rem;
+      border-radius: 6px;
+      font-family: var(--font-mono);
+      font-size: 0.68rem;
+      letter-spacing: 0.1em;
+      color: var(--green);
+      z-index: 9999;
+      transition: transform 0.4s cubic-bezier(0.16, 1, 0.3, 1), opacity 0.4s;
+      opacity: 0;
+      white-space: nowrap;
+    }
+    #konami-toast.show {
+      transform: translateX(-50%) translateY(0);
+      opacity: 1;
+    }
 
     /* ── RESPONSIVE ── */
-    @media (max-width: 740px) {
-      nav { padding: 1rem 1.2rem; }
-      .nav-links { display: none; flex-direction: column; gap: 1rem;
+    @media (max-width: 800px) {
+      nav { padding: 0.9rem 1.2rem; }
+      nav.scrolled { padding: 0.7rem 1.2rem; }
+      .nav-center { display: none; }
+      .hamburger { display: flex; }
+
+      .mobile-menu {
+        display: none;
+        flex-direction: column; gap: 0;
         position: absolute; top: 100%; left: 0; right: 0;
         background: rgba(8,8,8,0.97);
         border-bottom: 1px solid var(--border);
-        padding: 1.5rem 1.2rem;
       }
-      .nav-links.open { display: flex; }
-      .hamburger { display: flex; }
-      .hero-content { padding: 0 1.2rem 3.5rem; }
+      .mobile-menu.open { display: flex; }
+      .mobile-menu a {
+        color: var(--muted2); text-decoration: none;
+        font-family: var(--font-mono); font-size: 0.72rem;
+        letter-spacing: 0.12em; text-transform: uppercase;
+        padding: 1rem 1.2rem;
+        border-bottom: 1px solid var(--border);
+        transition: color 0.2s, background 0.2s;
+      }
+      .mobile-menu a:hover { color: var(--white); background: var(--surface); }
+      .mobile-menu a.nav-cta { color: #000; background: var(--white); }
+
+      .hero-content { padding: 0 1.2rem 4rem; }
       .section { padding: 3.5rem 1.2rem; }
       .join-grid { grid-template-columns: 1fr; }
       .bento { grid-template-columns: 1fr; }
       .bento-cell.wide { grid-column: auto; }
+      .plugins-grid { grid-template-columns: 1fr 1fr; }
+      .roadmap-grid { grid-template-columns: 1fr; }
+      .issue-card { grid-template-columns: auto 1fr; grid-template-rows: auto auto; }
+      .issue-solution { grid-column: 2; max-width: 100%; min-width: auto; }
       footer { flex-direction: column; }
-      .foot-disclaimer { text-align: left; }
-      .community-logos { flex-wrap: wrap; }
+      .foot-right { text-align: left; }
+      .hero-bottom { flex-direction: column; align-items: flex-start; }
+      .hero-stats { display: none; }
       .scroll-cue { display: none; }
+    }
+
+    @media (max-width: 480px) {
+      .plugins-grid { grid-template-columns: 1fr; }
+      .issue-card { grid-template-columns: 1fr; }
+      .issue-num { display: none; }
+      .issue-solution { grid-column: 1; }
     }
   </style>
 </head>
 <body>
 
-  <!-- NAV -->
-  <nav>
+  <!-- SCROLL PROGRESS -->
+  <div id="scroll-progress"></div>
+
+  <!-- CUSTOM CURSOR -->
+  <div id="cursor-dot"></div>
+  <div id="cursor-ring"></div>
+
+  <!-- KONAMI TOAST -->
+  <div id="konami-toast">🎮 CHEAT CODE UNLOCKED — FREE DIAMOND SWORD (not real)</div>
+
+  <!-- ── NAV ── -->
+  <nav id="main-nav">
     <a class="nav-logo" href="https://faizzzlol.github.io/freakyniggas/">
       <img src="https://faizzzlol.github.io/freakyniggas/FreakyNiggasLogo.gif" alt="FN"/>
       <span class="nav-wordmark">Freaky Niggas</span>
@@ -560,19 +1160,34 @@
     <button class="hamburger" id="hamburger" aria-label="Menu">
       <span></span><span></span><span></span>
     </button>
-    <ul class="nav-links" id="nav-links">
+    <ul class="nav-center" id="nav-center">
       <li><a href="https://faizzzlol.github.io/freakyniggas/">Home</a></li>
       <li><a href="https://faizzzlol.github.io/freakyniggas/minecraft">Minecraft</a></li>
-      <li><a href="#" class="active">FN SMP</a></li>
-      <li><a href="https://faizzzlol.github.io/freakyniggas/valorant">Valorant</a></li>
-      <li><a href="https://chat.whatsapp.com/E0Z4puJdXR8HhRcjoce3h6" target="_blank" class="nav-cta">Join Now</a></li>
+      <li><a href="#join">Join</a></li>
+      <li><a href="#plugins">Plugins</a></li>
+      <li><a href="#changelog">Changelog</a></li>
+      <li><a href="#roadmap">Roadmap</a></li>
     </ul>
+    <div class="nav-right">
+      <span class="nav-version">V1.3.1</span>
+      <a href="https://chat.whatsapp.com/E0Z4puJdXR8HhRcjoce3h6" target="_blank" class="nav-cta">Join Now</a>
+    </div>
+    <!-- Mobile menu -->
+    <div class="mobile-menu" id="mobile-menu">
+      <a href="https://faizzzlol.github.io/freakyniggas/">Home</a>
+      <a href="https://faizzzlol.github.io/freakyniggas/minecraft">Minecraft</a>
+      <a href="#join">Join</a>
+      <a href="#plugins">Plugins</a>
+      <a href="#changelog">Changelog</a>
+      <a href="#roadmap">Roadmap</a>
+      <a href="https://faizzzlol.github.io/freakyniggas/valorant">Valorant</a>
+      <a href="https://chat.whatsapp.com/E0Z4puJdXR8HhRcjoce3h6" target="_blank" class="nav-cta">Join Now</a>
+    </div>
   </nav>
 
   <!-- ── HERO ── -->
-  <section class="hero">
+  <section class="hero" id="hero">
     <div class="hero-bg" id="heroBg"></div>
-
     <div class="hero-content">
       <div class="breadcrumb">
         <a href="https://faizzzlol.github.io/freakyniggas/">FN</a>
@@ -582,15 +1197,16 @@
         <span>FN SMP</span>
       </div>
 
-      <div class="hero-logo-mark">
-        <img src="https://faizzzlol.github.io/freakyniggas/minecraft/FN_SMP_LOGO.png" alt="FN SMP"/>
-      </div>
-
-      <!-- Live status pill -->
-      <div class="status-pill" id="statusPill">
-        <span class="status-dot" id="statusDot"></span>
-        <span class="status-text" id="statusText">We Are Checking...</span>
-        <span class="status-players" id="statusPlayers"></span>
+      <div class="hero-top-row">
+        <div class="status-pill" id="statusPill">
+          <span class="status-dot" id="statusDot"></span>
+          <span class="status-text" id="statusText">Checking...</span>
+          <span class="status-players" id="statusPlayers"></span>
+        </div>
+        <div class="version-badge">
+          <span>Current Build</span>
+          <span class="ver-num">V1.3.1</span>
+        </div>
       </div>
 
       <div class="hero-title">
@@ -598,12 +1214,30 @@
         <span>SMP</span>
       </div>
 
-      <div class="hero-meta">
-        <div class="hero-tagline">// FN SMP × The Legend of Legiona · by FreakyNiggas</div>
-        <div class="hero-badges">
-          <span class="hero-badge">Java & Bedrock</span>
-          <span class="hero-badge">Semi-Vanilla</span>
-          <span class="hero-badge">10 Slots</span>
+      <div class="hero-bottom">
+        <div class="hero-meta-left">
+          <div class="hero-tagline">// FN SMP × The Legend of Legiona · Freaky Niggas</div>
+          <div class="hero-badges">
+            <span class="hero-badge">Java & Bedrock</span>
+            <span class="hero-badge">Semi-Vanilla</span>
+            <span class="hero-badge">10 Slots</span>
+            <span class="hero-badge">Crossplay</span>
+            <span class="hero-badge">minekeep.net</span>
+          </div>
+        </div>
+        <div class="hero-stats">
+          <div class="hero-stat">
+            <div class="hero-stat-val" id="heroPlayerCount">—</div>
+            <div class="hero-stat-label">Online Now</div>
+          </div>
+          <div class="hero-stat">
+            <div class="hero-stat-val">10</div>
+            <div class="hero-stat-label">Max Slots</div>
+          </div>
+          <div class="hero-stat">
+            <div class="hero-stat-val">4</div>
+            <div class="hero-stat-label">Plugins</div>
+          </div>
         </div>
       </div>
     </div>
@@ -616,23 +1250,26 @@
 
   <hr class="section-divider"/>
 
-  <!-- ── JOIN SECTION ── -->
-  <div class="section anim anim-d1">
-    <div class="section-label">// 01 — How to Join</div>
-    <div class="section-title">Connect</div>
+  <!-- ── JOIN ── -->
+  <div class="section anim anim-d1" id="join">
+    <div class="section-header">
+      <div>
+        <div class="section-label">// 01 — How to Connect</div>
+        <div class="section-title">Join Server</div>
+      </div>
+    </div>
 
     <div class="join-grid">
-
       <!-- Java -->
       <div class="join-panel">
         <div class="join-panel-label">
           <span class="java-dot"></span>
           <span>Java Edition</span>
         </div>
-        <div class="ip-chip" id="javaIp">freakynsmp.minekeep.gg</div>
-        <div class="join-meta">Port: Default &nbsp;·&nbsp; 1.7.2 – Latest</div>
+        <div class="ip-chip">freakynsmp.minekeep.gg</div>
+        <div class="join-meta">Port: Default &nbsp;·&nbsp; 1.7.2 – Latest &nbsp;·&nbsp; Premium only</div>
         <button class="copy-btn" id="copyJava" onclick="copyIP('freakynsmp.minekeep.gg', 'copyJava')">
-          <svg viewBox="0 0 24 24"><path d="M8 4H6a2 2 0 00-2 2v12a2 2 0 002 2h8a2 2 0 002-2v-2M8 4a2 2 0 002 2h4a2 2 0 002-2M8 4a2 2 0 012-2h4a2 2 0 012 2v0M16 8v8a2 2 0 01-2 2H8"/></svg>
+          <svg viewBox="0 0 24 24"><path d="M8 4H6a2 2 0 00-2 2v12a2 2 0 002 2h8a2 2 0 002-2v-2M8 4a2 2 0 002 2h4a2 2 0 002-2M8 4a2 2 0 012-2h4a2 2 0 012 2M16 8v8a2 2 0 01-2 2H8"/></svg>
           Copy Java IP
         </button>
       </div>
@@ -643,29 +1280,27 @@
           <span class="bedrock-dot"></span>
           <span>Bedrock Edition</span>
         </div>
-        <div class="ip-chip" id="bedrockIp">freakynsmp.bedrock.minekeep.gg</div>
-        <div class="join-meta">Port: Default (19132) &nbsp;·&nbsp; Win 10 · Mobile · Console</div>
+        <div class="ip-chip">freakynsmp.bedrock.minekeep.gg</div>
+        <div class="join-meta">Port: 19132 &nbsp;·&nbsp; Win10/11 · Mobile · Console</div>
         <button class="copy-btn" id="copyBedrock" onclick="copyIP('freakynsmp.bedrock.minekeep.gg', 'copyBedrock')">
-          <svg viewBox="0 0 24 24"><path d="M8 4H6a2 2 0 00-2 2v12a2 2 0 002 2h8a2 2 0 002-2v-2M8 4a2 2 0 002 2h4a2 2 0 002-2M8 4a2 2 0 012-2h4a2 2 0 012 2v0M16 8v8a2 2 0 01-2 2H8"/></svg>
+          <svg viewBox="0 0 24 24"><path d="M8 4H6a2 2 0 00-2 2v12a2 2 0 002 2h8a2 2 0 002-2v-2M8 4a2 2 0 002 2h4a2 2 0 002-2M8 4a2 2 0 012-2h4a2 2 0 012 2M16 8v8a2 2 0 01-2 2H8"/></svg>
           Copy Bedrock IP
         </button>
       </div>
-
     </div>
 
-    <!-- Launch button -->
-    <div class="launch-row">
-      <a class="launch-btn"
-         href="minecraft://?addExternalServer=FN SMP|freakynsmp.bedrock.minekeep.gg:19132">
-        <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
-          <rect x="2" y="2" width="9" height="9" rx="1"/><rect x="13" y="2" width="9" height="9" rx="1"/>
-          <rect x="2" y="13" width="9" height="9" rx="1"/><rect x="13" y="13" width="9" height="9" rx="1"/>
-        </svg>
+    <div class="launch-row" style="margin-top:1rem;">
+      <a class="launch-btn" href="minecraft://?addExternalServer=FN SMP|freakynsmp.bedrock.minekeep.gg:19132">
+        <svg viewBox="0 0 24 24"><rect x="2" y="2" width="9" height="9" rx="1"/><rect x="13" y="2" width="9" height="9" rx="1"/><rect x="2" y="13" width="9" height="9" rx="1"/><rect x="13" y="13" width="9" height="9" rx="1"/></svg>
         Launch in Minecraft
       </a>
+      <a class="launch-btn" href="https://chat.whatsapp.com/E0Z4puJdXR8HhRcjoce3h6" target="_blank">
+        <svg viewBox="0 0 24 24"><path d="M21 15a2 2 0 01-2 2H7l-4 4V5a2 2 0 012-2h14a2 2 0 012 2z"/></svg>
+        Join WhatsApp Group
+      </a>
       <div class="launch-hint">
-        Auto-adds server to your list<br/>
-        Bedrock only · Windows 10 / Mobile
+        Auto-adds server to Bedrock list · Windows 10 & Mobile<br/>
+        Cracked Java not supported — use Bedrock instead
       </div>
     </div>
   </div>
@@ -673,57 +1308,245 @@
   <hr class="section-divider"/>
 
   <!-- ── SERVER INFO BENTO ── -->
-  <div class="section anim anim-d2">
-    <div class="section-label">// 02 — Server Info</div>
-    <div class="section-title">Details</div>
+  <div class="section anim anim-d2" id="info">
+    <div class="section-header">
+      <div>
+        <div class="section-label">// 02 — Server Details</div>
+        <div class="section-title">Stats</div>
+      </div>
+    </div>
 
     <div class="bento">
-
-      <!-- Platform -->
       <div class="bento-cell">
         <div class="bento-cell-label">Platform</div>
         <div class="bento-cell-value">Cross-Play</div>
-        <div class="bento-cell-sub">Java Edition & Bedrock Edition<br/>Both supported simultaneously</div>
+        <div class="bento-cell-sub">Java Edition & Bedrock simultaneously<br/>Geyser-powered crossplay bridge</div>
       </div>
-
-      <!-- Capacity -->
       <div class="bento-cell">
-        <div class="bento-cell-label">Capacity</div>
+        <div class="bento-cell-label">Live Capacity</div>
         <div class="bento-cell-value" id="bentoCapacity">— / 10</div>
-        <div class="bento-cell-sub" id="bentoCapacitySub">Checking live player count...</div>
+        <div class="bento-cell-sub" id="bentoCapacitySub">Fetching live player count...</div>
       </div>
-
-      <!-- Server Type -->
       <div class="bento-cell">
         <div class="bento-cell-label">Server Type</div>
         <div class="bento-cell-value">Semi-Vanilla</div>
-        <div class="bento-cell-sub">Survival gameplay · minimal plugin interference<br/>Play the game the way it was meant</div>
+        <div class="bento-cell-sub">Paper server engine · survival gameplay<br/>Minimal plugin interference — play naturally</div>
       </div>
-
-      <!-- Host -->
       <div class="bento-cell">
-        <div class="bento-cell-label">Hosting</div>
-        <div class="bento-cell-value">minekeep.net</div>
-        <div class="bento-cell-sub">Dedicated server hosting<br/>Java IP: freakynsmp.minekeep.gg</div>
+        <div class="bento-cell-label">Hosting Provider</div>
+        <div class="bento-cell-value">MineKeep</div>
+        <div class="bento-cell-sub">minekeep.net · Germany nodes<br/>~100ms avg latency for Malaysian players</div>
+        <div class="uptime-bar-wrap">
+          <div class="uptime-seg"></div><div class="uptime-seg"></div>
+          <div class="uptime-seg"></div><div class="uptime-seg"></div>
+          <div class="uptime-seg"></div><div class="uptime-seg"></div>
+          <div class="uptime-seg"></div><div class="uptime-seg"></div>
+          <div class="uptime-seg"></div><div class="uptime-seg"></div>
+          <div class="uptime-seg"></div><div class="uptime-seg"></div>
+          <div class="uptime-seg"></div><div class="uptime-seg"></div>
+          <div class="uptime-seg down"></div>
+        </div>
+      </div>
+      <div class="bento-cell wide community">
+        <div class="community-wrap">
+          <div>
+            <div class="bento-cell-label">Community</div>
+            <div class="bento-cell-value">FN × The LoL</div>
+            <div class="bento-cell-sub">A joint server between Freaky Niggas and The Legend of Legiona<br/>Two communities, one world.</div>
+          </div>
+          <div class="community-logos">
+            <div class="community-logo-item">
+              <img src="https://faizzzlol.github.io/freakyniggas/FreakyNiggasLogo.gif" alt="FN" style="filter:grayscale(1) brightness(1.5)"/>
+              <span>FreakyNiggas</span>
+            </div>
+            <span class="community-x">×</span>
+            <div class="community-logo-item">
+              <img src="https://faizzzlol.github.io/thelol/assets/TheLoL.png" alt="The LoL" style="filter:invert(1); background:#111; border-radius:3px; padding:3px;"/>
+              <span>The Legend of Legiona</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <hr class="section-divider"/>
+
+  <!-- ── PLUGINS ── -->
+  <div class="section anim anim-d2" id="plugins">
+    <div class="section-header">
+      <div>
+        <div class="section-label">// 03 — Active Plugins</div>
+        <div class="section-title">Plugins</div>
+      </div>
+      <div class="section-count">4 Active · Updated V1.3.1</div>
+    </div>
+
+    <div class="plugins-grid">
+      <div class="plugin-card">
+        <div class="plugin-header">
+          <div class="plugin-name">AuraSkills</div>
+          <div class="plugin-status active">Active</div>
+        </div>
+        <div class="plugin-category">RPG · Progression</div>
+        <div class="plugin-desc">Full RPG leveling system with skills, stats, and abilities. Adds progression depth to the semi-vanilla experience.</div>
+      </div>
+      <div class="plugin-card">
+        <div class="plugin-header">
+          <div class="plugin-name">ChestSort</div>
+          <div class="plugin-status active">Active</div>
+        </div>
+        <div class="plugin-category">Utility · QoL</div>
+        <div class="plugin-desc">Auto-sorts inventory and chests on interaction. Keeps your storage clean without any effort.</div>
+      </div>
+      <div class="plugin-card">
+        <div class="plugin-header">
+          <div class="plugin-name">LuckPerms</div>
+          <div class="plugin-status updated">Updated</div>
+        </div>
+        <div class="plugin-category">Permissions · Admin</div>
+        <div class="plugin-desc">Advanced permission management. Updated in V1.3.1 to give players more freedom and flexibility with permissions.</div>
+      </div>
+      <div class="plugin-card">
+        <div class="plugin-header">
+          <div class="plugin-name">Vault</div>
+          <div class="plugin-status new">New</div>
+        </div>
+        <div class="plugin-category">Economy · Foundation</div>
+        <div class="plugin-desc">Economy API foundation layer. Enables future economy plugins and player-driven trading systems to integrate seamlessly.</div>
+      </div>
+    </div>
+  </div>
+
+  <hr class="section-divider"/>
+
+  <!-- ── CHANGELOG ── -->
+  <div class="section anim anim-d3" id="changelog">
+    <div class="section-header">
+      <div>
+        <div class="section-label">// 04 — Update History</div>
+        <div class="section-title">Changelog</div>
+      </div>
+      <div class="section-count">2 Releases</div>
+    </div>
+
+    <div class="changelog-list">
+
+      <!-- V1.3.1 -->
+      <div class="changelog-entry open" id="cl-v131">
+        <div class="changelog-head" onclick="toggleChangelog('cl-v131')">
+          <div class="changelog-head-left">
+            <div class="changelog-ver">V1.3.1</div>
+            <div class="changelog-latest">Latest</div>
+          </div>
+          <div class="changelog-head-right">
+            <div class="changelog-date">17 April 2026 · 8:56 PM</div>
+            <div>
+              <div class="changelog-tags-row" style="margin-bottom:0; gap:0.35rem;">
+                <span class="cl-tag optimized">Optimized</span>
+                <span class="cl-tag updated">Updated</span>
+                <span class="cl-tag added">Added</span>
+              </div>
+            </div>
+            <div class="changelog-toggle">
+              <svg viewBox="0 0 24 24"><polyline points="6 9 12 15 18 9"/></svg>
+            </div>
+          </div>
+        </div>
+        <div class="changelog-body">
+          <div class="changelog-inner">
+            <div class="changelog-subtitle">Performance & Stability Patch</div>
+            <div class="changelog-group">
+              <div class="changelog-group-title" style="color:var(--yellow);">Performance</div>
+              <div class="changelog-items">
+                <div class="changelog-item opt">
+                  <div class="item-icon">⚡</div>
+                  <div>Removed <strong>LagFixer</strong> plugin — Paper engine already handles optimization natively, plugin was redundant and causing overhead</div>
+                </div>
+                <div class="changelog-item opt">
+                  <div class="item-icon">⚡</div>
+                  <div>Reduced simulation distance <strong>10 → 5</strong> for significant CPU savings and smoother tick rates</div>
+                </div>
+                <div class="changelog-item opt">
+                  <div class="item-icon">⚡</div>
+                  <div>Adjusted entity activation range — mobs activate only when players are closer, dramatically helping Bedrock players with high entity lag</div>
+                </div>
+              </div>
+            </div>
+            <div class="changelog-group">
+              <div class="changelog-group-title" style="color:var(--blue);">Plugins</div>
+              <div class="changelog-items">
+                <div class="changelog-item upd">
+                  <div class="item-icon">↑</div>
+                  <div><strong>LuckPerms</strong> updated — gives everyone more freedom and flexibility with server permissions</div>
+                </div>
+                <div class="changelog-item add">
+                  <div class="item-icon">+</div>
+                  <div>Added <strong>Vault</strong> — economy foundation plugin, enabling future economy integrations and trading systems</div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
       </div>
 
-      <!-- Community — full width -->
-      <div class="bento-cell wide community">
-        <div class="community-left">
-          <div class="bento-cell-label">Community</div>
-          <div class="bento-cell-value">FN × The LoL</div>
-          <div class="bento-cell-sub">A joint server between Freaky Niggas and The Legend of Legiona<br/>Two communities, one world.</div>
-        </div>
-        <div class="community-logos">
-          <div class="community-logo-item">
-            <img class="fn-logo" src="https://faizzzlol.github.io/freakyniggas/FreakyNiggasLogo.gif" alt="FN"/>
-            <span>FreakyNiggas</span>
+      <!-- V1.3 -->
+      <div class="changelog-entry" id="cl-v13">
+        <div class="changelog-head" onclick="toggleChangelog('cl-v13')">
+          <div class="changelog-head-left">
+            <div class="changelog-ver">V1.3</div>
           </div>
-          <span class="community-x">×</span>
-          <div class="community-logo-item">
-            <img src="https://faizzzlol.github.io/thelol/assets/TheLoL.png" alt="The LoL"
-                 style="filter:invert(1); background:#111; border-radius:3px; padding:3px;"/>
-            <span>The Legend of Legiona</span>
+          <div class="changelog-head-right">
+            <div class="changelog-date">16 April 2026 · 9:55 PM</div>
+            <div>
+              <div class="changelog-tags-row" style="margin-bottom:0; gap:0.35rem;">
+                <span class="cl-tag added">Added</span>
+                <span class="cl-tag removed">Removed</span>
+                <span class="cl-tag notice">Notice</span>
+              </div>
+            </div>
+            <div class="changelog-toggle">
+              <svg viewBox="0 0 24 24"><polyline points="6 9 12 15 18 9"/></svg>
+            </div>
+          </div>
+        </div>
+        <div class="changelog-body">
+          <div class="changelog-inner">
+            <div class="changelog-subtitle">Minor Plugin Update — FN SMP Official Soft Launch</div>
+            <div class="changelog-group">
+              <div class="changelog-group-title" style="color:var(--green);">Plugins Added</div>
+              <div class="changelog-items">
+                <div class="changelog-item add">
+                  <div class="item-icon">+</div>
+                  <div><strong>AuraSkills</strong> — Full RPG skills and leveling system</div>
+                </div>
+                <div class="changelog-item add">
+                  <div class="item-icon">+</div>
+                  <div><strong>LagFixer</strong> — Performance optimization (later removed in V1.3.1)</div>
+                </div>
+                <div class="changelog-item add">
+                  <div class="item-icon">+</div>
+                  <div><strong>ChestSort</strong> — Automatic inventory & chest sorting</div>
+                </div>
+                <div class="changelog-item add">
+                  <div class="item-icon">+</div>
+                  <div><strong>LuckPerms</strong> — Advanced permission management</div>
+                </div>
+              </div>
+            </div>
+            <div class="changelog-group">
+              <div class="changelog-group-title" style="color:var(--red);">Plugins Removed</div>
+              <div class="changelog-items">
+                <div class="changelog-item rem">
+                  <div class="item-icon">−</div>
+                  <div><strong>Simple Voice Chat</strong> — Removed due to performance concerns on free hosting</div>
+                </div>
+              </div>
+            </div>
+            <div class="cl-notice">
+              <div class="cl-notice-title">⚠️ Notice — Cracked Java Players</div>
+              <div class="cl-notice-text">We cannot resolve the cracked Java login issue at this time. Because we use managed free hosting, we do not have access to the main Proxy configurations required to fix this. Cracked players should use <strong>Bedrock Edition</strong> (mobile, Windows 10/11, or emulator) as a workaround.</div>
+            </div>
           </div>
         </div>
       </div>
@@ -733,83 +1556,284 @@
 
   <hr class="section-divider"/>
 
-  <!-- FOOTER -->
-  <footer>
-    <div class="foot-logo">
-      <img src="https://faizzzlol.github.io/freakyniggas/FreakyNiggasLogo.gif" alt="FN"/>
-      <span class="foot-wordmark">Freaky Niggas</span>
+  <!-- ── KNOWN ISSUES ── -->
+  <div class="section anim anim-d3" id="issues">
+    <div class="section-header">
+      <div>
+        <div class="section-label">// 05 — Transparency Report</div>
+        <div class="section-title">Known Issues</div>
+      </div>
+      <div class="section-count">3 Active</div>
     </div>
-    <div class="foot-copy">© 2025 Freaky Niggas. All rights reserved.</div>
-    <div class="foot-disclaimer">Not affiliated with Mojang Studios or Microsoft.<br/>"Minecraft" is a trademark of Mojang Studios.</div>
+
+    <div class="issues-list">
+
+      <div class="issue-card">
+        <div class="issue-num">01</div>
+        <div class="issue-main">
+          <div style="display:flex; align-items:center; gap:0.6rem; margin-bottom:0.35rem;">
+            <div class="issue-title">Cracked Java Access</div>
+            <div class="issue-severity high">High</div>
+          </div>
+          <div class="issue-desc">Cannot be fixed due to host-side Proxy restrictions on the free managed plan. The login authentication bypass requires direct access to Proxy config files which MineKeep does not expose on the free tier.</div>
+        </div>
+        <div class="issue-solution">
+          <div class="issue-solution-label">Workaround</div>
+          <div class="issue-solution-text">Use <strong>Bedrock Edition</strong> on mobile, Windows 10/11, or via an Android emulator.</div>
+        </div>
+      </div>
+
+      <div class="issue-card">
+        <div class="issue-num">02</div>
+        <div class="issue-main">
+          <div style="display:flex; align-items:center; gap:0.6rem; margin-bottom:0.35rem;">
+            <div class="issue-title">Low RAM Performance</div>
+            <div class="issue-severity med">Medium</div>
+          </div>
+          <div class="issue-desc">Occasional stutters and TPS drops because we're on a free hosting tier with limited RAM allocation. Heavy activities like TNT explosions or large mob farms may cause noticeable lag spikes.</div>
+        </div>
+        <div class="issue-solution">
+          <div class="issue-solution-label">Workaround</div>
+          <div class="issue-solution-text">Migrate to a <strong>paid plan</strong>. Free tier limitations cannot be optimized further at the plugin level.</div>
+        </div>
+      </div>
+
+      <div class="issue-card">
+        <div class="issue-num">03</div>
+        <div class="issue-main">
+          <div style="display:flex; align-items:center; gap:0.6rem; margin-bottom:0.35rem;">
+            <div class="issue-title">Bedrock Input Delay</div>
+            <div class="issue-severity low">Low</div>
+          </div>
+          <div class="issue-desc">Bedrock players may experience minor input delay compared to Java. This is primarily caused by low server resources and the Geyser translation layer overhead, not your personal internet connection.</div>
+        </div>
+        <div class="issue-solution">
+          <div class="issue-solution-label">Workaround</div>
+          <div class="issue-solution-text">A <strong>server plan upgrade</strong> is required to fully eliminate this issue.</div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+  <hr class="section-divider"/>
+
+  <!-- ── ROADMAP ── -->
+  <div class="section anim anim-d4" id="roadmap">
+    <div class="section-header">
+      <div>
+        <div class="section-label">// 06 — What's Coming</div>
+        <div class="section-title">Roadmap</div>
+      </div>
+      <div class="section-count">3 Planned</div>
+    </div>
+
+    <div class="roadmap-grid">
+
+      <div class="roadmap-card">
+        <div class="roadmap-status planned">Planned</div>
+        <div class="roadmap-num">01</div>
+        <div class="roadmap-title">Chat & Discord Bridge</div>
+        <div class="roadmap-desc">InteractiveChat integration with DiscordSRV — sync in-game chat with the Discord server in real time, with clickable mentions and rich embeds.</div>
+        <div class="roadmap-tags">
+          <span class="roadmap-tag">InteractiveChat</span>
+          <span class="roadmap-tag">DiscordSRV</span>
+          <span class="roadmap-tag">Community</span>
+        </div>
+      </div>
+
+      <div class="roadmap-card">
+        <div class="roadmap-status planned">Planned</div>
+        <div class="roadmap-num">02</div>
+        <div class="roadmap-title">Proximity Voice Chat</div>
+        <div class="roadmap-desc">Optimized voice chat implementation for both Java and Bedrock players. Proximity-based — hear players only when they're nearby. Requires better server resources to run smoothly.</div>
+        <div class="roadmap-tags">
+          <span class="roadmap-tag">Voice Chat</span>
+          <span class="roadmap-tag">Crossplay</span>
+          <span class="roadmap-tag">Requires Upgrade</span>
+        </div>
+      </div>
+
+      <div class="roadmap-card">
+        <div class="roadmap-status planned">Planned</div>
+        <div class="roadmap-num">03</div>
+        <div class="roadmap-title">Custom Weapons</div>
+        <div class="roadmap-desc">Custom weapons and gameplay enhancements to push beyond vanilla limits. Special items, unique abilities, and lore-tied content for The LoL and FN world integration.</div>
+        <div class="roadmap-tags">
+          <span class="roadmap-tag">Custom Items</span>
+          <span class="roadmap-tag">Gameplay</span>
+          <span class="roadmap-tag">Lore</span>
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+  <hr class="section-divider"/>
+
+  <!-- ── FOOTER ── -->
+  <footer>
+    <div class="foot-left">
+      <div class="foot-logo">
+        <img src="https://faizzzlol.github.io/freakyniggas/FreakyNiggasLogo.gif" alt="FN"/>
+        <span class="foot-wordmark">Freaky Niggas</span>
+      </div>
+      <ul class="foot-links">
+        <li><a href="https://faizzzlol.github.io/freakyniggas/">Home</a></li>
+        <li><a href="https://faizzzlol.github.io/freakyniggas/minecraft">Minecraft</a></li>
+        <li><a href="https://faizzzlol.github.io/freakyniggas/valorant">Valorant</a></li>
+        <li><a href="https://chat.whatsapp.com/LDSxXcxRHDK5iBjcx1HQA1" target="_blank">Announcements</a></li>
+      </ul>
+    </div>
+    <div class="foot-right">
+      <div class="foot-copy">© 2025–2026 Freaky Niggas · FN SMP V1.3.1</div>
+      <div class="foot-disclaimer">Not affiliated with Mojang Studios or Microsoft.<br/>"Minecraft" is a trademark of Mojang Studios.</div>
+    </div>
   </footer>
 
   <script>
-    // ── Hamburger ──
-    const hamburger = document.getElementById('hamburger');
-    const navLinks  = document.getElementById('nav-links');
-    hamburger.addEventListener('click', () => navLinks.classList.toggle('open'));
-
-    // ── Hero BG pan trigger ──
-    window.addEventListener('load', () => {
-      document.getElementById('heroBg').classList.add('loaded');
+    // ── SCROLL PROGRESS ──
+    const progress = document.getElementById('scroll-progress');
+    window.addEventListener('scroll', () => {
+      const h = document.documentElement;
+      const pct = (window.scrollY / (h.scrollHeight - h.clientHeight)) * 100;
+      progress.style.width = Math.min(pct, 100) + '%';
     });
 
-    // ── Scroll reveal ──
-    const observer = new IntersectionObserver(entries => {
-      entries.forEach(e => { if (e.isIntersecting) { e.target.classList.add('visible'); observer.unobserve(e.target); } });
-    }, { threshold: 0.08 });
-    document.querySelectorAll('.anim').forEach(el => observer.observe(el));
+    // ── NAV SCROLL ──
+    const mainNav = document.getElementById('main-nav');
+    window.addEventListener('scroll', () => {
+      mainNav.classList.toggle('scrolled', window.scrollY > 60);
+    });
 
-    // ── Copy IP ──
+    // ── CUSTOM CURSOR ──
+    const dot  = document.getElementById('cursor-dot');
+    const ring = document.getElementById('cursor-ring');
+    let mx = 0, my = 0, rx = 0, ry = 0;
+    document.addEventListener('mousemove', e => {
+      mx = e.clientX; my = e.clientY;
+      dot.style.left = mx + 'px';
+      dot.style.top  = my + 'px';
+    });
+    function animRing() {
+      rx += (mx - rx) * 0.1;
+      ry += (my - ry) * 0.1;
+      ring.style.left = rx + 'px';
+      ring.style.top  = ry + 'px';
+      requestAnimationFrame(animRing);
+    }
+    animRing();
+    document.querySelectorAll('a,button,.changelog-head,.bento-cell,.plugin-card,.roadmap-card,.issue-card')
+      .forEach(el => {
+        el.addEventListener('mouseenter', () => document.body.classList.add('cursor-hover'));
+        el.addEventListener('mouseleave', () => document.body.classList.remove('cursor-hover'));
+      });
+    document.addEventListener('mousedown', () => document.body.classList.add('cursor-active'));
+    document.addEventListener('mouseup',   () => document.body.classList.remove('cursor-active'));
+
+    // ── HAMBURGER ──
+    const hamburger   = document.getElementById('hamburger');
+    const mobileMenu  = document.getElementById('mobile-menu');
+    hamburger.addEventListener('click', () => mobileMenu.classList.toggle('open'));
+
+    // ── HERO BG ──
+    window.addEventListener('load', () => document.getElementById('heroBg').classList.add('loaded'));
+
+    // ── SCROLL REVEAL ──
+    const revealObs = new IntersectionObserver(entries => {
+      entries.forEach(e => { if (e.isIntersecting) { e.target.classList.add('visible'); revealObs.unobserve(e.target); }});
+    }, { threshold: 0.06 });
+    document.querySelectorAll('.anim').forEach(el => revealObs.observe(el));
+
+    // ── COPY IP ──
     function copyIP(ip, btnId) {
       navigator.clipboard.writeText(ip).then(() => {
         const btn = document.getElementById(btnId);
         const orig = btn.innerHTML;
-        btn.textContent = 'Copied!';
-        setTimeout(() => btn.innerHTML = orig, 1600);
+        btn.classList.add('copied');
+        btn.textContent = '✓ Copied!';
+        setTimeout(() => { btn.classList.remove('copied'); btn.innerHTML = orig; }, 1800);
       });
     }
 
-    // ── Live Server Status ──
-    async function fetchServerStatus() {
-      const dot   = document.getElementById('statusDot');
-      const text  = document.getElementById('statusText');
-      const pills = document.getElementById('statusPlayers');
-      const cap   = document.getElementById('bentoCapacity');
-      const capSub= document.getElementById('bentoCapacitySub');
+    // ── CHANGELOG TOGGLE ──
+    function toggleChangelog(id) {
+      const entry = document.getElementById(id);
+      const isOpen = entry.classList.contains('open');
+      // Close all
+      document.querySelectorAll('.changelog-entry').forEach(e => e.classList.remove('open'));
+      // Toggle current
+      if (!isOpen) entry.classList.add('open');
+    }
 
+    // ── SERVER STATUS ──
+    async function fetchStatus() {
+      const statusDot   = document.getElementById('statusDot');
+      const statusText  = document.getElementById('statusText');
+      const statusPlayers = document.getElementById('statusPlayers');
+      const cap    = document.getElementById('bentoCapacity');
+      const capSub = document.getElementById('bentoCapacitySub');
+      const heroCount = document.getElementById('heroPlayerCount');
       try {
         const res  = await fetch('https://api.mcsrvstat.us/3/freakynsmp.minekeep.gg');
         const data = await res.json();
-
         if (data.online) {
           const online = data.players?.online ?? 0;
           const max    = data.players?.max    ?? 10;
-
-          dot.classList.add('online');
-          text.textContent  = 'Online';
-          pills.textContent = `· ${online} / ${max} players`;
-
-          cap.textContent    = `${online} / ${max}`;
-          capSub.textContent = online === 0
-            ? 'Server is empty — be the first to join!'
-            : `${online} player${online !== 1 ? 's' : ''} currently online`;
+          statusDot.classList.add('online');
+          statusText.textContent   = 'Online';
+          statusPlayers.textContent = `· ${online} / ${max} players`;
+          cap.textContent          = `${online} / ${max}`;
+          capSub.textContent       = online === 0 ? 'Server is empty — be the first to join!' : `${online} player${online !== 1 ? 's' : ''} online right now`;
+          heroCount.textContent    = online;
         } else {
-          dot.classList.add('offline');
-          text.textContent  = 'Offline';
-          pills.textContent = '';
-          cap.textContent   = '— / 10';
+          statusDot.classList.add('offline');
+          statusText.textContent = 'Offline';
+          statusPlayers.textContent = '';
+          cap.textContent    = '— / 10';
           capSub.textContent = 'Server is currently offline';
+          heroCount.textContent = '0';
         }
       } catch {
-        dot.style.background = 'var(--muted)';
-        text.textContent = 'Status unknown';
-        cap.textContent  = '— / 10';
+        statusDot.style.background = 'var(--muted)';
+        statusText.textContent = 'Unknown';
+        cap.textContent    = '— / 10';
         capSub.textContent = 'Could not fetch server status';
+        heroCount.textContent = '?';
       }
     }
+    fetchStatus();
+    setInterval(fetchStatus, 60000); // refresh every 60s
 
-    fetchServerStatus();
+    // ── KONAMI CODE ──
+    const konami = [38,38,40,40,37,39,37,39,66,65];
+    let ki = 0;
+    document.addEventListener('keydown', e => {
+      if (e.keyCode === konami[ki]) {
+        ki++;
+        if (ki === konami.length) {
+          ki = 0;
+          const t = document.getElementById('konami-toast');
+          t.classList.add('show');
+          setTimeout(() => t.classList.remove('show'), 3500);
+        }
+      } else { ki = 0; }
+    });
+
+    // ── ACTIVE NAV ON SCROLL ──
+    const sections = document.querySelectorAll('section[id], div[id]');
+    const navLinks = document.querySelectorAll('.nav-center a');
+    const scrollSpy = new IntersectionObserver(entries => {
+      entries.forEach(e => {
+        if (e.isIntersecting) {
+          navLinks.forEach(a => a.classList.remove('active'));
+          const link = document.querySelector(`.nav-center a[href="#${e.target.id}"]`);
+          if (link) link.classList.add('active');
+        }
+      });
+    }, { threshold: 0.5 });
+    document.querySelectorAll('#join, #plugins, #changelog, #issues, #roadmap')
+      .forEach(s => scrollSpy.observe(s));
   </script>
 
 </body>
