@@ -197,25 +197,36 @@
       overflow: hidden;
     }
 
+    /* CSS-only hero background — no GIF dependency */
     .hero-bg {
       position: absolute; inset: 0;
-      background-image: url('https://faizzzlol.github.io/freakyniggas/FreakyNiggasBanner.gif');
-      background-size: cover;
-      background-position: center;
-      filter: grayscale(0.45) brightness(0.28);
-      transform: scale(1.06);
-      transition: transform 10s ease;
+      background:
+        radial-gradient(ellipse 80% 60% at 20% 60%, rgba(74,222,128,0.04) 0%, transparent 55%),
+        radial-gradient(ellipse 60% 50% at 80% 30%, rgba(96,165,250,0.025) 0%, transparent 50%),
+        radial-gradient(ellipse 100% 80% at 50% 100%, rgba(8,8,8,0.9) 0%, transparent 70%),
+        #080808;
     }
-    .hero-bg.loaded { transform: scale(1); }
+    /* Subtle grid lines for depth */
+    .hero-bg::before {
+      content: '';
+      position: absolute; inset: 0;
+      background-image:
+        linear-gradient(var(--border) 1px, transparent 1px),
+        linear-gradient(90deg, var(--border) 1px, transparent 1px);
+      background-size: 80px 80px;
+      opacity: 0.35;
+      mask-image: linear-gradient(to bottom, transparent 0%, rgba(0,0,0,0.5) 30%, rgba(0,0,0,0.5) 70%, transparent 100%);
+      -webkit-mask-image: linear-gradient(to bottom, transparent 0%, rgba(0,0,0,0.5) 30%, rgba(0,0,0,0.5) 70%, transparent 100%);
+    }
 
     .hero::after {
       content: '';
       position: absolute; inset: 0;
       background: linear-gradient(
         to bottom,
-        rgba(8,8,8,0.1) 0%,
-        rgba(8,8,8,0) 30%,
-        rgba(8,8,8,0.6) 65%,
+        rgba(8,8,8,0.2) 0%,
+        rgba(8,8,8,0) 25%,
+        rgba(8,8,8,0.5) 60%,
         rgba(8,8,8,1) 100%
       );
       pointer-events: none;
@@ -592,12 +603,12 @@
       background: var(--green);
       opacity: 0.7;
     }
-    .uptime-seg.down { background: var(--red); opacity: 0.5; }
+    .uptime-seg.down    { background: var(--red);    opacity: 0.5; }
+    .uptime-seg.partial { background: var(--yellow); opacity: 0.65; }
+    .uptime-seg.unknown { background: var(--border2); opacity: 0.5; cursor: default; }
 
     /* ── ONLINE PLAYERS BENTO CELL ── */
-    .bento-cell.players-cell {
-      padding: 1.8rem;
-    }
+    .bento-cell.players-cell { padding: 1.8rem; }
 
     .players-grid {
       display: flex;
@@ -620,6 +631,10 @@
       background: var(--surface3);
       border-color: var(--green);
     }
+    /* Bedrock player card — blue accent */
+    .player-card.bedrock-card { border-color: rgba(96,165,250,0.25); }
+    .player-card.bedrock-card:hover { border-color: var(--blue); background: var(--surface3); }
+
     @keyframes playerIn {
       from { opacity:0; transform: scale(0.92) translateY(6px); }
       to   { opacity:1; transform: scale(1) translateY(0); }
@@ -631,6 +646,22 @@
       image-rendering: pixelated;
       background: var(--surface3);
       flex-shrink: 0;
+    }
+
+    /* Bedrock avatar placeholder */
+    .bedrock-avatar {
+      width: 28px; height: 28px;
+      border-radius: 3px;
+      background: var(--surface3);
+      border: 1px solid rgba(96,165,250,0.3);
+      display: flex; align-items: center; justify-content: center;
+      flex-shrink: 0;
+      font-family: var(--font-mono);
+      font-size: 0.6rem;
+      font-weight: 500;
+      color: var(--blue);
+      letter-spacing: 0;
+      user-select: none;
     }
 
     .player-name {
@@ -646,6 +677,20 @@
       background: var(--green);
       flex-shrink: 0;
       animation: pulse-green 2s ease infinite;
+    }
+
+    /* Bedrock tag badge */
+    .bedrock-tag {
+      font-family: var(--font-mono);
+      font-size: 0.5rem;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      color: var(--blue);
+      background: var(--blue-dim);
+      border: 1px solid rgba(96,165,250,0.2);
+      padding: 0.1rem 0.35rem;
+      border-radius: 2px;
+      flex-shrink: 0;
     }
 
     .players-empty {
@@ -675,9 +720,7 @@
       font-size: 3rem; line-height: 1;
       color: var(--white);
     }
-    .unique-label-stack {
-      padding-bottom: 0.35rem;
-    }
+    .unique-label-stack { padding-bottom: 0.35rem; }
     .unique-label-main {
       font-family: var(--font-mono);
       font-size: 0.6rem;
@@ -774,7 +817,7 @@
     }
     .plugin-status.new    { background: var(--green-dim);  color: var(--green);  border: 1px solid rgba(74,222,128,0.2); }
     .plugin-status.active { background: var(--surface3);   color: var(--muted2); border: 1px solid var(--border2); }
-    .plugin-status.updated{ background: var(--blue-dim);   color: var(--blue);   border: 1px solid rgba(96,165,250,0.2); }
+    .plugin-status.core   { background: var(--blue-dim);   color: var(--blue);   border: 1px solid rgba(96,165,250,0.2); }
 
     .plugin-category {
       font-family: var(--font-mono);
@@ -1289,7 +1332,7 @@
   <!-- ── NAV ── -->
   <nav id="main-nav">
     <a class="nav-logo" href="https://faizzzlol.github.io/freakyniggas/">
-      <img src="https://faizzzlol.github.io/freakyniggas/FreakyNiggasLogo.gif" alt="FN"/>
+      <img src="https://faizzzlol.github.io/freakyniggas/FreakyNiggasLogo.png" alt="FN" onerror="this.style.display='none'"/>
       <span class="nav-wordmark">Freaky Niggas</span>
     </a>
     <button class="hamburger" id="hamburger" aria-label="Menu" aria-expanded="false">
@@ -1321,7 +1364,7 @@
 
   <!-- ── HERO ── -->
   <section class="hero" id="hero">
-    <div class="hero-bg" id="heroBg"></div>
+    <div class="hero-bg"></div>
     <div class="hero-content">
       <div class="breadcrumb">
         <a href="https://faizzzlol.github.io/freakyniggas/">FN</a>
@@ -1446,7 +1489,7 @@
       <div class="bento-cell">
         <div class="bento-cell-label">Platform</div>
         <div class="bento-cell-value">Cross-Play</div>
-        <div class="bento-cell-sub">Java Edition & Bedrock simultaneously<br/>Geyser-powered crossplay bridge</div>
+        <div class="bento-cell-sub">Java Edition & Bedrock simultaneously<br/>Geyser + Floodgate crossplay bridge</div>
       </div>
 
       <!-- Live Capacity -->
@@ -1459,9 +1502,7 @@
       <!-- Online Players — WIDE -->
       <div class="bento-cell wide players-cell">
         <div class="bento-cell-label">Online Players</div>
-        <div id="playersGrid" class="players-grid">
-          <!-- Injected by JS -->
-        </div>
+        <div id="playersGrid" class="players-grid"></div>
         <div id="playersEmpty" class="players-empty" style="display:none;">
           No players online right now — be the first to join!
         </div>
@@ -1482,7 +1523,7 @@
         </div>
         <div class="unique-info">
           <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>
-          Accumulated locally — updates each time you visit while players are online.
+          Accumulated locally — includes Java & Bedrock players. Updates each visit.
         </div>
       </div>
 
@@ -1493,26 +1534,18 @@
         <div class="bento-cell-sub">Paper server engine · survival gameplay<br/>Minimal plugin interference — play naturally</div>
       </div>
 
-      <!-- Hosting -->
+      <!-- Hosting — WIDE with real uptime bar -->
       <div class="bento-cell" style="grid-column: 1 / -1;">
         <div style="display:flex; align-items:flex-start; justify-content:space-between; flex-wrap:wrap; gap:1.5rem;">
           <div>
             <div class="bento-cell-label">Hosting Provider</div>
             <div class="bento-cell-value">MineKeep</div>
-            <div class="bento-cell-sub">minekeep.net · Germany nodes<br/>~100ms avg latency for Malaysian players</div>
+            <div class="bento-cell-sub">minekeep.net · Free tier<br/>~100–200ms avg latency for Malaysian players</div>
           </div>
           <div style="flex:1; min-width:200px;">
             <div class="bento-cell-label" style="margin-bottom:0.8rem;">Uptime (14 days)</div>
-            <div class="uptime-bar-wrap">
-              <div class="uptime-seg"></div><div class="uptime-seg"></div>
-              <div class="uptime-seg"></div><div class="uptime-seg"></div>
-              <div class="uptime-seg"></div><div class="uptime-seg"></div>
-              <div class="uptime-seg"></div><div class="uptime-seg"></div>
-              <div class="uptime-seg"></div><div class="uptime-seg"></div>
-              <div class="uptime-seg"></div><div class="uptime-seg"></div>
-              <div class="uptime-seg"></div><div class="uptime-seg down"></div>
-            </div>
-            <div class="bento-cell-sub" style="margin-top:0.5rem;">13/14 days online</div>
+            <div class="uptime-bar-wrap" id="uptimeBar"></div>
+            <div class="bento-cell-sub" style="margin-top:0.5rem;" id="uptimeSub">Tracking from your first visit...</div>
           </div>
         </div>
       </div>
@@ -1527,7 +1560,9 @@
           </div>
           <div class="community-logos">
             <div class="community-logo-item">
-              <img src="https://faizzzlol.github.io/freakyniggas/FreakyNiggasLogo.gif" alt="FN" style="filter:grayscale(1) brightness(1.5)"/>
+              <img src="https://faizzzlol.github.io/freakyniggas/FreakyNiggasLogo.png" alt="FN"
+                   style="filter:grayscale(1) brightness(1.5)"
+                   onerror="this.style.display='none'"/>
               <span>FreakyNiggas</span>
             </div>
             <span class="community-x">×</span>
@@ -1551,57 +1586,100 @@
         <div class="section-label">// 03 — Active Plugins</div>
         <div class="section-title">Plugins</div>
       </div>
-      <div class="section-count">11 Active</div>
+      <div class="section-count">18 Active</div>
     </div>
     <div class="plugins-grid">
+
       <div class="plugin-card">
         <div class="plugin-header">
           <div class="plugin-name">AuraSkills</div>
           <div class="plugin-status active">Active</div>
         </div>
         <div class="plugin-category">RPG · Progression</div>
-        <div class="plugin-desc">Full RPG leveling system with skills, stats, and abilities. Adds progression depth to the semi-vanilla experience.</div>
+        <div class="plugin-desc">Full RPG leveling system with skills, stats, and abilities. Adds deep progression to the semi-vanilla experience.</div>
       </div>
+
       <div class="plugin-card">
         <div class="plugin-header">
           <div class="plugin-name">ChestSort</div>
           <div class="plugin-status active">Active</div>
         </div>
         <div class="plugin-category">Utility · QoL</div>
-        <div class="plugin-desc">Auto-sorts inventory and chests on interaction. Keeps your storage clean without any effort.</div>
+        <div class="plugin-desc">Auto-sorts inventory and chests on interaction. Keeps your storage organized without any effort.</div>
       </div>
+
       <div class="plugin-card">
         <div class="plugin-header">
           <div class="plugin-name">Chunky</div>
-          <div class="plugin-status new">New</div>
+          <div class="plugin-status active">Active</div>
         </div>
         <div class="plugin-category">World · Pre-Generation</div>
-        <div class="plugin-desc">Pre-generates world chunks in the background. Eliminates lag spikes from unexplored terrain by loading chunks before players arrive.</div>
+        <div class="plugin-desc">Pre-generates world chunks in the background. Eliminates lag spikes from unexplored terrain before players arrive.</div>
       </div>
+
       <div class="plugin-card">
         <div class="plugin-header">
           <div class="plugin-name">DiscordSRV</div>
-          <div class="plugin-status new">New</div>
+          <div class="plugin-status active">Active</div>
         </div>
         <div class="plugin-category">Community · Integration</div>
-        <div class="plugin-desc">Bridges in-game chat with Discord. Players can communicate between the server and Discord channels in real time.</div>
+        <div class="plugin-desc">Bridges in-game chat with Discord in real time. Works alongside InteractiveChat for rich message formatting and embeds.</div>
       </div>
+
+      <div class="plugin-card">
+        <div class="plugin-header">
+          <div class="plugin-name">Floodgate</div>
+          <div class="plugin-status core">Core</div>
+        </div>
+        <div class="plugin-category">Crossplay · Authentication</div>
+        <div class="plugin-desc">Handles Bedrock player authentication through Geyser without needing a Java account. Lets Xbox players join seamlessly alongside Java players.</div>
+      </div>
+
+      <div class="plugin-card">
+        <div class="plugin-header">
+          <div class="plugin-name">Geyser</div>
+          <div class="plugin-status core">Core</div>
+        </div>
+        <div class="plugin-category">Crossplay · Protocol</div>
+        <div class="plugin-desc">The translation layer that makes Java↔Bedrock crossplay possible. Converts Bedrock protocol packets into Java protocol in real time — the backbone of FN SMP's crossplay.</div>
+      </div>
+
       <div class="plugin-card">
         <div class="plugin-header">
           <div class="plugin-name">GSit</div>
-          <div class="plugin-status new">New</div>
+          <div class="plugin-status active">Active</div>
         </div>
         <div class="plugin-category">Cosmetic · QoL</div>
         <div class="plugin-desc">Lets players sit, lay down, and crawl on any block. Small but immersive addition to the survival experience.</div>
       </div>
+
+      <div class="plugin-card">
+        <div class="plugin-header">
+          <div class="plugin-name">InteractiveChat</div>
+          <div class="plugin-status new">New</div>
+        </div>
+        <div class="plugin-category">Chat · Formatting</div>
+        <div class="plugin-desc">Advanced chat formatting with clickable items, hover previews, and rich message components. Makes in-game chat significantly more expressive and interactive.</div>
+      </div>
+
+      <div class="plugin-card">
+        <div class="plugin-header">
+          <div class="plugin-name">IC Discord Addon</div>
+          <div class="plugin-status new">New</div>
+        </div>
+        <div class="plugin-category">Chat · Integration</div>
+        <div class="plugin-desc">InteractiveChat's DiscordSRV addon — syncs InteractiveChat's rich formatting features with the Discord bridge for a seamless cross-platform chat experience.</div>
+      </div>
+
       <div class="plugin-card">
         <div class="plugin-header">
           <div class="plugin-name">LuckPerms</div>
           <div class="plugin-status active">Active</div>
         </div>
         <div class="plugin-category">Permissions · Admin</div>
-        <div class="plugin-desc">Advanced permission management system. Controls what each player and rank can access across the entire server.</div>
+        <div class="plugin-desc">Advanced permission management. Controls what each player and rank can access across the entire server.</div>
       </div>
+
       <div class="plugin-card">
         <div class="plugin-header">
           <div class="plugin-name">packetevents</div>
@@ -1610,38 +1688,70 @@
         <div class="plugin-category">Library · Dependency</div>
         <div class="plugin-desc">Low-level packet manipulation library. Required by other plugins for protocol-level features and cross-version compatibility.</div>
       </div>
+
+      <div class="plugin-card">
+        <div class="plugin-header">
+          <div class="plugin-name">PlaceholderAPI</div>
+          <div class="plugin-status active">Active</div>
+        </div>
+        <div class="plugin-category">Library · Dependency</div>
+        <div class="plugin-desc">Universal placeholder engine used by plugins to display dynamic player data — stats, ranks, online counts — anywhere that supports it.</div>
+      </div>
+
+      <div class="plugin-card">
+        <div class="plugin-header">
+          <div class="plugin-name">ProtocolLib</div>
+          <div class="plugin-status active">Active</div>
+        </div>
+        <div class="plugin-category">Library · Dependency</div>
+        <div class="plugin-desc">Provides safe and easy access to the Minecraft protocol. Required by several plugins including InteractiveChat for packet-level modifications.</div>
+      </div>
+
+      <div class="plugin-card">
+        <div class="plugin-header">
+          <div class="plugin-name">RealScoreboard</div>
+          <div class="plugin-status new">New</div>
+        </div>
+        <div class="plugin-category">Display · UI</div>
+        <div class="plugin-desc">Custom animated scoreboard on the right side of the screen. Displays live player stats, server info, and PlaceholderAPI values in a clean sidebar.</div>
+      </div>
+
       <div class="plugin-card">
         <div class="plugin-header">
           <div class="plugin-name">SkinsRestorer</div>
-          <div class="plugin-status new">New</div>
+          <div class="plugin-status active">Active</div>
         </div>
         <div class="plugin-category">Cosmetic · Identity</div>
-        <div class="plugin-desc">Restores custom skins for Bedrock and cracked players who can't get them through Mojang's auth. Everyone gets to look like themselves.</div>
+        <div class="plugin-desc">Restores custom skins for Bedrock and offline-mode players who can't get them through Mojang auth. Everyone gets to look like themselves.</div>
       </div>
+
       <div class="plugin-card">
         <div class="plugin-header">
           <div class="plugin-name">Vault</div>
           <div class="plugin-status active">Active</div>
         </div>
         <div class="plugin-category">Economy · Foundation</div>
-        <div class="plugin-desc">Economy API foundation layer. Enables future economy plugins and player-driven trading systems to integrate seamlessly.</div>
+        <div class="plugin-desc">Economy API foundation. Enables future economy plugins and player-driven trading systems to integrate seamlessly.</div>
       </div>
+
       <div class="plugin-card">
         <div class="plugin-header">
           <div class="plugin-name">ViaBackwards</div>
-          <div class="plugin-status new">New</div>
+          <div class="plugin-status active">Active</div>
         </div>
         <div class="plugin-category">Compatibility · Protocol</div>
-        <div class="plugin-desc">Allows players on older Minecraft versions to connect to the server. Works alongside ViaVersion to maximize client compatibility.</div>
+        <div class="plugin-desc">Allows players on older Minecraft versions to connect. Works alongside ViaVersion to maximize client compatibility.</div>
       </div>
+
       <div class="plugin-card">
         <div class="plugin-header">
           <div class="plugin-name">ViaVersion</div>
-          <div class="plugin-status new">New</div>
+          <div class="plugin-status active">Active</div>
         </div>
         <div class="plugin-category">Compatibility · Protocol</div>
-        <div class="plugin-desc">Enables multi-version support — players on newer clients can join even if the server runs an older version. Keeps the door open for everyone.</div>
+        <div class="plugin-desc">Multi-version support — players on newer clients can join even if the server runs an older version. Keeps the door open for everyone.</div>
       </div>
+
     </div>
   </div>
 
@@ -1823,14 +1933,14 @@
         <div class="issue-num">03</div>
         <div class="issue-main">
           <div class="issue-title-row">
-            <div class="issue-title">Bedrock Input Delay</div>
+            <div class="issue-title">Bedrock Player List Visibility</div>
             <div class="issue-severity low">Low</div>
           </div>
-          <div class="issue-desc">Bedrock players may experience minor input delay compared to Java. This is primarily caused by low server resources and the Geyser translation layer overhead, not your personal internet connection.</div>
+          <div class="issue-desc">Bedrock players connected via Geyser may not appear in the website's player list even when online. This is a limitation of the server's query protocol — Geyser-bridged players aren't always exposed through the standard player list API. Their count is included in the total, but names and skins can't be retrieved.</div>
         </div>
         <div class="issue-solution">
-          <div class="issue-solution-label">Workaround</div>
-          <div class="issue-solution-text">A <strong>server plan upgrade</strong> is required to fully eliminate this issue.</div>
+          <div class="issue-solution-label">Status</div>
+          <div class="issue-solution-text">Investigating query protocol config options. No workaround available on the free hosting tier.</div>
         </div>
       </div>
 
@@ -1853,12 +1963,12 @@
       <div class="roadmap-card">
         <div class="roadmap-status indev">In Dev</div>
         <div class="roadmap-num">01</div>
-        <div class="roadmap-title">Chat & Discord Bridge</div>
-        <div class="roadmap-desc">InteractiveChat integration with DiscordSRV — sync in-game chat with the Discord server in real time, with clickable mentions and rich embeds.</div>
+        <div class="roadmap-title">Chat & Scoreboard</div>
+        <div class="roadmap-desc">Configuring InteractiveChat for rich in-game chat with clickable item previews, hover cards, and player mentions. RealScoreboard sidebar customisation with live AuraSkills stats and server info.</div>
         <div class="roadmap-tags">
           <span class="roadmap-tag">InteractiveChat</span>
-          <span class="roadmap-tag">DiscordSRV</span>
-          <span class="roadmap-tag">Community</span>
+          <span class="roadmap-tag">RealScoreboard</span>
+          <span class="roadmap-tag">PlaceholderAPI</span>
         </div>
       </div>
 
@@ -1895,7 +2005,8 @@
   <footer>
     <div class="foot-left">
       <div class="foot-logo">
-        <img src="https://faizzzlol.github.io/freakyniggas/FreakyNiggasLogo.gif" alt="FN"/>
+        <img src="https://faizzzlol.github.io/freakyniggas/FreakyNiggasLogo.png" alt="FN"
+             onerror="this.style.display='none'"/>
         <span class="foot-wordmark">Freaky Niggas</span>
       </div>
       <ul class="foot-links">
@@ -1914,6 +2025,7 @@
   <script>
     // ── SCROLL PROGRESS ──
     const progress = document.getElementById('scroll-progress');
+    const mainNav  = document.getElementById('main-nav');
     const onScroll = () => {
       const h = document.documentElement;
       const pct = (window.scrollY / (h.scrollHeight - h.clientHeight)) * 100;
@@ -1923,8 +2035,7 @@
     window.addEventListener('scroll', onScroll, { passive: true });
 
     // ── NAV ──
-    const mainNav = document.getElementById('main-nav');
-    const hamburger = document.getElementById('hamburger');
+    const hamburger  = document.getElementById('hamburger');
     const mobileMenu = document.getElementById('mobile-menu');
 
     hamburger.addEventListener('click', () => {
@@ -1932,8 +2043,6 @@
       hamburger.classList.toggle('open', isOpen);
       hamburger.setAttribute('aria-expanded', isOpen);
     });
-
-    // Close mobile menu on link click
     mobileMenu.querySelectorAll('a').forEach(a => {
       a.addEventListener('click', () => {
         mobileMenu.classList.remove('open');
@@ -1942,16 +2051,10 @@
       });
     });
 
-    // ── HERO BG ──
-    window.addEventListener('load', () => document.getElementById('heroBg').classList.add('loaded'));
-
     // ── SCROLL REVEAL ──
     const revealObs = new IntersectionObserver(entries => {
       entries.forEach(e => {
-        if (e.isIntersecting) {
-          e.target.classList.add('visible');
-          revealObs.unobserve(e.target);
-        }
+        if (e.isIntersecting) { e.target.classList.add('visible'); revealObs.unobserve(e.target); }
       });
     }, { threshold: 0.05 });
     document.querySelectorAll('.anim').forEach(el => revealObs.observe(el));
@@ -1959,13 +2062,12 @@
     // ── COPY IP ──
     function copyIP(ip, btnId) {
       navigator.clipboard.writeText(ip).then(() => {
-        const btn = document.getElementById(btnId);
+        const btn  = document.getElementById(btnId);
         const orig = btn.innerHTML;
         btn.classList.add('copied');
         btn.textContent = '✓ Copied!';
         setTimeout(() => { btn.classList.remove('copied'); btn.innerHTML = orig; }, 1800);
       }).catch(() => {
-        // Fallback
         const ta = document.createElement('textarea');
         ta.value = ip; ta.style.position = 'fixed'; ta.style.opacity = '0';
         document.body.appendChild(ta); ta.select();
@@ -1976,48 +2078,131 @@
 
     // ── CHANGELOG TOGGLE ──
     function toggleChangelog(id) {
-      const entry = document.getElementById(id);
+      const entry  = document.getElementById(id);
       const isOpen = entry.classList.contains('open');
       document.querySelectorAll('.changelog-entry').forEach(e => e.classList.remove('open'));
       if (!isOpen) entry.classList.add('open');
     }
 
-    // ── UNIQUE PLAYERS — localStorage tracker ──
+    // ─────────────────────────────────────────────────────────────
+    // ── REAL UPTIME TRACKING (localStorage, 14-day rolling) ──
+    // ─────────────────────────────────────────────────────────────
+    const UPTIME_KEY = 'fnsmp_uptime_v2';
+
+    function getUptimeData() {
+      try { return JSON.parse(localStorage.getItem(UPTIME_KEY) || '{}'); }
+      catch { return {}; }
+    }
+
+    function saveUptimeData(data) {
+      // Keep only last 14 days
+      const keys = Object.keys(data).sort();
+      while (keys.length > 14) delete data[keys.shift()];
+      try { localStorage.setItem(UPTIME_KEY, JSON.stringify(data)); }
+      catch {}
+    }
+
+    function recordUptimeCheck(isOnline) {
+      const today = new Date().toISOString().slice(0, 10); // YYYY-MM-DD
+      const data  = getUptimeData();
+      if (!data[today]) data[today] = { online: 0, total: 0 };
+      if (isOnline) data[today].online++;
+      data[today].total++;
+      saveUptimeData(data);
+      renderUptimeBar(data);
+    }
+
+    function renderUptimeBar(data) {
+      const barWrap  = document.getElementById('uptimeBar');
+      const uptimeSub = document.getElementById('uptimeSub');
+      if (!barWrap) return;
+
+      // Build last 14 days array, oldest → newest
+      const days = [];
+      for (let i = 13; i >= 0; i--) {
+        const d = new Date();
+        d.setDate(d.getDate() - i);
+        days.push(d.toISOString().slice(0, 10));
+      }
+
+      barWrap.innerHTML = days.map(dateKey => {
+        const day = data[dateKey];
+        let cls   = 'uptime-seg unknown';
+        let tip   = `${dateKey}: No data yet`;
+        if (day && day.total > 0) {
+          const pct = day.online / day.total;
+          const pctStr = Math.round(pct * 100) + '%';
+          if      (pct >= 0.9) { cls = 'uptime-seg';         tip = `${dateKey}: ${pctStr} online`; }
+          else if (pct >= 0.5) { cls = 'uptime-seg partial';  tip = `${dateKey}: ${pctStr} online`; }
+          else                 { cls = 'uptime-seg down';     tip = `${dateKey}: ${pctStr} online`; }
+        }
+        return `<div class="${cls}" title="${tip}" style="cursor:help;"></div>`;
+      }).join('');
+
+      // Overall uptime percentage
+      const allVals    = Object.values(data);
+      const totOnline  = allVals.reduce((s, d) => s + d.online, 0);
+      const totChecks  = allVals.reduce((s, d) => s + d.total, 0);
+      if (uptimeSub) {
+        if (totChecks === 0) {
+          uptimeSub.textContent = 'Hover segments for daily details · tracking from your first visit';
+        } else {
+          const pct = Math.round((totOnline / totChecks) * 100);
+          uptimeSub.textContent = `${pct}% uptime · ${totChecks} checks · tracked from your visits`;
+        }
+      }
+    }
+
+    // Render on page load from existing stored data immediately
+    renderUptimeBar(getUptimeData());
+
+    // ─────────────────────────────────────────────────────────────
+    // ── UNIQUE PLAYERS (localStorage tracker) ──
+    // ─────────────────────────────────────────────────────────────
     const STORAGE_KEY = 'fnsmp_seen_players_v2';
 
     function getSeenPlayers() {
-      try {
-        return new Set(JSON.parse(localStorage.getItem(STORAGE_KEY) || '[]'));
-      } catch { return new Set(); }
+      try { return new Set(JSON.parse(localStorage.getItem(STORAGE_KEY) || '[]')); }
+      catch { return new Set(); }
     }
-
     function saveSeenPlayers(set) {
-      try {
-        localStorage.setItem(STORAGE_KEY, JSON.stringify([...set]));
-      } catch {}
+      try { localStorage.setItem(STORAGE_KEY, JSON.stringify([...set])); }
+      catch {}
     }
-
     function trackAndGetUnique(playerList) {
       const seen = getSeenPlayers();
       if (playerList && playerList.length > 0) {
-        playerList.forEach(p => { if (p.name) seen.add(p.name.toLowerCase()); });
+        playerList.forEach(p => {
+          if (p.name) {
+            // Normalize: strip leading dot for Bedrock/Geyser players, lowercase
+            const normalized = p.name.startsWith('.')
+              ? p.name.slice(1).toLowerCase()
+              : p.name.toLowerCase();
+            seen.add(normalized);
+          }
+        });
         saveSeenPlayers(seen);
       }
       return seen.size;
     }
-
     function updateUniqueUI(count) {
-      document.getElementById('uniqueCount').textContent = count > 0 ? count : '—';
+      document.getElementById('uniqueCount').textContent    = count > 0 ? count : '—';
       document.getElementById('heroUniqueStat').textContent = count > 0 ? count : '—';
     }
-
-    // Init unique count from existing storage immediately
+    // Init from existing storage immediately
     updateUniqueUI(getSeenPlayers().size);
 
-    // ── RENDER PLAYER CARDS ──
+    // ─────────────────────────────────────────────────────────────
+    // ── PLAYER CARD RENDERING (with Bedrock detection) ──
+    // ─────────────────────────────────────────────────────────────
+    function isBedrockPlayer(name) {
+      // Geyser prefixes Bedrock players with a dot by default
+      return typeof name === 'string' && name.startsWith('.');
+    }
+
     function renderPlayers(playerList) {
-      const grid = document.getElementById('playersGrid');
-      const empty = document.getElementById('playersEmpty');
+      const grid     = document.getElementById('playersGrid');
+      const empty    = document.getElementById('playersEmpty');
       const fetching = document.getElementById('playersFetching');
 
       fetching.style.display = 'none';
@@ -2032,31 +2217,44 @@
       grid.innerHTML = '';
 
       playerList.forEach((player, i) => {
-        const name = player.name || 'Unknown';
-        const uuid = player.uuid || '';
+        const rawName    = player.name || 'Unknown';
+        const bedrock    = isBedrockPlayer(rawName);
+        const displayName = bedrock ? rawName.slice(1) : rawName;
+        const uuid        = player.uuid || '';
 
-        // Avatar URL: prefer UUID-based, fallback to name
-        const avatarSrc = uuid
-          ? `https://mc-heads.net/avatar/${uuid}/32`
-          : `https://mc-heads.net/avatar/${name}/32`;
+        let avatarHTML;
+        if (bedrock) {
+          // Bedrock player — show "BE" placeholder since Java skin APIs don't have Xbox skins
+          avatarHTML = `<div class="bedrock-avatar" title="Bedrock / Xbox Player">BE</div>`;
+        } else {
+          const src = uuid
+            ? `https://mc-heads.net/avatar/${uuid}/32`
+            : `https://mc-heads.net/avatar/${encodeURIComponent(displayName)}/32`;
+          avatarHTML = `<img class="player-avatar"
+            src="${src}"
+            alt="${displayName}"
+            loading="lazy"
+            onerror="this.src='https://mc-heads.net/avatar/MHF_Steve/32'"/>`;
+        }
 
         const card = document.createElement('div');
-        card.className = 'player-card';
+        card.className = 'player-card' + (bedrock ? ' bedrock-card' : '');
         card.style.animationDelay = `${i * 0.07}s`;
         card.innerHTML = `
-          <img class="player-avatar"
-               src="${avatarSrc}"
-               alt="${name}"
-               loading="lazy"
-               onerror="this.src='https://mc-heads.net/avatar/MHF_Steve/32'"/>
-          <span class="player-name">${name}</span>
-          <span class="player-online-dot"></span>
+          ${avatarHTML}
+          <span class="player-name">${displayName}</span>
+          ${bedrock
+            ? '<span class="bedrock-tag">Bedrock</span>'
+            : '<span class="player-online-dot"></span>'
+          }
         `;
         grid.appendChild(card);
       });
     }
 
+    // ─────────────────────────────────────────────────────────────
     // ── SERVER STATUS ──
+    // ─────────────────────────────────────────────────────────────
     async function fetchStatus() {
       const statusDot     = document.getElementById('statusDot');
       const statusText    = document.getElementById('statusText');
@@ -2075,39 +2273,35 @@
           const max        = data.players?.max    ?? 10;
           const playerList = data.players?.list   ?? [];
 
-          // Status pill
           statusDot.classList.add('online');
           statusDot.classList.remove('offline');
           statusText.textContent    = 'Online';
           statusPlayers.textContent = `· ${online} / ${max}`;
 
-          // Bento capacity
           cap.textContent    = `${online} / ${max}`;
           capSub.textContent = online === 0
             ? 'Server is empty — be the first to join!'
             : `${online} player${online !== 1 ? 's' : ''} online right now`;
 
-          // Hero stat
           heroCount.textContent = online;
 
-          // Player list rendering
           if (playerList.length > 0) {
             renderPlayers(playerList);
           } else if (online > 0) {
-            // Server is online with players but list is hidden
+            // Server has players but list not exposed (common with Geyser Bedrock players)
             fetching.style.display = 'none';
             document.getElementById('playersEmpty').style.display = 'none';
             document.getElementById('playersGrid').innerHTML = `
               <div class="players-empty" style="display:flex; padding:0;">
-                ${online} player${online !== 1 ? 's' : ''} online — player list hidden by server config.
+                ${online} player${online !== 1 ? 's' : ''} online — names hidden by server config or Bedrock limitation.
               </div>`;
           } else {
             renderPlayers([]);
           }
 
-          // Track unique players
-          const uniqueCount = trackAndGetUnique(playerList);
-          updateUniqueUI(uniqueCount);
+          // Track unique + record uptime
+          updateUniqueUI(trackAndGetUnique(playerList));
+          recordUptimeCheck(true);
 
         } else {
           statusDot.classList.add('offline');
@@ -2119,6 +2313,7 @@
           heroCount.textContent = '0';
           renderPlayers([]);
           updateUniqueUI(getSeenPlayers().size);
+          recordUptimeCheck(false);
         }
       } catch {
         statusDot.style.background = 'var(--muted)';
@@ -2126,11 +2321,10 @@
         cap.textContent    = '— / 10';
         capSub.textContent = 'Could not fetch server status';
         heroCount.textContent = '?';
-
-        const fetching = document.getElementById('playersFetching');
         fetching.style.display = 'flex';
         fetching.textContent = 'Could not reach server API.';
         updateUniqueUI(getSeenPlayers().size);
+        // Don't record uptime on network error — ambiguous
       }
     }
 
@@ -2153,7 +2347,7 @@
     });
 
     // ── ACTIVE NAV ON SCROLL ──
-    const navLinks = document.querySelectorAll('.nav-center a');
+    const navLinks  = document.querySelectorAll('.nav-center a');
     const scrollSpy = new IntersectionObserver(entries => {
       entries.forEach(e => {
         if (e.isIntersecting) {
