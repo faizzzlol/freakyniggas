@@ -197,7 +197,6 @@
       overflow: hidden;
     }
 
-    /* CSS-only hero background — no GIF dependency */
     .hero-bg {
       position: absolute; inset: 0;
       background:
@@ -206,7 +205,6 @@
         radial-gradient(ellipse 100% 80% at 50% 100%, rgba(8,8,8,0.9) 0%, transparent 70%),
         #080808;
     }
-    /* Subtle grid lines for depth */
     .hero-bg::before {
       content: '';
       position: absolute; inset: 0;
@@ -232,13 +230,16 @@
       pointer-events: none;
     }
 
-    .hero::before {
-      content: '';
-      position: absolute;
-      top: 80px; left: 2.5rem;
-      width: 1px; height: calc(100% - 160px);
-      background: linear-gradient(to bottom, transparent, var(--border2) 20%, var(--border2) 80%, transparent);
-      z-index: 1;
+    /* Left accent line — only on desktop where content aligns */
+    @media (min-width: 681px) {
+      .hero::before {
+        content: '';
+        position: absolute;
+        top: 80px; left: 2.5rem;
+        width: 1px; height: calc(100% - 160px);
+        background: linear-gradient(to bottom, transparent, var(--border2) 20%, var(--border2) 80%, transparent);
+        z-index: 1;
+      }
     }
 
     .hero-content {
@@ -631,7 +632,6 @@
       background: var(--surface3);
       border-color: var(--green);
     }
-    /* Bedrock player card — blue accent */
     .player-card.bedrock-card { border-color: rgba(96,165,250,0.25); }
     .player-card.bedrock-card:hover { border-color: var(--blue); background: var(--surface3); }
 
@@ -648,7 +648,6 @@
       flex-shrink: 0;
     }
 
-    /* Bedrock avatar placeholder */
     .bedrock-avatar {
       width: 28px; height: 28px;
       border-radius: 3px;
@@ -679,7 +678,6 @@
       animation: pulse-green 2s ease infinite;
     }
 
-    /* Bedrock tag badge */
     .bedrock-tag {
       font-family: var(--font-mono);
       font-size: 0.5rem;
@@ -863,8 +861,19 @@
       user-select: none;
     }
 
+    /* IMPROVED: Left side now stacks version + preview line */
     .changelog-head-left {
-      display: flex; align-items: center; gap: 1rem;
+      display: flex;
+      flex-direction: column;
+      gap: 0.3rem;
+      flex: 1;
+      min-width: 0;
+    }
+
+    .changelog-ver-row {
+      display: flex;
+      align-items: center;
+      gap: 0.75rem;
     }
 
     .changelog-ver {
@@ -886,11 +895,50 @@
       background: var(--green-dim);
       color: var(--green);
       border: 1px solid rgba(74,222,128,0.2);
+      flex-shrink: 0;
     }
+
+    /* NEW: Brief summary shown in collapsed state */
+    .changelog-preview {
+      font-family: var(--font-mono);
+      font-size: 0.6rem;
+      letter-spacing: 0.07em;
+      color: var(--muted);
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      max-width: 480px;
+      transition: opacity 0.3s;
+    }
+    .changelog-entry.open .changelog-preview {
+      opacity: 0;
+      pointer-events: none;
+    }
+
+    /* NEW: Change count chips in header */
+    .changelog-counts {
+      display: flex;
+      gap: 0.35rem;
+      align-items: center;
+      flex-wrap: wrap;
+    }
+    .changelog-count-chip {
+      font-family: var(--font-mono);
+      font-size: 0.52rem;
+      letter-spacing: 0.1em;
+      padding: 0.18rem 0.5rem;
+      border-radius: 3px;
+      white-space: nowrap;
+    }
+    .count-add  { background: var(--green-dim);  color: var(--green);  border: 1px solid rgba(74,222,128,0.2); }
+    .count-rem  { background: var(--red-dim);    color: var(--red);    border: 1px solid rgba(248,113,113,0.2); }
+    .count-upd  { background: var(--blue-dim);   color: var(--blue);   border: 1px solid rgba(96,165,250,0.2); }
+    .count-opt  { background: var(--yellow-dim); color: var(--yellow); border: 1px solid rgba(251,191,36,0.2); }
 
     .changelog-head-right {
       display: flex; align-items: center; gap: 1rem;
       flex-wrap: wrap;
+      flex-shrink: 0;
     }
 
     .changelog-date {
@@ -935,7 +983,28 @@
       letter-spacing: 0.16em;
       color: var(--muted);
       text-transform: uppercase;
-      margin-bottom: 1.2rem;
+      margin-bottom: 1.4rem;
+      display: flex;
+      align-items: center;
+      gap: 0.7rem;
+    }
+    .changelog-subtitle::after {
+      content: '';
+      flex: 1;
+      height: 1px;
+      background: var(--border);
+    }
+
+    /* IMPROVED: 2-col groups on desktop */
+    .changelog-groups-wrap {
+      display: grid;
+      grid-template-columns: 1fr;
+      gap: 1.4rem;
+    }
+    @media (min-width: 900px) {
+      .changelog-groups-wrap.multi-group {
+        grid-template-columns: 1fr 1fr;
+      }
     }
 
     .cl-tag {
@@ -952,7 +1021,7 @@
     .cl-tag.optimized{ background: var(--yellow-dim); color: var(--yellow); border: 1px solid rgba(251,191,36,0.2); }
     .cl-tag.notice   { background: var(--orange-dim); color: var(--orange); border: 1px solid rgba(251,146,60,0.2); }
 
-    .changelog-group { margin-bottom: 1.4rem; }
+    .changelog-group { margin-bottom: 0; }
     .changelog-group-title {
       font-family: var(--font-mono);
       font-size: 0.6rem;
@@ -998,7 +1067,7 @@
       border: 1px solid rgba(251,146,60,0.2);
       border-radius: 5px;
       padding: 1rem 1.2rem;
-      margin-top: 1rem;
+      margin-top: 1.2rem;
     }
     .cl-notice-title {
       font-family: var(--font-mono);
@@ -1179,9 +1248,12 @@
     footer {
       border-top: 1px solid var(--border);
       padding: 2.5rem 2.5rem;
+    }
+    .footer-inner {
       display: flex; align-items: center; justify-content: space-between;
       flex-wrap: wrap; gap: 1.5rem;
-      max-width: 100%;
+      max-width: 1200px;
+      margin: 0 auto;
     }
     .foot-left {
       display: flex; flex-direction: column; gap: 0.7rem;
@@ -1250,6 +1322,7 @@
       nav { padding: 0.9rem 1.4rem; }
       nav.scrolled { padding: 0.7rem 1.4rem; }
       .roadmap-grid { grid-template-columns: 1fr 1fr; }
+      .changelog-preview { max-width: 300px; }
     }
 
     /* ── RESPONSIVE — MOBILE (max 680px) ── */
@@ -1258,7 +1331,6 @@
       nav.scrolled { padding: 0.65rem 1rem; }
       .nav-cta { padding: 0.4rem 0.8rem; font-size: 0.62rem; }
 
-      .hero::before { display: none; }
       .hero-content { padding: 0 1rem 3.5rem; }
       .breadcrumb { font-size: 0.58rem; margin-bottom: 1.5rem; }
       .hero-title { font-size: clamp(4.5rem, 22vw, 8rem); margin-bottom: 1.2rem; }
@@ -1294,6 +1366,8 @@
       .cl-tags-inline { display: none; }
       .changelog-ver { font-size: 1.5rem; }
       .changelog-inner { padding: 1.2rem; }
+      .changelog-preview { display: none; }
+      .changelog-counts { display: none; }
 
       /* Issues */
       .issue-card {
@@ -1308,7 +1382,8 @@
       .roadmap-grid { grid-template-columns: 1fr; }
 
       /* Footer */
-      footer { padding: 2rem 1rem; flex-direction: column; align-items: flex-start; }
+      footer { padding: 2rem 1rem; }
+      .footer-inner { flex-direction: column; align-items: flex-start; }
       .foot-right { text-align: left; }
       .foot-disclaimer { max-width: 100%; }
 
@@ -1535,12 +1610,17 @@
       </div>
 
       <!-- Hosting — WIDE with real uptime bar -->
+      <!-- FIX: Removed "~100–200ms avg latency" claim — we can't know a visitor's actual ping. -->
+      <!-- Server region is stated instead so players can judge latency themselves. -->
       <div class="bento-cell" style="grid-column: 1 / -1;">
         <div style="display:flex; align-items:flex-start; justify-content:space-between; flex-wrap:wrap; gap:1.5rem;">
           <div>
             <div class="bento-cell-label">Hosting Provider</div>
             <div class="bento-cell-value">MineKeep</div>
-            <div class="bento-cell-sub">minekeep.net · Free tier<br/>~100–200ms avg latency for Malaysian players</div>
+            <div class="bento-cell-sub">
+              minekeep.net · Free tier<br/>
+              Server region: Singapore (SEA) — your actual ping depends on your location &amp; ISP
+            </div>
           </div>
           <div style="flex:1; min-width:200px;">
             <div class="bento-cell-label" style="margin-bottom:0.8rem;">Uptime (14 days)</div>
@@ -1586,7 +1666,7 @@
         <div class="section-label">// 03 — Active Plugins</div>
         <div class="section-title">Plugins</div>
       </div>
-      <div class="section-count">18 Active</div>
+      <div class="section-count">19 Active</div>
     </div>
     <div class="plugins-grid">
 
@@ -1651,6 +1731,16 @@
         </div>
         <div class="plugin-category">Cosmetic · QoL</div>
         <div class="plugin-desc">Lets players sit, lay down, and crawl on any block. Small but immersive addition to the survival experience.</div>
+      </div>
+
+      <!-- NEW: ImageFrame — added in V1.3.2 -->
+      <div class="plugin-card">
+        <div class="plugin-header">
+          <div class="plugin-name">ImageFrame</div>
+          <div class="plugin-status new">New</div>
+        </div>
+        <div class="plugin-category">Cosmetic · Display</div>
+        <div class="plugin-desc">Render custom images on item frames in-game. Display maps, artwork, and custom graphics directly inside the Minecraft world using in-game frames.</div>
       </div>
 
       <div class="plugin-card">
@@ -1768,15 +1858,21 @@
     </div>
     <div class="changelog-list">
 
-      <!-- V1.3.2 -->
+      <!-- ────────────────────────────────── V1.3.2 ── -->
       <div class="changelog-entry open" id="cl-v132">
         <div class="changelog-head" onclick="toggleChangelog('cl-v132')">
           <div class="changelog-head-left">
-            <div class="changelog-ver">V1.3.2</div>
-            <div class="changelog-latest">Latest</div>
+            <div class="changelog-ver-row">
+              <div class="changelog-ver">V1.3.2</div>
+              <div class="changelog-latest">Latest</div>
+              <div class="changelog-counts">
+                <span class="changelog-count-chip count-add">+6 added</span>
+              </div>
+            </div>
+            <div class="changelog-preview">Minor Plugin Update — RealScoreboard, InteractiveChat, ImageFrame &amp; more added</div>
           </div>
           <div class="changelog-head-right">
-            <div class="changelog-date">18 April 2026 · 10:03 PM</div>
+            <div class="changelog-date">18 Apr 2026 · 10:03 PM</div>
             <div class="cl-tags-inline">
               <span class="cl-tag updated">Updated</span>
               <span class="cl-tag added">Added</span>
@@ -1788,45 +1884,59 @@
         </div>
         <div class="changelog-body">
           <div class="changelog-inner">
-            <div class="changelog-subtitle">Minor Plugin Update & Enhancements</div>
-            <div class="changelog-group">
-              <div class="changelog-group-title" style="color:var(--blue);">Plugins</div>
-              <div class="changelog-items">
-                <div class="changelog-item add">
-                  <div class="item-icon">+</div>
-                  <div>Added <strong>RealScoreboard</strong> — Animated sidebar showing player stats and server info.</div>
-                </div>
-                <div class="changelog-item add">
-                  <div class="item-icon">+</div>
-                  <div><strong>InteractiveChat</strong> — Improved chat with clickable items and hover previews.</div>
-                </div>
-                <div class="changelog-item add">
-                  <div class="item-icon">+</div>
-                  <div><strong>IC DiscordSRV Addon</strong> — Syncs InteractiveChat features with Discord chat.</div>
-                </div>
-                <div class="changelog-item add">
-                  <div class="item-icon">+</div>
-                  <div><strong>ProtocolLib</strong> — Required library for advanced plugin features.</div>
-                </div>
-                <div class="changelog-item add">
-                  <div class="item-icon">+</div>
-                  <div><strong>PlaceholderAPI</strong> — Provides dynamic placeholders (stats, ranks, etc.).</div>
+            <div class="changelog-subtitle">Minor Plugin Update &amp; Enhancements</div>
+            <div class="changelog-groups-wrap">
+              <div class="changelog-group">
+                <div class="changelog-group-title" style="color:var(--green);">Plugins Added</div>
+                <div class="changelog-items">
+                  <div class="changelog-item add">
+                    <div class="item-icon">+</div>
+                    <div>Added <strong>RealScoreboard</strong> — Animated sidebar showing live player stats and server info via PlaceholderAPI.</div>
+                  </div>
+                  <div class="changelog-item add">
+                    <div class="item-icon">+</div>
+                    <div>Added <strong>InteractiveChat</strong> — Improved chat with clickable item previews, hover cards, and rich message components.</div>
+                  </div>
+                  <div class="changelog-item add">
+                    <div class="item-icon">+</div>
+                    <div>Added <strong>IC DiscordSRV Addon</strong> — Syncs InteractiveChat's formatting features with the Discord bridge for cross-platform chat.</div>
+                  </div>
+                  <div class="changelog-item add">
+                    <div class="item-icon">+</div>
+                    <div>Added <strong>ImageFrame</strong> — Render custom images on in-game item frames. Display artwork and maps directly in the world.</div>
+                  </div>
+                  <div class="changelog-item add">
+                    <div class="item-icon">+</div>
+                    <div>Added <strong>ProtocolLib</strong> — Required dependency for advanced packet-level plugin features including InteractiveChat.</div>
+                  </div>
+                  <div class="changelog-item add">
+                    <div class="item-icon">+</div>
+                    <div>Added <strong>PlaceholderAPI</strong> — Universal placeholder engine for dynamic in-game stats, ranks, and server info across all plugins.</div>
+                  </div>
                 </div>
               </div>
             </div>
           </div>
         </div>
       </div>
-      
-      <!-- V1.3.1 -->
-      <div class="changelog-entry open" id="cl-v131">
+
+      <!-- ────────────────────────────────── V1.3.1 ── -->
+      <!-- FIX: Removed duplicate "Latest" badge and removed default open state -->
+      <div class="changelog-entry" id="cl-v131">
         <div class="changelog-head" onclick="toggleChangelog('cl-v131')">
           <div class="changelog-head-left">
-            <div class="changelog-ver">V1.3.1</div>
-            <div class="changelog-latest">Latest</div>
+            <div class="changelog-ver-row">
+              <div class="changelog-ver">V1.3.1</div>
+              <div class="changelog-counts">
+                <span class="changelog-count-chip count-opt">3 optimized</span>
+                <span class="changelog-count-chip count-upd">1 updated</span>
+                <span class="changelog-count-chip count-add">+1 added</span>
+              </div>
+            </div>
+            <div class="changelog-preview">Performance &amp; Stability — simulation distance halved, LagFixer removed, Vault added</div>
           </div>
           <div class="changelog-head-right">
-            <div class="changelog-date">17 April 2026 · 8:56 PM</div>
+            <div class="changelog-date">17 Apr 2026 · 8:56 PM</div>
             <div class="cl-tags-inline">
               <span class="cl-tag optimized">Optimized</span>
               <span class="cl-tag updated">Updated</span>
@@ -1839,34 +1949,36 @@
         </div>
         <div class="changelog-body">
           <div class="changelog-inner">
-            <div class="changelog-subtitle">Performance & Stability Patch</div>
-            <div class="changelog-group">
-              <div class="changelog-group-title" style="color:var(--yellow);">Performance</div>
-              <div class="changelog-items">
-                <div class="changelog-item opt">
-                  <div class="item-icon">⚡</div>
-                  <div>Removed <strong>LagFixer</strong> plugin — Paper engine already handles optimization natively, plugin was redundant and causing overhead</div>
-                </div>
-                <div class="changelog-item opt">
-                  <div class="item-icon">⚡</div>
-                  <div>Reduced simulation distance <strong>10 → 5</strong> for significant CPU savings and smoother tick rates</div>
-                </div>
-                <div class="changelog-item opt">
-                  <div class="item-icon">⚡</div>
-                  <div>Adjusted entity activation range — mobs activate only when players are closer, dramatically helping Bedrock players with high entity lag</div>
+            <div class="changelog-subtitle">Performance &amp; Stability Patch</div>
+            <div class="changelog-groups-wrap multi-group">
+              <div class="changelog-group">
+                <div class="changelog-group-title" style="color:var(--yellow);">Performance</div>
+                <div class="changelog-items">
+                  <div class="changelog-item opt">
+                    <div class="item-icon">⚡</div>
+                    <div>Removed <strong>LagFixer</strong> — Paper already handles optimization natively; plugin was redundant and causing overhead.</div>
+                  </div>
+                  <div class="changelog-item opt">
+                    <div class="item-icon">⚡</div>
+                    <div>Reduced simulation distance <strong>10 → 5</strong> for significant CPU savings and smoother tick rates.</div>
+                  </div>
+                  <div class="changelog-item opt">
+                    <div class="item-icon">⚡</div>
+                    <div>Adjusted entity activation range — mobs activate only when players are closer, dramatically reducing Bedrock player lag near large mob farms.</div>
+                  </div>
                 </div>
               </div>
-            </div>
-            <div class="changelog-group">
-              <div class="changelog-group-title" style="color:var(--blue);">Plugins</div>
-              <div class="changelog-items">
-                <div class="changelog-item upd">
-                  <div class="item-icon">↑</div>
-                  <div><strong>LuckPerms</strong> updated — gives everyone more freedom and flexibility with server permissions</div>
-                </div>
-                <div class="changelog-item add">
-                  <div class="item-icon">+</div>
-                  <div>Added <strong>Vault</strong> — economy foundation plugin, enabling future economy integrations and trading systems</div>
+              <div class="changelog-group">
+                <div class="changelog-group-title" style="color:var(--blue);">Plugins</div>
+                <div class="changelog-items">
+                  <div class="changelog-item upd">
+                    <div class="item-icon">↑</div>
+                    <div><strong>LuckPerms</strong> updated — expanded permissions give players more freedom and flexibility across the server.</div>
+                  </div>
+                  <div class="changelog-item add">
+                    <div class="item-icon">+</div>
+                    <div>Added <strong>Vault</strong> — Economy foundation plugin enabling future economy integrations and trading systems.</div>
+                  </div>
                 </div>
               </div>
             </div>
@@ -1874,14 +1986,21 @@
         </div>
       </div>
 
-      <!-- V1.3 -->
+      <!-- ────────────────────────────────── V1.3 ── -->
       <div class="changelog-entry" id="cl-v13">
         <div class="changelog-head" onclick="toggleChangelog('cl-v13')">
           <div class="changelog-head-left">
-            <div class="changelog-ver">V1.3</div>
+            <div class="changelog-ver-row">
+              <div class="changelog-ver">V1.3</div>
+              <div class="changelog-counts">
+                <span class="changelog-count-chip count-add">+4 added</span>
+                <span class="changelog-count-chip count-rem">1 removed</span>
+              </div>
+            </div>
+            <div class="changelog-preview">Official Soft Launch — AuraSkills, ChestSort added; Voice Chat removed due to performance</div>
           </div>
           <div class="changelog-head-right">
-            <div class="changelog-date">16 April 2026 · 9:55 PM</div>
+            <div class="changelog-date">16 Apr 2026 · 9:55 PM</div>
             <div class="cl-tags-inline">
               <span class="cl-tag added">Added</span>
               <span class="cl-tag removed">Removed</span>
@@ -1894,34 +2013,36 @@
         </div>
         <div class="changelog-body">
           <div class="changelog-inner">
-            <div class="changelog-subtitle">Minor Plugin Update — FN SMP Official Soft Launch</div>
-            <div class="changelog-group">
-              <div class="changelog-group-title" style="color:var(--green);">Plugins Added</div>
-              <div class="changelog-items">
-                <div class="changelog-item add">
-                  <div class="item-icon">+</div>
-                  <div><strong>AuraSkills</strong> — Full RPG skills and leveling system</div>
-                </div>
-                <div class="changelog-item add">
-                  <div class="item-icon">+</div>
-                  <div><strong>LagFixer</strong> — Performance optimization (later removed in V1.3.1)</div>
-                </div>
-                <div class="changelog-item add">
-                  <div class="item-icon">+</div>
-                  <div><strong>ChestSort</strong> — Automatic inventory & chest sorting</div>
-                </div>
-                <div class="changelog-item add">
-                  <div class="item-icon">+</div>
-                  <div><strong>LuckPerms</strong> — Advanced permission management</div>
+            <div class="changelog-subtitle">FN SMP Official Soft Launch</div>
+            <div class="changelog-groups-wrap multi-group">
+              <div class="changelog-group">
+                <div class="changelog-group-title" style="color:var(--green);">Plugins Added</div>
+                <div class="changelog-items">
+                  <div class="changelog-item add">
+                    <div class="item-icon">+</div>
+                    <div><strong>AuraSkills</strong> — Full RPG skills and leveling system integrated into survival gameplay.</div>
+                  </div>
+                  <div class="changelog-item add">
+                    <div class="item-icon">+</div>
+                    <div><strong>LagFixer</strong> — Performance optimization plugin (later removed in V1.3.1 — redundant with Paper).</div>
+                  </div>
+                  <div class="changelog-item add">
+                    <div class="item-icon">+</div>
+                    <div><strong>ChestSort</strong> — Automatic inventory &amp; chest sorting on interaction.</div>
+                  </div>
+                  <div class="changelog-item add">
+                    <div class="item-icon">+</div>
+                    <div><strong>LuckPerms</strong> — Advanced permission management across all player ranks.</div>
+                  </div>
                 </div>
               </div>
-            </div>
-            <div class="changelog-group">
-              <div class="changelog-group-title" style="color:var(--red);">Plugins Removed</div>
-              <div class="changelog-items">
-                <div class="changelog-item rem">
-                  <div class="item-icon">−</div>
-                  <div><strong>Simple Voice Chat</strong> — Removed due to performance concerns on free hosting</div>
+              <div class="changelog-group">
+                <div class="changelog-group-title" style="color:var(--red);">Plugins Removed</div>
+                <div class="changelog-items">
+                  <div class="changelog-item rem">
+                    <div class="item-icon">−</div>
+                    <div><strong>Simple Voice Chat</strong> — Removed due to performance concerns on the free hosting tier. Planned return with server upgrade.</div>
+                  </div>
                 </div>
               </div>
             </div>
@@ -2052,23 +2173,26 @@
   <hr class="section-divider"/>
 
   <!-- ── FOOTER ── -->
+  <!-- FIX: Wrapped in .footer-inner with max-width so content aligns with sections on wide screens -->
   <footer>
-    <div class="foot-left">
-      <div class="foot-logo">
-        <img src="https://faizzzlol.github.io/freakyniggas/FreakyNiggasLogo.png" alt="FN"
-             onerror="this.style.display='none'"/>
-        <span class="foot-wordmark">Freaky Niggas</span>
+    <div class="footer-inner">
+      <div class="foot-left">
+        <div class="foot-logo">
+          <img src="https://faizzzlol.github.io/freakyniggas/FreakyNiggasLogo.png" alt="FN"
+               onerror="this.style.display='none'"/>
+          <span class="foot-wordmark">Freaky Niggas</span>
+        </div>
+        <ul class="foot-links">
+          <li><a href="https://faizzzlol.github.io/freakyniggas/">Home</a></li>
+          <li><a href="https://faizzzlol.github.io/freakyniggas/minecraft">Minecraft</a></li>
+          <li><a href="https://faizzzlol.github.io/freakyniggas/valorant">Valorant</a></li>
+          <li><a href="https://chat.whatsapp.com/LDSxXcxRHDK5iBjcx1HQA1" target="_blank">Announcements</a></li>
+        </ul>
       </div>
-      <ul class="foot-links">
-        <li><a href="https://faizzzlol.github.io/freakyniggas/">Home</a></li>
-        <li><a href="https://faizzzlol.github.io/freakyniggas/minecraft">Minecraft</a></li>
-        <li><a href="https://faizzzlol.github.io/freakyniggas/valorant">Valorant</a></li>
-        <li><a href="https://chat.whatsapp.com/LDSxXcxRHDK5iBjcx1HQA1" target="_blank">Announcements</a></li>
-      </ul>
-    </div>
-    <div class="foot-right">
-      <div class="foot-copy">© 2025–2026 Freaky Niggas · FN SMP V1.3.1</div>
-      <div class="foot-disclaimer">Not affiliated with Mojang Studios or Microsoft.<br/>"Minecraft" is a trademark of Mojang Studios.</div>
+      <div class="foot-right">
+        <div class="foot-copy">© 2025–2026 Freaky Niggas · FN SMP V1.3.2</div>
+        <div class="foot-disclaimer">Not affiliated with Mojang Studios or Microsoft.<br/>"Minecraft" is a trademark of Mojang Studios.</div>
+      </div>
     </div>
   </footer>
 
@@ -2127,6 +2251,7 @@
     }
 
     // ── CHANGELOG TOGGLE ──
+    // Only one open at a time (accordion). Click same entry to collapse it.
     function toggleChangelog(id) {
       const entry  = document.getElementById(id);
       const isOpen = entry.classList.contains('open');
@@ -2145,7 +2270,6 @@
     }
 
     function saveUptimeData(data) {
-      // Keep only last 14 days
       const keys = Object.keys(data).sort();
       while (keys.length > 14) delete data[keys.shift()];
       try { localStorage.setItem(UPTIME_KEY, JSON.stringify(data)); }
@@ -2153,7 +2277,7 @@
     }
 
     function recordUptimeCheck(isOnline) {
-      const today = new Date().toISOString().slice(0, 10); // YYYY-MM-DD
+      const today = new Date().toISOString().slice(0, 10);
       const data  = getUptimeData();
       if (!data[today]) data[today] = { online: 0, total: 0 };
       if (isOnline) data[today].online++;
@@ -2163,11 +2287,10 @@
     }
 
     function renderUptimeBar(data) {
-      const barWrap  = document.getElementById('uptimeBar');
+      const barWrap   = document.getElementById('uptimeBar');
       const uptimeSub = document.getElementById('uptimeSub');
       if (!barWrap) return;
 
-      // Build last 14 days array, oldest → newest
       const days = [];
       for (let i = 13; i >= 0; i--) {
         const d = new Date();
@@ -2189,10 +2312,9 @@
         return `<div class="${cls}" title="${tip}" style="cursor:help;"></div>`;
       }).join('');
 
-      // Overall uptime percentage
-      const allVals    = Object.values(data);
-      const totOnline  = allVals.reduce((s, d) => s + d.online, 0);
-      const totChecks  = allVals.reduce((s, d) => s + d.total, 0);
+      const allVals   = Object.values(data);
+      const totOnline = allVals.reduce((s, d) => s + d.online, 0);
+      const totChecks = allVals.reduce((s, d) => s + d.total, 0);
       if (uptimeSub) {
         if (totChecks === 0) {
           uptimeSub.textContent = 'Hover segments for daily details · tracking from your first visit';
@@ -2203,7 +2325,6 @@
       }
     }
 
-    // Render on page load from existing stored data immediately
     renderUptimeBar(getUptimeData());
 
     // ─────────────────────────────────────────────────────────────
@@ -2224,7 +2345,6 @@
       if (playerList && playerList.length > 0) {
         playerList.forEach(p => {
           if (p.name) {
-            // Normalize: strip leading dot for Bedrock/Geyser players, lowercase
             const normalized = p.name.startsWith('.')
               ? p.name.slice(1).toLowerCase()
               : p.name.toLowerCase();
@@ -2239,14 +2359,12 @@
       document.getElementById('uniqueCount').textContent    = count > 0 ? count : '—';
       document.getElementById('heroUniqueStat').textContent = count > 0 ? count : '—';
     }
-    // Init from existing storage immediately
     updateUniqueUI(getSeenPlayers().size);
 
     // ─────────────────────────────────────────────────────────────
-    // ── PLAYER CARD RENDERING (with Bedrock detection) ──
+    // ── PLAYER CARD RENDERING ──
     // ─────────────────────────────────────────────────────────────
     function isBedrockPlayer(name) {
-      // Geyser prefixes Bedrock players with a dot by default
       return typeof name === 'string' && name.startsWith('.');
     }
 
@@ -2267,14 +2385,13 @@
       grid.innerHTML = '';
 
       playerList.forEach((player, i) => {
-        const rawName    = player.name || 'Unknown';
-        const bedrock    = isBedrockPlayer(rawName);
+        const rawName     = player.name || 'Unknown';
+        const bedrock     = isBedrockPlayer(rawName);
         const displayName = bedrock ? rawName.slice(1) : rawName;
         const uuid        = player.uuid || '';
 
         let avatarHTML;
         if (bedrock) {
-          // Bedrock player — show "BE" placeholder since Java skin APIs don't have Xbox skins
           avatarHTML = `<div class="bedrock-avatar" title="Bedrock / Xbox Player">BE</div>`;
         } else {
           const src = uuid
@@ -2338,7 +2455,6 @@
           if (playerList.length > 0) {
             renderPlayers(playerList);
           } else if (online > 0) {
-            // Server has players but list not exposed (common with Geyser Bedrock players)
             fetching.style.display = 'none';
             document.getElementById('playersEmpty').style.display = 'none';
             document.getElementById('playersGrid').innerHTML = `
@@ -2349,7 +2465,6 @@
             renderPlayers([]);
           }
 
-          // Track unique + record uptime
           updateUniqueUI(trackAndGetUnique(playerList));
           recordUptimeCheck(true);
 
@@ -2374,7 +2489,6 @@
         fetching.style.display = 'flex';
         fetching.textContent = 'Could not reach server API.';
         updateUniqueUI(getSeenPlayers().size);
-        // Don't record uptime on network error — ambiguous
       }
     }
 
