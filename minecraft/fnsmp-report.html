@@ -1,0 +1,1483 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Report — FN SMP</title>
+  <meta name="description" content="Report bugs, issues, or players on FN SMP. Your reports go directly to the server team."/>
+  <link rel="icon" type="image/png" href="https://faizzzlol.github.io/freakyniggas/minecraft/FN_SMP_LOGO.png"/>
+  <link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:ital,wght@0,400;0,700;0,900;1,700;1,900&family=DM+Mono:wght@400;500&family=Barlow:wght@400;500;600&display=swap" rel="stylesheet"/>
+  <style>
+    :root {
+      --bg:         #080808;
+      --surface:    #0f0f0f;
+      --surface2:   #161616;
+      --surface3:   #1e1e1e;
+      --border:     #1f1f1f;
+      --border2:    #2a2a2a;
+      --text:       #f0f0f0;
+      --muted:      #4a4a4a;
+      --muted2:     #7a7a7a;
+      --white:      #ffffff;
+      --green:      #4ade80;
+      --green-dim:  rgba(74,222,128,0.08);
+      --red:        #f87171;
+      --red-dim:    rgba(248,113,113,0.08);
+      --orange:     #fb923c;
+      --orange-dim: rgba(251,146,60,0.08);
+      --blue:       #60a5fa;
+      --blue-dim:   rgba(96,165,250,0.08);
+      --yellow:     #fbbf24;
+      --yellow-dim: rgba(251,191,36,0.08);
+      --purple:     #c084fc;
+      --purple-dim: rgba(192,132,252,0.08);
+      --font-display: 'Barlow Condensed', sans-serif;
+      --font-body:    'Barlow', sans-serif;
+      --font-mono:    'DM Mono', monospace;
+      --radius: 8px;
+    }
+
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    html { scroll-behavior: smooth; }
+
+    body {
+      background: var(--bg);
+      color: var(--text);
+      font-family: var(--font-body);
+      font-size: 16px;
+      overflow-x: hidden;
+      min-height: 100vh;
+    }
+
+    /* ── SCROLL PROGRESS ── */
+    #scroll-progress {
+      position: fixed; top: 0; left: 0;
+      height: 2px; width: 0%;
+      background: var(--white);
+      z-index: 9999;
+      transition: width 0.05s linear;
+    }
+
+    /* Noise overlay */
+    body::before {
+      content: '';
+      position: fixed; inset: 0;
+      background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='300' height='300'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.75' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='300' height='300' filter='url(%23n)' opacity='0.055'/%3E%3C/svg%3E");
+      pointer-events: none; z-index: 9998; mix-blend-mode: overlay;
+    }
+
+    /* ── NAV ── */
+    nav {
+      position: fixed; top: 0; left: 0; right: 0; z-index: 200;
+      display: flex; align-items: center; justify-content: space-between;
+      padding: 1rem 2.5rem;
+      background: rgba(8,8,8,0.92);
+      backdrop-filter: blur(20px);
+      -webkit-backdrop-filter: blur(20px);
+      border-bottom: 1px solid var(--border);
+      transition: padding 0.3s, background 0.3s;
+    }
+    nav.scrolled { padding: 0.65rem 2.5rem; background: rgba(8,8,8,0.97); }
+
+    .nav-logo {
+      display: flex; align-items: center; gap: 0.65rem;
+      text-decoration: none; flex-shrink: 0;
+    }
+    .nav-logo img { width: 30px; height: 30px; border-radius: 5px; object-fit: cover; }
+    .nav-wordmark {
+      font-family: var(--font-display); font-weight: 900;
+      font-size: 1.1rem; letter-spacing: 0.08em;
+      color: var(--white); text-transform: uppercase;
+    }
+    .nav-center {
+      display: flex; gap: 0; list-style: none; align-items: center;
+      background: var(--surface); border: 1px solid var(--border2);
+      border-radius: 6px; overflow: hidden;
+    }
+    .nav-center li a {
+      display: block; color: var(--muted2); text-decoration: none;
+      font-family: var(--font-mono); font-size: 0.65rem;
+      letter-spacing: 0.12em; text-transform: uppercase;
+      padding: 0.45rem 0.9rem;
+      transition: color 0.2s, background 0.2s;
+      border-right: 1px solid var(--border); white-space: nowrap;
+    }
+    .nav-center li:last-child a { border-right: none; }
+    .nav-center li a:hover { color: var(--white); background: var(--surface2); }
+    .nav-center li a.active { color: var(--white); background: var(--surface2); }
+
+    .nav-right { display: flex; align-items: center; gap: 0.75rem; flex-shrink: 0; }
+    .nav-version {
+      font-family: var(--font-mono); font-size: 0.6rem;
+      color: var(--muted); letter-spacing: 0.1em;
+      border: 1px solid var(--border2);
+      padding: 0.3rem 0.65rem; border-radius: 4px;
+    }
+    .nav-back {
+      background: var(--surface); color: var(--muted2);
+      border: 1px solid var(--border2);
+      padding: 0.42rem 1rem; border-radius: 4px;
+      font-family: var(--font-mono); font-size: 0.65rem;
+      letter-spacing: 0.12em; text-transform: uppercase;
+      text-decoration: none;
+      transition: all 0.2s; white-space: nowrap;
+      display: flex; align-items: center; gap: 0.4rem;
+    }
+    .nav-back:hover { background: var(--surface2); color: var(--white); border-color: var(--border2); }
+
+    .hamburger {
+      display: none; background: none; border: 1px solid var(--border2);
+      border-radius: 5px; cursor: pointer;
+      flex-direction: column; gap: 5px;
+      padding: 8px 10px; align-items: center;
+    }
+    .hamburger span {
+      display: block; width: 20px; height: 1.5px;
+      background: var(--white); border-radius: 2px;
+      transition: all 0.3s cubic-bezier(0.16,1,0.3,1);
+      transform-origin: center;
+    }
+    .hamburger.open span:nth-child(1) { transform: translateY(6.5px) rotate(45deg); }
+    .hamburger.open span:nth-child(2) { opacity: 0; transform: scaleX(0); }
+    .hamburger.open span:nth-child(3) { transform: translateY(-6.5px) rotate(-45deg); }
+
+    .mobile-menu {
+      display: none; flex-direction: column;
+      position: absolute; top: 100%; left: 0; right: 0;
+      background: rgba(8,8,8,0.98); border-bottom: 1px solid var(--border);
+      backdrop-filter: blur(20px);
+      overflow: hidden; max-height: 0;
+      transition: max-height 0.4s cubic-bezier(0.16,1,0.3,1);
+    }
+    .mobile-menu.open { display: flex; max-height: 400px; }
+    .mobile-menu a {
+      color: var(--muted2); text-decoration: none;
+      font-family: var(--font-mono); font-size: 0.72rem;
+      letter-spacing: 0.12em; text-transform: uppercase;
+      padding: 1rem 1.5rem; border-bottom: 1px solid var(--border);
+      transition: color 0.2s, background 0.2s;
+      display: flex; align-items: center; gap: 0.6rem;
+    }
+    .mobile-menu a:hover { color: var(--white); background: var(--surface); }
+
+    /* ── PAGE WRAPPER ── */
+    .page {
+      padding-top: 80px;
+      max-width: 760px;
+      margin: 0 auto;
+      padding-left: 2.5rem;
+      padding-right: 2.5rem;
+      padding-bottom: 5rem;
+    }
+
+    /* ── PAGE HEADER ── */
+    .page-header {
+      padding: 3.5rem 0 3rem;
+      border-bottom: 1px solid var(--border);
+      margin-bottom: 3rem;
+    }
+    .breadcrumb {
+      font-family: var(--font-mono); font-size: 0.63rem;
+      letter-spacing: 0.14em; color: var(--muted);
+      text-transform: uppercase; margin-bottom: 1.5rem;
+      display: flex; align-items: center; gap: 0.5rem; flex-wrap: wrap;
+    }
+    .breadcrumb a { color: var(--muted); text-decoration: none; transition: color 0.2s; }
+    .breadcrumb a:hover { color: var(--white); }
+    .breadcrumb-sep { color: var(--border2); }
+
+    .page-title {
+      font-family: var(--font-display); font-weight: 900; font-style: italic;
+      font-size: clamp(3.5rem, 12vw, 6rem); line-height: 0.85;
+      text-transform: uppercase; color: var(--white);
+      margin-bottom: 1.2rem;
+    }
+    .page-sub {
+      font-family: var(--font-mono); font-size: 0.68rem;
+      letter-spacing: 0.14em; text-transform: uppercase;
+      color: var(--muted2); margin-bottom: 1.2rem;
+    }
+    .page-desc {
+      font-family: var(--font-body); font-size: 0.88rem;
+      color: var(--muted2); line-height: 1.65; max-width: 520px;
+    }
+
+    /* ── STEP INDICATOR ── */
+    .steps-bar {
+      display: flex; align-items: center; gap: 0;
+      margin-bottom: 2.5rem;
+    }
+    .step-item {
+      display: flex; align-items: center; gap: 0.5rem;
+      font-family: var(--font-mono); font-size: 0.6rem;
+      letter-spacing: 0.14em; text-transform: uppercase;
+      color: var(--muted); transition: color 0.3s;
+    }
+    .step-item.active { color: var(--white); }
+    .step-item.done   { color: var(--green); }
+
+    .step-num {
+      width: 22px; height: 22px;
+      border-radius: 50%;
+      border: 1px solid var(--border2);
+      display: flex; align-items: center; justify-content: center;
+      font-size: 0.58rem; flex-shrink: 0;
+      transition: all 0.3s;
+    }
+    .step-item.active .step-num {
+      border-color: var(--white); color: var(--white);
+      background: transparent;
+    }
+    .step-item.done .step-num {
+      border-color: var(--green); color: var(--green);
+      background: var(--green-dim);
+    }
+
+    .step-connector {
+      flex: 1; height: 1px; background: var(--border);
+      margin: 0 0.75rem; min-width: 20px;
+      transition: background 0.3s;
+    }
+    .step-connector.done { background: var(--green); opacity: 0.4; }
+
+    /* ── PANEL / CARD ── */
+    .panel {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      overflow: hidden;
+    }
+    .panel-header {
+      padding: 1.5rem 1.8rem;
+      border-bottom: 1px solid var(--border);
+      display: flex; align-items: center; gap: 0.75rem;
+    }
+    .panel-label {
+      font-family: var(--font-mono); font-size: 0.6rem;
+      letter-spacing: 0.22em; color: var(--muted); text-transform: uppercase;
+    }
+    .panel-title {
+      font-family: var(--font-display); font-weight: 900;
+      font-size: 1.5rem; text-transform: uppercase; color: var(--white);
+    }
+    .panel-body { padding: 1.8rem; }
+
+    /* ── TYPE SELECTOR ── */
+    .type-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 1px;
+      background: var(--border);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      overflow: hidden;
+    }
+    .type-card {
+      background: var(--surface);
+      padding: 1.6rem 1.5rem;
+      cursor: pointer;
+      transition: background 0.2s;
+      position: relative;
+      user-select: none;
+      -webkit-tap-highlight-color: transparent;
+    }
+    .type-card:hover { background: var(--surface2); }
+    .type-card.selected { background: var(--surface2); }
+
+    .type-card-check {
+      position: absolute; top: 1rem; right: 1rem;
+      width: 18px; height: 18px; border-radius: 50%;
+      border: 1px solid var(--border2);
+      display: flex; align-items: center; justify-content: center;
+      transition: all 0.2s;
+      font-size: 0.6rem;
+    }
+    .type-card.selected .type-card-check {
+      border-color: currentColor;
+      background: transparent;
+    }
+    .type-card.type-bug.selected     { --accent: var(--red);    --accent-dim: var(--red-dim); }
+    .type-card.type-issue.selected   { --accent: var(--orange); --accent-dim: var(--orange-dim); }
+    .type-card.type-player.selected  { --accent: var(--yellow); --accent-dim: var(--yellow-dim); }
+    .type-card.type-suggest.selected { --accent: var(--blue);   --accent-dim: var(--blue-dim); }
+
+    .type-card.selected { outline: 1px solid var(--accent); }
+    .type-card.selected .type-card-check { border-color: var(--accent); color: var(--accent); background: var(--accent-dim); }
+    .type-card.selected .type-icon       { color: var(--accent); }
+    .type-card.selected .type-name       { color: var(--accent); }
+
+    .type-icon {
+      font-size: 1.6rem; margin-bottom: 0.65rem;
+      display: block; transition: color 0.2s;
+      line-height: 1;
+    }
+    .type-name {
+      font-family: var(--font-display); font-weight: 900;
+      font-size: 1.25rem; text-transform: uppercase;
+      color: var(--white); margin-bottom: 0.3rem;
+      transition: color 0.2s;
+    }
+    .type-desc {
+      font-family: var(--font-mono); font-size: 0.58rem;
+      letter-spacing: 0.08em; color: var(--muted2); line-height: 1.5;
+    }
+
+    /* ── FORM ── */
+    .form-group {
+      margin-bottom: 1.5rem;
+    }
+    .form-label {
+      display: flex; align-items: center; gap: 0.5rem;
+      font-family: var(--font-mono); font-size: 0.6rem;
+      letter-spacing: 0.18em; text-transform: uppercase;
+      color: var(--muted2); margin-bottom: 0.65rem;
+    }
+    .form-label-req {
+      color: var(--red); font-size: 0.55rem;
+    }
+    .form-hint {
+      font-family: var(--font-mono); font-size: 0.57rem;
+      letter-spacing: 0.06em; color: var(--muted);
+      margin-top: 0.45rem; line-height: 1.55;
+    }
+
+    input[type="text"],
+    select,
+    textarea {
+      width: 100%;
+      background: var(--surface2);
+      border: 1px solid var(--border2);
+      border-radius: 5px;
+      color: var(--text);
+      font-family: var(--font-mono);
+      font-size: 0.8rem;
+      letter-spacing: 0.02em;
+      padding: 0.8rem 1rem;
+      outline: none;
+      transition: border-color 0.2s, background 0.2s;
+      -webkit-appearance: none;
+      appearance: none;
+    }
+    input[type="text"]::placeholder,
+    textarea::placeholder { color: var(--muted); }
+    input[type="text"]:focus,
+    select:focus,
+    textarea:focus {
+      border-color: var(--border);
+      background: var(--surface3);
+    }
+    textarea { resize: vertical; min-height: 110px; line-height: 1.6; }
+
+    /* Custom select arrow */
+    .select-wrap { position: relative; }
+    .select-wrap::after {
+      content: '';
+      position: absolute; right: 1rem; top: 50%; transform: translateY(-50%);
+      width: 0; height: 0;
+      border-left: 4px solid transparent;
+      border-right: 4px solid transparent;
+      border-top: 5px solid var(--muted2);
+      pointer-events: none;
+    }
+    select { padding-right: 2.5rem; cursor: pointer; }
+    select option { background: var(--surface2); color: var(--text); }
+
+    /* Platform pill toggle */
+    .platform-toggle {
+      display: flex; gap: 0;
+      background: var(--surface2);
+      border: 1px solid var(--border2);
+      border-radius: 5px; overflow: hidden;
+    }
+    .platform-btn {
+      flex: 1; padding: 0.75rem 1rem;
+      background: transparent; border: none;
+      color: var(--muted2); cursor: pointer;
+      font-family: var(--font-mono); font-size: 0.68rem;
+      letter-spacing: 0.12em; text-transform: uppercase;
+      transition: all 0.2s;
+      display: flex; align-items: center; justify-content: center; gap: 0.5rem;
+      border-right: 1px solid var(--border2);
+      -webkit-tap-highlight-color: transparent;
+    }
+    .platform-btn:last-child { border-right: none; }
+    .platform-btn:hover { color: var(--white); background: var(--surface3); }
+    .platform-btn.active {
+      background: var(--surface3); color: var(--white);
+      box-shadow: inset 0 0 0 1px var(--border);
+    }
+    .platform-dot {
+      width: 7px; height: 7px; border-radius: 50%;
+      background: currentColor; flex-shrink: 0;
+    }
+    .platform-btn.java-btn.active   .platform-dot { background: #f5a623; color: #f5a623; }
+    .platform-btn.java-btn.active              { color: #f5a623; }
+    .platform-btn.bedrock-btn.active .platform-dot { background: var(--green); }
+    .platform-btn.bedrock-btn.active           { color: var(--green); }
+
+    /* Severity selector */
+    .severity-row {
+      display: flex; gap: 0;
+      background: var(--surface2);
+      border: 1px solid var(--border2);
+      border-radius: 5px; overflow: hidden;
+    }
+    .severity-btn {
+      flex: 1; padding: 0.7rem 0.5rem;
+      background: transparent; border: none; border-right: 1px solid var(--border2);
+      cursor: pointer; font-family: var(--font-mono); font-size: 0.62rem;
+      letter-spacing: 0.1em; text-transform: uppercase; color: var(--muted2);
+      transition: all 0.2s;
+      -webkit-tap-highlight-color: transparent;
+    }
+    .severity-btn:last-child { border-right: none; }
+    .severity-btn:hover { background: var(--surface3); color: var(--white); }
+    .severity-btn.active-low    { background: var(--yellow-dim); color: var(--yellow); border-color: var(--border2); }
+    .severity-btn.active-medium { background: var(--orange-dim); color: var(--orange); border-color: var(--border2); }
+    .severity-btn.active-high   { background: var(--red-dim);    color: var(--red);    border-color: var(--border2); }
+
+    /* ── DYNAMIC FIELDS ── */
+    .dynamic-fields { margin-top: 0; }
+    .field-show { display: block; }
+    .field-hide { display: none; }
+
+    /* ── DIVIDER ── */
+    .form-divider {
+      border: none; border-top: 1px solid var(--border);
+      margin: 1.8rem 0;
+    }
+
+    /* ── SUBMIT BTN ── */
+    .submit-row {
+      display: flex; align-items: center; gap: 1rem; flex-wrap: wrap;
+      margin-top: 1.8rem;
+    }
+    .btn-submit {
+      background: var(--white); border: none; color: #000;
+      padding: 0.85rem 2rem; border-radius: 5px;
+      font-family: var(--font-mono); font-size: 0.72rem;
+      letter-spacing: 0.12em; text-transform: uppercase;
+      cursor: pointer; transition: all 0.2s;
+      display: flex; align-items: center; gap: 0.6rem;
+      min-height: 48px; min-width: 160px; justify-content: center;
+    }
+    .btn-submit:hover { background: #e8e8e8; transform: translateY(-1px); }
+    .btn-submit:disabled { opacity: 0.5; cursor: not-allowed; transform: none; }
+    .btn-submit.loading { background: var(--surface2); color: var(--muted2); border: 1px solid var(--border2); }
+
+    .btn-back-step {
+      background: transparent; border: 1px solid var(--border2);
+      color: var(--muted2); padding: 0.85rem 1.5rem;
+      border-radius: 5px; font-family: var(--font-mono);
+      font-size: 0.68rem; letter-spacing: 0.12em;
+      text-transform: uppercase; cursor: pointer;
+      transition: all 0.2s; min-height: 48px;
+    }
+    .btn-back-step:hover { color: var(--white); border-color: var(--border); }
+
+    .btn-next {
+      background: var(--white); border: none; color: #000;
+      padding: 0.85rem 2rem; border-radius: 5px;
+      font-family: var(--font-mono); font-size: 0.72rem;
+      letter-spacing: 0.12em; text-transform: uppercase;
+      cursor: pointer; transition: all 0.2s;
+      display: flex; align-items: center; gap: 0.6rem;
+      min-height: 48px;
+    }
+    .btn-next:hover { background: #e8e8e8; transform: translateY(-1px); }
+    .btn-next:disabled { opacity: 0.4; cursor: not-allowed; transform: none; }
+
+    .submit-note {
+      font-family: var(--font-mono); font-size: 0.57rem;
+      color: var(--muted); letter-spacing: 0.07em; line-height: 1.6;
+      flex: 1; min-width: 200px;
+    }
+
+    /* ── LOADING SPINNER ── */
+    .spinner {
+      width: 14px; height: 14px;
+      border: 1.5px solid rgba(255,255,255,0.2);
+      border-top-color: var(--muted2);
+      border-radius: 50%;
+      animation: spin 0.7s linear infinite;
+      flex-shrink: 0;
+    }
+    @keyframes spin { to { transform: rotate(360deg); } }
+
+    /* ── ERROR BANNER ── */
+    .error-banner {
+      display: none;
+      background: var(--red-dim);
+      border: 1px solid rgba(248,113,113,0.25);
+      border-radius: 5px;
+      padding: 0.9rem 1.1rem;
+      margin-top: 1rem;
+      font-family: var(--font-mono);
+      font-size: 0.65rem;
+      letter-spacing: 0.07em;
+      color: var(--red);
+      line-height: 1.55;
+    }
+    .error-banner.show { display: flex; align-items: flex-start; gap: 0.5rem; }
+
+    /* ── SUCCESS SCREEN ── */
+    #success-screen {
+      display: none;
+      padding: 4rem 0;
+      text-align: center;
+    }
+    #success-screen.show { display: block; }
+
+    .success-icon {
+      width: 64px; height: 64px;
+      background: var(--green-dim);
+      border: 1px solid rgba(74,222,128,0.25);
+      border-radius: 50%;
+      display: flex; align-items: center; justify-content: center;
+      margin: 0 auto 2rem;
+      font-size: 1.8rem;
+    }
+    .success-title {
+      font-family: var(--font-display); font-weight: 900; font-style: italic;
+      font-size: clamp(2.5rem, 8vw, 4.5rem); text-transform: uppercase;
+      color: var(--white); line-height: 0.9; margin-bottom: 1rem;
+    }
+    .success-sub {
+      font-family: var(--font-mono); font-size: 0.68rem;
+      letter-spacing: 0.14em; text-transform: uppercase;
+      color: var(--green); margin-bottom: 1.5rem;
+    }
+    .success-desc {
+      font-family: var(--font-body); font-size: 0.85rem;
+      color: var(--muted2); line-height: 1.65;
+      max-width: 420px; margin: 0 auto 2.5rem;
+    }
+
+    .report-id-chip {
+      display: inline-flex; align-items: center; gap: 0.7rem;
+      background: var(--surface);
+      border: 1px solid var(--border2);
+      padding: 0.7rem 1.2rem;
+      border-radius: 5px;
+      font-family: var(--font-mono); font-size: 0.72rem;
+      letter-spacing: 0.06em; color: var(--white);
+      margin-bottom: 2.5rem;
+      cursor: pointer; transition: border-color 0.2s;
+    }
+    .report-id-chip:hover { border-color: var(--border); }
+    .report-id-label {
+      font-family: var(--font-mono); font-size: 0.55rem;
+      letter-spacing: 0.16em; color: var(--muted);
+      text-transform: uppercase;
+    }
+    .report-id-copy-hint {
+      font-family: var(--font-mono); font-size: 0.55rem;
+      letter-spacing: 0.08em; color: var(--muted);
+    }
+
+    .success-actions {
+      display: flex; gap: 0.75rem; justify-content: center; flex-wrap: wrap;
+    }
+    .btn-another {
+      background: var(--white); border: none; color: #000;
+      padding: 0.75rem 1.6rem; border-radius: 5px;
+      font-family: var(--font-mono); font-size: 0.68rem;
+      letter-spacing: 0.12em; text-transform: uppercase;
+      cursor: pointer; transition: background 0.2s;
+    }
+    .btn-another:hover { background: #e8e8e8; }
+    .btn-home {
+      background: transparent; border: 1px solid var(--border2); color: var(--muted2);
+      padding: 0.75rem 1.6rem; border-radius: 5px;
+      font-family: var(--font-mono); font-size: 0.68rem;
+      letter-spacing: 0.12em; text-transform: uppercase;
+      cursor: pointer; transition: all 0.2s; text-decoration: none;
+      display: inline-block;
+    }
+    .btn-home:hover { color: var(--white); border-color: var(--border); }
+
+    /* ── STEP PANELS ── */
+    .step-panel { display: none; }
+    .step-panel.active { display: block; }
+
+    /* Smooth fade in */
+    .step-panel.active {
+      animation: fadeUp 0.4s cubic-bezier(0.16,1,0.3,1) both;
+    }
+    @keyframes fadeUp {
+      from { opacity:0; transform:translateY(12px); }
+      to   { opacity:1; transform:translateY(0); }
+    }
+
+    /* ── NOTICE BOX ── */
+    .notice-box {
+      background: var(--orange-dim);
+      border: 1px solid rgba(251,146,60,0.2);
+      border-radius: 5px; padding: 0.9rem 1.1rem;
+      margin-bottom: 1.8rem;
+      display: flex; align-items: flex-start; gap: 0.7rem;
+    }
+    .notice-icon {
+      font-size: 0.85rem; flex-shrink: 0; margin-top: 0.05rem;
+    }
+    .notice-text {
+      font-family: var(--font-mono); font-size: 0.62rem;
+      letter-spacing: 0.06em; color: var(--orange); line-height: 1.65;
+    }
+
+    /* ── INFO ROW ── */
+    .info-row {
+      display: grid; grid-template-columns: 1fr 1fr; gap: 1rem;
+    }
+
+    /* ── CHAR COUNT ── */
+    .char-counter {
+      display: flex; justify-content: flex-end;
+      font-family: var(--font-mono); font-size: 0.55rem;
+      color: var(--muted); margin-top: 0.35rem;
+      letter-spacing: 0.06em;
+    }
+    .char-counter.warn { color: var(--yellow); }
+    .char-counter.over { color: var(--red); }
+
+    /* ── FOOTER ── */
+    footer {
+      border-top: 1px solid var(--border);
+      padding: 2.5rem;
+    }
+    .footer-inner {
+      display: flex; align-items: center; justify-content: space-between;
+      flex-wrap: wrap; gap: 1.5rem;
+      max-width: 760px; margin: 0 auto;
+    }
+    .foot-left { display: flex; flex-direction: column; gap: 0.7rem; }
+    .foot-logo { display: flex; align-items: center; gap: 0.55rem; }
+    .foot-logo img { width: 26px; height: 26px; border-radius: 4px; object-fit: cover; }
+    .foot-wordmark { font-family: var(--font-display); font-weight: 900; font-size: 1.05rem; letter-spacing: 0.08em; color: var(--white); }
+    .foot-links { display: flex; gap: 1.2rem; list-style: none; flex-wrap: wrap; }
+    .foot-links a {
+      font-family: var(--font-mono); font-size: 0.6rem;
+      letter-spacing: 0.1em; text-transform: uppercase;
+      color: var(--muted); text-decoration: none; transition: color 0.2s;
+    }
+    .foot-links a:hover { color: var(--white); }
+    .foot-right { text-align: right; }
+    .foot-copy { font-family: var(--font-mono); font-size: 0.62rem; color: var(--muted); }
+
+    /* ── RESPONSIVE TABLET ── */
+    @media (max-width: 900px) {
+      .nav-center { display: none; }
+      .nav-version { display: none; }
+      .hamburger { display: flex; }
+      nav { padding: 0.9rem 1.4rem; }
+      nav.scrolled { padding: 0.7rem 1.4rem; }
+    }
+
+    /* ── RESPONSIVE MOBILE ── */
+    @media (max-width: 680px) {
+      nav { padding: 0.85rem 1rem; }
+      .page { padding-left: 1rem; padding-right: 1rem; padding-bottom: 4rem; }
+      .page-header { padding: 2.5rem 0 2rem; margin-bottom: 2rem; }
+      .page-title { font-size: clamp(3rem, 14vw, 5rem); }
+      .type-grid { grid-template-columns: 1fr 1fr; }
+      .type-card { padding: 1.2rem 1rem; }
+      .type-name { font-size: 1rem; }
+      .info-row { grid-template-columns: 1fr; gap: 0; }
+      .steps-bar { gap: 0; }
+      .step-item span:not(.step-num) { display: none; }
+      .step-connector { min-width: 12px; }
+      .submit-row { flex-direction: column; align-items: stretch; }
+      .btn-submit, .btn-next { width: 100%; }
+      .submit-note { min-width: auto; }
+      .success-actions { flex-direction: column; align-items: center; }
+      .btn-another, .btn-home { width: 100%; max-width: 280px; text-align: center; }
+      footer { padding: 2rem 1rem; }
+      .footer-inner { flex-direction: column; align-items: flex-start; }
+      .foot-right { text-align: left; }
+    }
+
+    @media (max-width: 380px) {
+      .type-grid { grid-template-columns: 1fr; }
+      .severity-row { flex-direction: column; }
+      .severity-btn { border-right: none; border-bottom: 1px solid var(--border2); }
+      .severity-btn:last-child { border-bottom: none; }
+    }
+  </style>
+</head>
+<body>
+
+  <div id="scroll-progress"></div>
+
+  <!-- ── NAV ── -->
+  <nav id="main-nav">
+    <a class="nav-logo" href="https://faizzzlol.github.io/freakyniggas/">
+      <img src="https://faizzzlol.github.io/freakyniggas/FreakyNiggasLogo.png" alt="FN"
+           onerror="this.style.display='none'"/>
+      <span class="nav-wordmark">Freaky Niggas</span>
+    </a>
+    <button class="hamburger" id="hamburger" aria-label="Menu" aria-expanded="false">
+      <span></span><span></span><span></span>
+    </button>
+    <ul class="nav-center">
+      <li><a href="https://faizzzlol.github.io/freakyniggas/">Home</a></li>
+      <li><a href="https://faizzzlol.github.io/freakyniggas/minecraft">Minecraft</a></li>
+      <li><a href="https://faizzzlol.github.io/freakyniggas/minecraft/fnsmp.html">FN SMP</a></li>
+      <li><a href="#" class="active">Report</a></li>
+    </ul>
+    <div class="nav-right">
+      <span class="nav-version">REPORT</span>
+      <a href="https://faizzzlol.github.io/freakyniggas/minecraft/fnsmp.html" class="nav-back">
+        ← Back to SMP
+      </a>
+    </div>
+    <div class="mobile-menu" id="mobile-menu" role="navigation">
+      <a href="https://faizzzlol.github.io/freakyniggas/">🏠 Home</a>
+      <a href="https://faizzzlol.github.io/freakyniggas/minecraft">⛏ Minecraft</a>
+      <a href="https://faizzzlol.github.io/freakyniggas/minecraft/fnsmp.html">🌐 FN SMP</a>
+      <a href="#">📋 Submit Report</a>
+    </div>
+  </nav>
+
+  <div class="page">
+
+    <!-- ── PAGE HEADER ── -->
+    <div class="page-header">
+      <div class="breadcrumb">
+        <a href="https://faizzzlol.github.io/freakyniggas/">FN</a>
+        <span class="breadcrumb-sep">/</span>
+        <a href="https://faizzzlol.github.io/freakyniggas/minecraft">Minecraft</a>
+        <span class="breadcrumb-sep">/</span>
+        <a href="https://faizzzlol.github.io/freakyniggas/minecraft/fnsmp.html">FN SMP</a>
+        <span class="breadcrumb-sep">/</span>
+        <span>Report</span>
+      </div>
+      <div class="page-title">Submit<br/>Report</div>
+      <div class="page-sub">// FN SMP Transparency System</div>
+      <div class="page-desc">Bug, issue, atau player misbehave? Report kat sini terus — admin team dapat notif Discord dalam masa nyata.</div>
+    </div>
+
+    <!-- ── MAIN CONTENT ── -->
+    <div id="main-content">
+
+      <!-- STEP INDICATOR -->
+      <div class="steps-bar" id="steps-bar">
+        <div class="step-item active" id="step-ind-1">
+          <span class="step-num">1</span>
+          <span>Type</span>
+        </div>
+        <div class="step-connector" id="conn-1-2"></div>
+        <div class="step-item" id="step-ind-2">
+          <span class="step-num">2</span>
+          <span>Details</span>
+        </div>
+        <div class="step-connector" id="conn-2-3"></div>
+        <div class="step-item" id="step-ind-3">
+          <span class="step-num">3</span>
+          <span>Submit</span>
+        </div>
+      </div>
+
+      <!-- ── STEP 1: CHOOSE TYPE ── -->
+      <div class="step-panel active" id="step-1">
+        <div style="margin-bottom:1.2rem;">
+          <div class="panel-label" style="margin-bottom:0.5rem;">// Step 01</div>
+          <div class="panel-title">What are you reporting?</div>
+        </div>
+        <div class="type-grid" id="type-grid">
+          <div class="type-card type-bug" data-type="bug" onclick="selectType(this)">
+            <div class="type-card-check">✓</div>
+            <span class="type-icon">🐛</span>
+            <div class="type-name">Bug Report</div>
+            <div class="type-desc">Something broken or not working as expected in the server.</div>
+          </div>
+          <div class="type-card type-issue" data-type="issue" onclick="selectType(this)">
+            <div class="type-card-check">✓</div>
+            <span class="type-icon">⚠️</span>
+            <div class="type-name">Server Issue</div>
+            <div class="type-desc">Lag, crashes, downtime, or general server performance problems.</div>
+          </div>
+          <div class="type-card type-player" data-type="player" onclick="selectType(this)">
+            <div class="type-card-check">✓</div>
+            <span class="type-icon">🚨</span>
+            <div class="type-name">Player Report</div>
+            <div class="type-desc">Griefing, cheating, harassment, or rule violations by another player.</div>
+          </div>
+          <div class="type-card type-suggest" data-type="suggestion" onclick="selectType(this)">
+            <div class="type-card-check">✓</div>
+            <span class="type-icon">💡</span>
+            <div class="type-name">Suggestion</div>
+            <div class="type-desc">Ideas, plugin requests, or improvements for the server.</div>
+          </div>
+        </div>
+        <div style="margin-top:1.5rem; display:flex; justify-content:flex-end;">
+          <button class="btn-next" id="btn-next-1" onclick="goToStep2()" disabled>
+            Continue
+            <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg>
+          </button>
+        </div>
+      </div>
+
+      <!-- ── STEP 2: FILL FORM ── -->
+      <div class="step-panel" id="step-2">
+
+        <div style="margin-bottom:1.8rem;">
+          <div class="panel-label" style="margin-bottom:0.5rem;">// Step 02</div>
+          <div class="panel-title" id="step2-title">Fill in Details</div>
+        </div>
+
+        <!-- PLAYER INFO -->
+        <div class="info-row">
+          <div class="form-group">
+            <label class="form-label">
+              Your IGN
+              <span class="form-label-req">*required</span>
+            </label>
+            <input type="text" id="f-ign" placeholder="e.g. Faiz4224" maxlength="24" autocomplete="off" spellcheck="false"/>
+            <div class="form-hint">In-game name — exactly as shown in Minecraft</div>
+          </div>
+          <div class="form-group">
+            <label class="form-label">Platform</label>
+            <div class="platform-toggle">
+              <button class="platform-btn java-btn active" onclick="setPlatform('Java', this)">
+                <span class="platform-dot"></span> Java
+              </button>
+              <button class="platform-btn bedrock-btn" onclick="setPlatform('Bedrock', this)">
+                <span class="platform-dot"></span> Bedrock
+              </button>
+            </div>
+          </div>
+        </div>
+
+        <hr class="form-divider"/>
+
+        <!-- TITLE -->
+        <div class="form-group">
+          <label class="form-label">
+            Report Title
+            <span class="form-label-req">*required</span>
+          </label>
+          <input type="text" id="f-title" placeholder="Short summary of the issue..." maxlength="100" oninput="updateCharCount('f-title', 'cc-title', 100)"/>
+          <div class="char-counter" id="cc-title">0 / 100</div>
+        </div>
+
+        <!-- DESCRIPTION -->
+        <div class="form-group">
+          <label class="form-label">
+            Description
+            <span class="form-label-req">*required</span>
+          </label>
+          <textarea id="f-desc" placeholder="Describe the issue in detail..." maxlength="1500" oninput="updateCharCount('f-desc', 'cc-desc', 1500)"></textarea>
+          <div class="char-counter" id="cc-desc">0 / 1500</div>
+        </div>
+
+        <!-- ── BUG-SPECIFIC ── -->
+        <div class="dynamic-fields field-hide" id="fields-bug">
+          <div class="form-group">
+            <label class="form-label">Steps to Reproduce</label>
+            <textarea id="f-steps" placeholder="1. Go to...\n2. Do this...\n3. See that..." style="min-height:90px;" maxlength="800" oninput="updateCharCount('f-steps','cc-steps',800)"></textarea>
+            <div class="char-counter" id="cc-steps">0 / 800</div>
+            <div class="form-hint">Optional but very helpful for the team to debug</div>
+          </div>
+          <div class="info-row">
+            <div class="form-group">
+              <label class="form-label">Expected Behaviour</label>
+              <input type="text" id="f-expected" placeholder="What should happen..." maxlength="120"/>
+            </div>
+            <div class="form-group">
+              <label class="form-label">Actual Behaviour</label>
+              <input type="text" id="f-actual" placeholder="What actually happened..." maxlength="120"/>
+            </div>
+          </div>
+          <div class="form-group">
+            <label class="form-label">Severity</label>
+            <div class="severity-row">
+              <button class="severity-btn" data-sev="Low"    onclick="setSeverity('Low',    this)">🟡 Low</button>
+              <button class="severity-btn" data-sev="Medium" onclick="setSeverity('Medium', this)">🟠 Medium</button>
+              <button class="severity-btn" data-sev="High"   onclick="setSeverity('High',   this)">🔴 High</button>
+            </div>
+          </div>
+        </div>
+
+        <!-- ── ISSUE-SPECIFIC ── -->
+        <div class="dynamic-fields field-hide" id="fields-issue">
+          <div class="form-group">
+            <label class="form-label">When did it happen?</label>
+            <input type="text" id="f-when" placeholder="e.g. 18 April 2026 around 10pm, or 'just now'" maxlength="100"/>
+          </div>
+          <div class="form-group">
+            <label class="form-label">Severity</label>
+            <div class="severity-row" id="sev-row-issue">
+              <button class="severity-btn" data-sev="Low"    onclick="setSeverity('Low',    this, 'sev-row-issue')">🟡 Low</button>
+              <button class="severity-btn" data-sev="Medium" onclick="setSeverity('Medium', this, 'sev-row-issue')">🟠 Medium</button>
+              <button class="severity-btn" data-sev="High"   onclick="setSeverity('High',   this, 'sev-row-issue')">🔴 High</button>
+            </div>
+          </div>
+        </div>
+
+        <!-- ── PLAYER REPORT-SPECIFIC ── -->
+        <div class="dynamic-fields field-hide" id="fields-player">
+          <div class="notice-box">
+            <span class="notice-icon">⚠️</span>
+            <div class="notice-text">False reports boleh lead to tindakan balik kat reporter. Only submit genuine reports.</div>
+          </div>
+          <div class="info-row">
+            <div class="form-group">
+              <label class="form-label">
+                Accused Player IGN
+                <span class="form-label-req">*required</span>
+              </label>
+              <input type="text" id="f-accused" placeholder="e.g. GrieferXYZ" maxlength="24" autocomplete="off" spellcheck="false"/>
+            </div>
+            <div class="form-group">
+              <label class="form-label">Accused Platform</label>
+              <div class="select-wrap">
+                <select id="f-accused-platform">
+                  <option value="Unknown">Unknown</option>
+                  <option value="Java">Java</option>
+                  <option value="Bedrock">Bedrock</option>
+                </select>
+              </div>
+            </div>
+          </div>
+          <div class="form-group">
+            <label class="form-label">Violation Type</label>
+            <div class="select-wrap">
+              <select id="f-violation">
+                <option value="Griefing">Griefing / Destroying builds</option>
+                <option value="Hacking/Cheating">Hacking / Cheating</option>
+                <option value="Harassment">Harassment / Toxic behaviour</option>
+                <option value="Stealing">Stealing items</option>
+                <option value="Spamming">Chat spam</option>
+                <option value="Other">Other</option>
+              </select>
+            </div>
+          </div>
+        </div>
+
+        <!-- ── SUGGESTION-SPECIFIC ── -->
+        <div class="dynamic-fields field-hide" id="fields-suggestion">
+          <div class="form-group">
+            <label class="form-label">Category</label>
+            <div class="select-wrap">
+              <select id="f-suggest-cat">
+                <option value="Plugin">Plugin / Feature</option>
+                <option value="Gameplay">Gameplay change</option>
+                <option value="Community">Community / Events</option>
+                <option value="Performance">Performance</option>
+                <option value="Other">Other</option>
+              </select>
+            </div>
+          </div>
+        </div>
+
+        <hr class="form-divider"/>
+
+        <div class="form-group">
+          <label class="form-label">Additional Notes</label>
+          <input type="text" id="f-extra" placeholder="Anything else the team should know... (optional)" maxlength="300"/>
+        </div>
+
+        <div class="submit-row">
+          <button class="btn-back-step" onclick="goToStep1()">← Back</button>
+          <button class="btn-submit" id="btn-submit" onclick="submitReport()">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="22" y1="2" x2="11" y2="13"/><polygon points="22 2 15 22 11 13 2 9 22 2"/></svg>
+            Send Report
+          </button>
+          <div class="submit-note">
+            Report dikirim terus ke Discord admin team.<br/>
+            No account needed · No personal data collected.
+          </div>
+        </div>
+
+        <div class="error-banner" id="error-banner">
+          <span>⚠</span>
+          <span id="error-msg">Something went wrong. Please try again.</span>
+        </div>
+
+      </div>
+
+    </div><!-- end main-content -->
+
+    <!-- ── SUCCESS SCREEN ── -->
+    <div id="success-screen">
+      <div class="success-icon">✓</div>
+      <div class="success-title">Report<br/>Sent</div>
+      <div class="success-sub">// Report received · Admin team notified</div>
+      <div class="success-desc">Your report has been sent to the FN SMP admin team via Discord. We'll look into it ASAP.</div>
+      <div class="report-id-chip" onclick="copyReportId()" title="Click to copy">
+        <div>
+          <div class="report-id-label">Report ID</div>
+          <div id="display-report-id">FNSMP-—</div>
+        </div>
+        <div class="report-id-copy-hint">click to copy</div>
+      </div>
+      <div class="success-actions">
+        <button class="btn-another" onclick="resetForm()">Submit Another</button>
+        <a href="https://faizzzlol.github.io/freakyniggas/minecraft/fnsmp.html" class="btn-home">← Back to FN SMP</a>
+      </div>
+    </div>
+
+  </div><!-- end page -->
+
+  <!-- ── FOOTER ── -->
+  <footer>
+    <div class="footer-inner">
+      <div class="foot-left">
+        <div class="foot-logo">
+          <img src="https://faizzzlol.github.io/freakyniggas/FreakyNiggasLogo.png" alt="FN"
+               onerror="this.style.display='none'"/>
+          <span class="foot-wordmark">Freaky Niggas</span>
+        </div>
+        <ul class="foot-links">
+          <li><a href="https://faizzzlol.github.io/freakyniggas/">Home</a></li>
+          <li><a href="https://faizzzlol.github.io/freakyniggas/minecraft/fnsmp.html">FN SMP</a></li>
+        </ul>
+      </div>
+      <div class="foot-right">
+        <div class="foot-copy">© 2025–2026 Freaky Niggas · Report System</div>
+      </div>
+    </div>
+  </footer>
+
+  <script>
+    // ═══════════════════════════════════════════════════════
+    // CONSTANTS
+    // ═══════════════════════════════════════════════════════
+    const WEBHOOK = 'https://discord.com/api/webhooks/1495786201116966953/0_UCmWj7-X3gbhLtSfMBvrmMtuudpQBr_J0b8h2zwAIRCNg4WWJrSIzCKGUlxvu4KrUY';
+
+    const TYPE_CONFIG = {
+      bug:        { label: 'Bug Report',     emoji: '🐛', color: 0xf87171 },
+      issue:      { label: 'Server Issue',   emoji: '⚠️', color: 0xfb923c },
+      player:     { label: 'Player Report',  emoji: '🚨', color: 0xfbbf24 },
+      suggestion: { label: 'Suggestion',     emoji: '💡', color: 0x60a5fa },
+    };
+
+    const SEV_EMOJI = { Low: '🟡', Medium: '🟠', High: '🔴' };
+
+    // ═══════════════════════════════════════════════════════
+    // STATE
+    // ═══════════════════════════════════════════════════════
+    let selectedType     = null;
+    let selectedPlatform = 'Java';
+    let selectedSeverity = null;
+    let currentReportId  = null;
+
+    // ═══════════════════════════════════════════════════════
+    // SCROLL PROGRESS + NAV
+    // ═══════════════════════════════════════════════════════
+    const progress = document.getElementById('scroll-progress');
+    const mainNav  = document.getElementById('main-nav');
+    window.addEventListener('scroll', () => {
+      const h = document.documentElement;
+      const pct = (window.scrollY / (h.scrollHeight - h.clientHeight)) * 100;
+      progress.style.width = Math.min(pct, 100) + '%';
+      mainNav.classList.toggle('scrolled', window.scrollY > 50);
+    }, { passive: true });
+
+    const hamburger  = document.getElementById('hamburger');
+    const mobileMenu = document.getElementById('mobile-menu');
+    hamburger.addEventListener('click', () => {
+      const isOpen = mobileMenu.classList.toggle('open');
+      hamburger.classList.toggle('open', isOpen);
+      hamburger.setAttribute('aria-expanded', isOpen);
+    });
+    mobileMenu.querySelectorAll('a').forEach(a => {
+      a.addEventListener('click', () => {
+        mobileMenu.classList.remove('open');
+        hamburger.classList.remove('open');
+        hamburger.setAttribute('aria-expanded', 'false');
+      });
+    });
+
+    // ═══════════════════════════════════════════════════════
+    // STEP 1: TYPE SELECTION
+    // ═══════════════════════════════════════════════════════
+    function selectType(card) {
+      document.querySelectorAll('.type-card').forEach(c => c.classList.remove('selected'));
+      card.classList.add('selected');
+      selectedType = card.dataset.type;
+      document.getElementById('btn-next-1').disabled = false;
+    }
+
+    function goToStep2() {
+      if (!selectedType) return;
+      showStep(2);
+
+      // Update step 2 title
+      const cfg = TYPE_CONFIG[selectedType];
+      document.getElementById('step2-title').textContent = cfg.emoji + ' ' + cfg.label;
+
+      // Show/hide dynamic fields
+      ['bug','issue','player','suggestion'].forEach(t => {
+        document.getElementById('fields-' + (t === 'player' ? 'player' : t === 'suggestion' ? 'suggestion' : t)).classList.replace('field-show','field-hide');
+      });
+      const fieldId = `fields-${selectedType === 'player' ? 'player' : selectedType === 'suggestion' ? 'suggestion' : selectedType}`;
+      document.getElementById(fieldId).classList.replace('field-hide','field-show');
+
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    }
+
+    function goToStep1() {
+      showStep(1);
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    }
+
+    // ═══════════════════════════════════════════════════════
+    // STEP MANAGEMENT
+    // ═══════════════════════════════════════════════════════
+    function showStep(n) {
+      document.querySelectorAll('.step-panel').forEach(p => p.classList.remove('active'));
+      document.getElementById('step-' + n).classList.add('active');
+
+      // Update indicators
+      for (let i = 1; i <= 3; i++) {
+        const ind  = document.getElementById('step-ind-' + i);
+        ind.classList.remove('active','done');
+        if (i < n)       ind.classList.add('done');
+        else if (i === n) ind.classList.add('active');
+      }
+      // Connectors
+      for (let i = 1; i <= 2; i++) {
+        const conn = document.getElementById('conn-' + i + '-' + (i+1));
+        conn.classList.toggle('done', i < n);
+      }
+    }
+
+    // ═══════════════════════════════════════════════════════
+    // PLATFORM TOGGLE
+    // ═══════════════════════════════════════════════════════
+    function setPlatform(val, btn) {
+      selectedPlatform = val;
+      document.querySelectorAll('.platform-btn').forEach(b => b.classList.remove('active'));
+      btn.classList.add('active');
+    }
+
+    // ═══════════════════════════════════════════════════════
+    // SEVERITY
+    // ═══════════════════════════════════════════════════════
+    function setSeverity(val, btn, rowId) {
+      selectedSeverity = val;
+      const row = rowId ? document.getElementById(rowId) : btn.closest('.severity-row');
+      row.querySelectorAll('.severity-btn').forEach(b => {
+        b.classList.remove('active-low','active-medium','active-high');
+      });
+      btn.classList.add('active-' + val.toLowerCase());
+    }
+
+    // ═══════════════════════════════════════════════════════
+    // CHAR COUNT
+    // ═══════════════════════════════════════════════════════
+    function updateCharCount(inputId, counterId, max) {
+      const el  = document.getElementById(inputId);
+      const ctr = document.getElementById(counterId);
+      if (!el || !ctr) return;
+      const len = el.value.length;
+      ctr.textContent = `${len} / ${max}`;
+      ctr.classList.toggle('warn', len > max * 0.85 && len <= max);
+      ctr.classList.toggle('over', len > max);
+    }
+
+    // ═══════════════════════════════════════════════════════
+    // REPORT ID GENERATOR
+    // ═══════════════════════════════════════════════════════
+    function generateReportId() {
+      const now = new Date();
+      const d   = now.toISOString().slice(2, 10).replace(/-/g, '');
+      const ms  = String(now.getTime()).slice(-5);
+      return `FNSMP-${d}-${ms}`;
+    }
+
+    // ═══════════════════════════════════════════════════════
+    // BUILD DISCORD EMBED
+    // ═══════════════════════════════════════════════════════
+    function buildEmbed(data, reportId) {
+      const cfg    = TYPE_CONFIG[data.type];
+      const now    = new Date();
+      const ts     = now.toISOString();
+
+      // ── Common fields ──
+      const fields = [
+        {
+          name:   '👤  Reporter',
+          value:  `\`${data.ign}\``,
+          inline: true,
+        },
+        {
+          name:   '🎮  Platform',
+          value:  data.platform === 'Bedrock' ? '🟢 Bedrock' : '🟠 Java',
+          inline: true,
+        },
+        {
+          name:   '🏷️  Type',
+          value:  `${cfg.emoji} ${cfg.label}`,
+          inline: true,
+        },
+      ];
+
+      // ── Type-specific fields ──
+      if (data.type === 'bug') {
+        if (data.severity) {
+          fields.push({ name: `🔥  Severity`, value: `${SEV_EMOJI[data.severity] || ''} **${data.severity}**`, inline: true });
+        }
+        if (data.expected || data.actual) {
+          fields.push({
+            name: '↔️  Behaviour',
+            value: [
+              data.expected ? `**Expected:** ${data.expected}` : null,
+              data.actual   ? `**Actual:** ${data.actual}`     : null,
+            ].filter(Boolean).join('\n'),
+            inline: false,
+          });
+        }
+        if (data.steps && data.steps.trim()) {
+          fields.push({
+            name: '🔁  Steps to Reproduce',
+            value: data.steps.length > 900 ? data.steps.slice(0, 900) + '...' : data.steps,
+            inline: false,
+          });
+        }
+      }
+
+      if (data.type === 'issue') {
+        if (data.when) {
+          fields.push({ name: '🕐  When', value: data.when, inline: true });
+        }
+        if (data.severity) {
+          fields.push({ name: '🔥  Severity', value: `${SEV_EMOJI[data.severity] || ''} **${data.severity}**`, inline: true });
+        }
+      }
+
+      if (data.type === 'player') {
+        fields.push(
+          { name: '🎯  Accused Player',   value: `\`${data.accused}\``, inline: true },
+          { name: '🎮  Accused Platform', value: data.accusedPlatform,  inline: true },
+          { name: '📌  Violation',        value: data.violation,        inline: true },
+        );
+      }
+
+      if (data.type === 'suggestion') {
+        fields.push({ name: '📂  Category', value: data.suggestCat, inline: true });
+      }
+
+      // ── Description ──
+      const descValue = data.desc.length > 1024 ? data.desc.slice(0, 1021) + '...' : data.desc;
+      fields.push({
+        name:   '📝  Description',
+        value:  descValue,
+        inline: false,
+      });
+
+      // ── Extra notes ──
+      if (data.extra && data.extra.trim()) {
+        fields.push({
+          name:   '💬  Additional Notes',
+          value:  data.extra,
+          inline: false,
+        });
+      }
+
+      // ── Report ID ──
+      fields.push({
+        name:   '🆔  Report ID',
+        value:  `\`${reportId}\``,
+        inline: true,
+      });
+
+      return {
+        title:       `${cfg.emoji}  ${data.title}`,
+        description: `New **${cfg.label}** from FN SMP`,
+        color:       cfg.color,
+        fields,
+        footer: {
+          text: `FN SMP Report System · ${data.type.toUpperCase()}`,
+          icon_url: 'https://faizzzlol.github.io/freakyniggas/FreakyNiggasLogo.png',
+        },
+        timestamp: ts,
+      };
+    }
+
+    // ═══════════════════════════════════════════════════════
+    // SUBMIT
+    // ═══════════════════════════════════════════════════════
+    async function submitReport() {
+      const ign   = document.getElementById('f-ign').value.trim();
+      const title = document.getElementById('f-title').value.trim();
+      const desc  = document.getElementById('f-desc').value.trim();
+
+      // Validation
+      if (!ign) { showError('IGN wajib diisi — masukkan in-game name kau.'); return; }
+      if (!title) { showError('Report title wajib diisi.'); return; }
+      if (!desc) { showError('Description wajib diisi — cerita detail sikit.'); return; }
+      if (selectedType === 'player') {
+        const accused = document.getElementById('f-accused').value.trim();
+        if (!accused) { showError('Accused player IGN wajib diisi untuk Player Report.'); return; }
+      }
+
+      // Collect data
+      const data = {
+        type:     selectedType,
+        ign:      ign,
+        platform: selectedPlatform,
+        title:    title,
+        desc:     desc,
+        extra:    document.getElementById('f-extra').value.trim(),
+      };
+
+      // Type-specific
+      if (selectedType === 'bug') {
+        data.steps    = document.getElementById('f-steps').value.trim();
+        data.expected = document.getElementById('f-expected').value.trim();
+        data.actual   = document.getElementById('f-actual').value.trim();
+        data.severity = selectedSeverity || null;
+      }
+      if (selectedType === 'issue') {
+        data.when     = document.getElementById('f-when').value.trim();
+        data.severity = selectedSeverity || null;
+      }
+      if (selectedType === 'player') {
+        data.accused         = document.getElementById('f-accused').value.trim();
+        data.accusedPlatform = document.getElementById('f-accused-platform').value;
+        data.violation       = document.getElementById('f-violation').value;
+      }
+      if (selectedType === 'suggestion') {
+        data.suggestCat = document.getElementById('f-suggest-cat').value;
+      }
+
+      const reportId = generateReportId();
+      currentReportId = reportId;
+
+      // Loading state
+      const btn = document.getElementById('btn-submit');
+      btn.disabled  = true;
+      btn.classList.add('loading');
+      btn.innerHTML = '<div class="spinner"></div> Sending...';
+      hideError();
+
+      // Role mention based on type
+      const cfg  = TYPE_CONFIG[selectedType];
+      const embed = buildEmbed(data, reportId);
+
+      // Priority ping for high severity or player reports
+      let content = '';
+      if (data.type === 'player')                                content = '🚨 **NEW PLAYER REPORT** — Action may be required!';
+      else if (data.severity === 'High')                         content = '🔴 **HIGH SEVERITY REPORT** — Needs immediate attention!';
+      else if (data.type === 'bug' || data.type === 'issue')     content = `${cfg.emoji} New **${cfg.label}** submitted`;
+      else                                                        content = `${cfg.emoji} New **${cfg.label}** from ${ign}`;
+
+      const payload = {
+        content,
+        username:   'FN SMP Reports',
+        avatar_url: 'https://faizzzlol.github.io/freakyniggas/FreakyNiggasLogo.png',
+        embeds:     [embed],
+      };
+
+      try {
+        const res = await fetch(WEBHOOK, {
+          method:  'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body:    JSON.stringify(payload),
+        });
+
+        if (res.ok || res.status === 204) {
+          // Success
+          document.getElementById('main-content').style.display  = 'none';
+          const suc = document.getElementById('success-screen');
+          suc.style.display = 'block';
+          suc.classList.add('show');
+          document.getElementById('display-report-id').textContent = reportId;
+          window.scrollTo({ top: 0, behavior: 'smooth' });
+        } else {
+          const errText = await res.text().catch(() => '');
+          showError(`Discord rejected the report (HTTP ${res.status}). Try again in a moment.${errText ? ' — ' + errText.slice(0, 80) : ''}`);
+          resetBtn(btn);
+        }
+      } catch (err) {
+        showError(`Network error — check your connection and try again. (${err.message})`);
+        resetBtn(btn);
+      }
+    }
+
+    function resetBtn(btn) {
+      btn.disabled  = false;
+      btn.classList.remove('loading');
+      btn.innerHTML = '<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="22" y1="2" x2="11" y2="13"/><polygon points="22 2 15 22 11 13 2 9 22 2"/></svg> Send Report';
+    }
+
+    function showError(msg) {
+      const b = document.getElementById('error-banner');
+      document.getElementById('error-msg').textContent = msg;
+      b.classList.add('show');
+      b.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+    }
+    function hideError() {
+      document.getElementById('error-banner').classList.remove('show');
+    }
+
+    // ═══════════════════════════════════════════════════════
+    // COPY REPORT ID
+    // ═══════════════════════════════════════════════════════
+    function copyReportId() {
+      if (!currentReportId) return;
+      navigator.clipboard.writeText(currentReportId).then(() => {
+        const chip = document.querySelector('.report-id-copy-hint');
+        chip.textContent = '✓ copied!';
+        setTimeout(() => { chip.textContent = 'click to copy'; }, 2000);
+      });
+    }
+
+    // ═══════════════════════════════════════════════════════
+    // RESET
+    // ═══════════════════════════════════════════════════════
+    function resetForm() {
+      // Reset state
+      selectedType     = null;
+      selectedPlatform = 'Java';
+      selectedSeverity = null;
+      currentReportId  = null;
+
+      // Clear fields
+      ['f-ign','f-title','f-desc','f-steps','f-expected','f-actual',
+       'f-when','f-accused','f-extra'].forEach(id => {
+        const el = document.getElementById(id);
+        if (el) el.value = '';
+      });
+      ['cc-title','cc-desc','cc-steps'].forEach(id => {
+        const el = document.getElementById(id);
+        if (el) { el.textContent = '0 / ' + (id === 'cc-desc' ? '1500' : id === 'cc-title' ? '100' : '800'); el.className = 'char-counter'; }
+      });
+
+      // Reset toggles
+      document.querySelectorAll('.platform-btn').forEach((b,i) => b.classList.toggle('active', i === 0));
+      document.querySelectorAll('.severity-btn').forEach(b => b.classList.remove('active-low','active-medium','active-high'));
+      document.querySelectorAll('.type-card').forEach(c => c.classList.remove('selected'));
+      document.getElementById('btn-next-1').disabled = true;
+
+      // Reset selects
+      ['f-accused-platform','f-violation','f-suggest-cat'].forEach(id => {
+        const el = document.getElementById(id);
+        if (el) el.selectedIndex = 0;
+      });
+
+      // Hide dynamic fields
+      ['fields-bug','fields-issue','fields-player','fields-suggestion'].forEach(id => {
+        const el = document.getElementById(id);
+        if (el) { el.classList.remove('field-show'); el.classList.add('field-hide'); }
+      });
+
+      hideError();
+
+      // Show form, hide success
+      document.getElementById('success-screen').style.display = 'none';
+      document.getElementById('success-screen').classList.remove('show');
+      document.getElementById('main-content').style.display = 'block';
+
+      const btn = document.getElementById('btn-submit');
+      resetBtn(btn); btn.disabled = false;
+
+      showStep(1);
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    }
+  </script>
+
+</body>
+</html>
