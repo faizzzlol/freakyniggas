@@ -230,7 +230,6 @@
       pointer-events: none;
     }
 
-    /* Left accent line — only on desktop where content aligns */
     @media (min-width: 681px) {
       .hero::before {
         content: '';
@@ -861,7 +860,6 @@
       user-select: none;
     }
 
-    /* IMPROVED: Left side now stacks version + preview line */
     .changelog-head-left {
       display: flex;
       flex-direction: column;
@@ -898,7 +896,6 @@
       flex-shrink: 0;
     }
 
-    /* NEW: Brief summary shown in collapsed state */
     .changelog-preview {
       font-family: var(--font-mono);
       font-size: 0.6rem;
@@ -915,7 +912,6 @@
       pointer-events: none;
     }
 
-    /* NEW: Change count chips in header */
     .changelog-counts {
       display: flex;
       gap: 0.35rem;
@@ -970,7 +966,7 @@
       overflow: hidden;
       transition: max-height 0.45s cubic-bezier(0.16,1,0.3,1);
     }
-    .changelog-entry.open .changelog-body { max-height: 1200px; }
+    .changelog-entry.open .changelog-body { max-height: 1400px; }
 
     .changelog-inner {
       padding: 1.5rem 1.8rem 1.8rem;
@@ -995,7 +991,6 @@
       background: var(--border);
     }
 
-    /* IMPROVED: 2-col groups on desktop */
     .changelog-groups-wrap {
       display: grid;
       grid-template-columns: 1fr;
@@ -1422,7 +1417,7 @@
       <li><a href="#roadmap">Roadmap</a></li>
     </ul>
     <div class="nav-right">
-      <span class="nav-version">V1.3.2</span>
+      <span class="nav-version">V1.3.3</span>
       <a href="https://chat.whatsapp.com/E0Z4puJdXR8HhRcjoce3h6" target="_blank" class="nav-cta">Join Now</a>
     </div>
     <div class="mobile-menu" id="mobile-menu" role="navigation">
@@ -1456,7 +1451,7 @@
         </div>
         <div class="version-badge">
           <span>Build</span>
-          <span class="ver-num">V1.3.2</span>
+          <span class="ver-num">V1.3.3</span>
         </div>
       </div>
       <div class="hero-title">
@@ -1609,9 +1604,7 @@
         <div class="bento-cell-sub">Paper server engine · survival gameplay<br/>Minimal plugin interference — play naturally</div>
       </div>
 
-      <!-- Hosting — WIDE with real uptime bar -->
-      <!-- FIX: Removed "~100–200ms avg latency" claim — we can't know a visitor's actual ping. -->
-      <!-- Server region is stated instead so players can judge latency themselves. -->
+      <!-- Hosting -->
       <div class="bento-cell" style="grid-column: 1 / -1;">
         <div style="display:flex; align-items:flex-start; justify-content:space-between; flex-wrap:wrap; gap:1.5rem;">
           <div>
@@ -1666,7 +1659,7 @@
         <div class="section-label">// 03 — Active Plugins</div>
         <div class="section-title">Plugins</div>
       </div>
-      <div class="section-count">19 Active</div>
+      <div class="section-count">20 Active</div>
     </div>
     <div class="plugins-grid">
 
@@ -1676,7 +1669,7 @@
           <div class="plugin-status active">Active</div>
         </div>
         <div class="plugin-category">RPG · Progression</div>
-        <div class="plugin-desc">Full RPG leveling system with skills, stats, and abilities. Adds deep progression to the semi-vanilla experience.</div>
+        <div class="plugin-desc">Full RPG leveling system with skills, stats, and abilities. Rebalanced in V1.3.3 — sources, loot tables, and mana abilities tuned for a more natural progression curve.</div>
       </div>
 
       <div class="plugin-card">
@@ -1706,6 +1699,16 @@
         <div class="plugin-desc">Bridges in-game chat with Discord in real time. Works alongside InteractiveChat for rich message formatting and embeds.</div>
       </div>
 
+      <!-- NEW V1.3.3: EssentialsX -->
+      <div class="plugin-card">
+        <div class="plugin-header">
+          <div class="plugin-name">EssentialsX</div>
+          <div class="plugin-status new">New</div>
+        </div>
+        <div class="plugin-category">Utility · Commands</div>
+        <div class="plugin-desc">Core utility suite with <strong style="color:var(--text);">restricted player access</strong> to preserve the semi-vanilla feel. Players can use <code style="font-family:var(--font-mono);font-size:0.75rem;color:var(--green);">/afk</code>, <code style="font-family:var(--font-mono);font-size:0.75rem;color:var(--green);">/msg</code>, and <code style="font-family:var(--font-mono);font-size:0.75rem;color:var(--green);">/reply</code>. Teleport commands, homes, warps, and kits are disabled — survival is meant to feel like survival.</div>
+      </div>
+
       <div class="plugin-card">
         <div class="plugin-header">
           <div class="plugin-name">Floodgate</div>
@@ -1733,11 +1736,10 @@
         <div class="plugin-desc">Lets players sit, lay down, and crawl on any block. Small but immersive addition to the survival experience.</div>
       </div>
 
-      <!-- NEW: ImageFrame — added in V1.3.2 -->
       <div class="plugin-card">
         <div class="plugin-header">
           <div class="plugin-name">ImageFrame</div>
-          <div class="plugin-status new">New</div>
+          <div class="plugin-status active">Active</div>
         </div>
         <div class="plugin-category">Cosmetic · Display</div>
         <div class="plugin-desc">Render custom images on item frames in-game. Display maps, artwork, and custom graphics directly inside the Minecraft world using in-game frames.</div>
@@ -1746,19 +1748,20 @@
       <div class="plugin-card">
         <div class="plugin-header">
           <div class="plugin-name">InteractiveChat</div>
-          <div class="plugin-status new">New</div>
+          <div class="plugin-status active">Active</div>
         </div>
         <div class="plugin-category">Chat · Formatting</div>
         <div class="plugin-desc">Advanced chat formatting with clickable items, hover previews, and rich message components. Makes in-game chat significantly more expressive and interactive.</div>
       </div>
 
+      <!-- NEW V1.3.3: JobsReborn -->
       <div class="plugin-card">
         <div class="plugin-header">
-          <div class="plugin-name">IC Discord Addon</div>
+          <div class="plugin-name">JobsReborn</div>
           <div class="plugin-status new">New</div>
         </div>
-        <div class="plugin-category">Chat · Integration</div>
-        <div class="plugin-desc">InteractiveChat's DiscordSRV addon — syncs InteractiveChat's rich formatting features with the Discord bridge for a seamless cross-platform chat experience.</div>
+        <div class="plugin-category">Economy · Progression</div>
+        <div class="plugin-desc">Earn in-game currency by doing what you already do — mining, farming, hunting, fishing, building, and more. Job levels increase your pay rate over time, adding an economic layer on top of survival without breaking vanilla feel.</div>
       </div>
 
       <div class="plugin-card">
@@ -1800,7 +1803,7 @@
       <div class="plugin-card">
         <div class="plugin-header">
           <div class="plugin-name">RealScoreboard</div>
-          <div class="plugin-status new">New</div>
+          <div class="plugin-status active">Active</div>
         </div>
         <div class="plugin-category">Display · UI</div>
         <div class="plugin-desc">Custom animated scoreboard on the right side of the screen. Displays live player stats, server info, and PlaceholderAPI values in a clean sidebar.</div>
@@ -1821,7 +1824,7 @@
           <div class="plugin-status active">Active</div>
         </div>
         <div class="plugin-category">Economy · Foundation</div>
-        <div class="plugin-desc">Economy API foundation. Enables future economy plugins and player-driven trading systems to integrate seamlessly.</div>
+        <div class="plugin-desc">Economy API foundation. Powers the JobsReborn economy system and enables future trading integrations to slot in seamlessly.</div>
       </div>
 
       <div class="plugin-card">
@@ -1854,17 +1857,81 @@
         <div class="section-label">// 04 — Update History</div>
         <div class="section-title">Changelog</div>
       </div>
-      <div class="section-count">3 Releases</div>
+      <div class="section-count">4 Releases</div>
     </div>
     <div class="changelog-list">
 
+      <!-- ────────────────────────────────── V1.3.3 ── -->
+      <div class="changelog-entry open" id="cl-v133">
+        <div class="changelog-head" onclick="toggleChangelog('cl-v133')">
+          <div class="changelog-head-left">
+            <div class="changelog-ver-row">
+              <div class="changelog-ver">V1.3.3</div>
+              <div class="changelog-latest">Latest</div>
+              <div class="changelog-counts">
+                <span class="changelog-count-chip count-add">+2 added</span>
+                <span class="changelog-count-chip count-rem">1 removed</span>
+                <span class="changelog-count-chip count-opt">1 rebalanced</span>
+              </div>
+            </div>
+            <div class="changelog-preview">Economy Update — EssentialsX &amp; JobsReborn added, IC Discord Addon removed, AuraSkills rebalanced</div>
+          </div>
+          <div class="changelog-head-right">
+            <div class="changelog-date">22 Apr 2026 · Latest</div>
+            <div class="cl-tags-inline">
+              <span class="cl-tag added">Added</span>
+              <span class="cl-tag removed">Removed</span>
+              <span class="cl-tag optimized">Rebalanced</span>
+            </div>
+            <div class="changelog-toggle">
+              <svg viewBox="0 0 24 24"><polyline points="6 9 12 15 18 9"/></svg>
+            </div>
+          </div>
+        </div>
+        <div class="changelog-body">
+          <div class="changelog-inner">
+            <div class="changelog-subtitle">Economy &amp; Balance Update</div>
+            <div class="changelog-groups-wrap multi-group">
+              <div class="changelog-group">
+                <div class="changelog-group-title" style="color:var(--green);">Plugins Added</div>
+                <div class="changelog-items">
+                  <div class="changelog-item add">
+                    <div class="item-icon">+</div>
+                    <div>Added <strong>EssentialsX</strong> — Core command utility with restricted player access. Enabled commands: <code style="font-family:var(--font-mono);font-size:0.78rem;color:var(--green);">/afk</code>, <code style="font-family:var(--font-mono);font-size:0.78rem;color:var(--green);">/msg</code>, <code style="font-family:var(--font-mono);font-size:0.78rem;color:var(--green);">/reply</code>. Teleports, homes, warps, and kits remain disabled to preserve vanilla survival integrity.</div>
+                  </div>
+                  <div class="changelog-item add">
+                    <div class="item-icon">+</div>
+                    <div>Added <strong>JobsReborn</strong> — Players can now earn in-game currency through mining, farming, hunting, fishing, building, and more. Jobs level up over time for better pay rates. Powered by the Vault economy layer.</div>
+                  </div>
+                </div>
+              </div>
+              <div class="changelog-group">
+                <div class="changelog-group-title" style="color:var(--red);">Plugins Removed</div>
+                <div class="changelog-items">
+                  <div class="changelog-item rem">
+                    <div class="item-icon">−</div>
+                    <div>Removed <strong>IC DiscordSRV Addon</strong> — Plugin failed to load properly on startup. Removed to maintain server stability. InteractiveChat and DiscordSRV continue to function independently without the addon.</div>
+                  </div>
+                </div>
+                <div class="changelog-group-title" style="color:var(--yellow); margin-top:1.2rem;">Rebalanced</div>
+                <div class="changelog-items">
+                  <div class="changelog-item opt">
+                    <div class="item-icon">⚡</div>
+                    <div>Rebalanced <strong>AuraSkills</strong> — Tuned XP sources, loot table drops, and mana ability costs for a more natural and rewarding progression curve. Progression should now feel less grindy in early game.</div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
       <!-- ────────────────────────────────── V1.3.2 ── -->
-      <div class="changelog-entry open" id="cl-v132">
+      <div class="changelog-entry" id="cl-v132">
         <div class="changelog-head" onclick="toggleChangelog('cl-v132')">
           <div class="changelog-head-left">
             <div class="changelog-ver-row">
               <div class="changelog-ver">V1.3.2</div>
-              <div class="changelog-latest">Latest</div>
               <div class="changelog-counts">
                 <span class="changelog-count-chip count-add">+6 added</span>
               </div>
@@ -1899,7 +1966,7 @@
                   </div>
                   <div class="changelog-item add">
                     <div class="item-icon">+</div>
-                    <div>Added <strong>IC DiscordSRV Addon</strong> — Syncs InteractiveChat's formatting features with the Discord bridge for cross-platform chat.</div>
+                    <div>Added <strong>IC DiscordSRV Addon</strong> — Synced InteractiveChat's formatting features with the Discord bridge. <em style="color:var(--muted);">(Removed in V1.3.3 — load failure.)</em></div>
                   </div>
                   <div class="changelog-item add">
                     <div class="item-icon">+</div>
@@ -1921,7 +1988,6 @@
       </div>
 
       <!-- ────────────────────────────────── V1.3.1 ── -->
-      <!-- FIX: Removed duplicate "Latest" badge and removed default open state -->
       <div class="changelog-entry" id="cl-v131">
         <div class="changelog-head" onclick="toggleChangelog('cl-v131')">
           <div class="changelog-head-left">
@@ -2135,7 +2201,7 @@
         <div class="roadmap-status indev">In Dev</div>
         <div class="roadmap-num">01</div>
         <div class="roadmap-title">Chat & Scoreboard</div>
-        <div class="roadmap-desc">Configuring InteractiveChat for rich in-game chat with clickable item previews, hover cards, and player mentions. RealScoreboard sidebar customisation with live AuraSkills stats and server info.</div>
+        <div class="roadmap-desc">Configuring InteractiveChat for rich in-game chat with clickable item previews, hover cards, and player mentions. RealScoreboard sidebar customisation with live AuraSkills stats and JobsReborn balances.</div>
         <div class="roadmap-tags">
           <span class="roadmap-tag">InteractiveChat</span>
           <span class="roadmap-tag">RealScoreboard</span>
@@ -2173,7 +2239,6 @@
   <hr class="section-divider"/>
 
   <!-- ── FOOTER ── -->
-  <!-- FIX: Wrapped in .footer-inner with max-width so content aligns with sections on wide screens -->
   <footer>
     <div class="footer-inner">
       <div class="foot-left">
@@ -2190,7 +2255,7 @@
         </ul>
       </div>
       <div class="foot-right">
-        <div class="foot-copy">© 2025–2026 Freaky Niggas · FN SMP V1.3.2</div>
+        <div class="foot-copy">© 2025–2026 Freaky Niggas · FN SMP V1.3.3</div>
         <div class="foot-disclaimer">Not affiliated with Mojang Studios or Microsoft.<br/>"Minecraft" is a trademark of Mojang Studios.</div>
       </div>
     </div>
@@ -2251,7 +2316,6 @@
     }
 
     // ── CHANGELOG TOGGLE ──
-    // Only one open at a time (accordion). Click same entry to collapse it.
     function toggleChangelog(id) {
       const entry  = document.getElementById(id);
       const isOpen = entry.classList.contains('open');
