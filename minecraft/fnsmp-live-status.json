@@ -1,0 +1,20 @@
+﻿{
+    "generated_at":  "2026-04-23T15:46:56Z",
+    "source":  "logs/latest.log",
+    "totals":  {
+                   "all":  0,
+                   "java":  0,
+                   "bedrock":  0
+               },
+    "players":  {
+                    "all":  [
+
+                            ],
+                    "java":  [
+
+                             ],
+                    "bedrock":  [
+
+                                ]
+                }
+}
