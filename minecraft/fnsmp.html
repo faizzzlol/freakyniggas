@@ -1393,6 +1393,7 @@
       .hero-badges .hero-badge:nth-child(n+4) { display: none; }
     }
   </style>
+  <link rel="stylesheet" href="/freakyniggas/legacy-archive.css">
 </head>
 <body>
 
@@ -1427,13 +1428,21 @@
       <a href="#plugins">🔌 Plugins</a>
       <a href="#changelog">📋 Changelog</a>
       <a href="#roadmap">🗺 Roadmap</a>
-      <a href="https://faizzzlol.github.io/freakyniggas/valorant">🎮 Valorant</a>
+      <a href="https://faizzzlol.github.io/freakyniggas/valorant/">🎮 Valorant</a>
       <a href="https://chat.whatsapp.com/E0Z4puJdXR8HhRcjoce3h6" target="_blank" class="mobile-cta">Join WhatsApp</a>
     </div>
   </nav>
+<aside class="fn-archive-notice" aria-label="FN Squad original-era archive notice">
+  <div class="fn-archive-notice__inner">
+    <span class="fn-archive-notice__eyebrow">FN SQUAD / ORIGINAL ERA / ARCHIVE</span>
+    <p><strong>You're visiting our preserved original website.</strong> Some names, links, news examples and server details are historical and may be outdated. <span lang="ms">Ini laman web lama FN Squad; maklumatnya mungkin tidak lagi terkini.</span></p>
+  </div>
+  <a class="fn-archive-notice__link" href="https://fnsquadofficial.github.io/">Visit current FN Squad ↗</a>
+</aside>
 
   <!-- ── HERO ── -->
-  <section class="hero" id="hero">
+  <div class="fn-archive-history-note" role="note"><strong>Original-era FN SMP server history and specifications:</strong> This page is kept for FN Squad history. Items and statuses shown here are not verified as current. For up-to-date information, visit <a href="https://fnsquadofficial.github.io/fn-smp/">FN Squad Official</a>.</div>
+<section class="hero" id="hero">
     <div class="hero-bg"></div>
     <div class="hero-content">
       <div class="breadcrumb">
@@ -1564,7 +1573,7 @@
 
       <!-- Live Capacity -->
       <div class="bento-cell">
-        <div class="bento-cell-label">Live Capacity</div>
+        <div class="bento-cell-label">Historic capacity</div>
         <div class="bento-cell-value" id="bentoCapacity">— / 10</div>
         <div class="bento-cell-sub" id="bentoCapacitySub">Fetching live player count...</div>
       </div>
@@ -2250,7 +2259,7 @@
         <ul class="foot-links">
           <li><a href="https://faizzzlol.github.io/freakyniggas/">Home</a></li>
           <li><a href="https://faizzzlol.github.io/freakyniggas/minecraft">Minecraft</a></li>
-          <li><a href="https://faizzzlol.github.io/freakyniggas/valorant">Valorant</a></li>
+          <li><a href="https://faizzzlol.github.io/freakyniggas/valorant/">Valorant</a></li>
           <li><a href="https://chat.whatsapp.com/LDSxXcxRHDK5iBjcx1HQA1" target="_blank">Announcements</a></li>
         </ul>
       </div>
@@ -2556,8 +2565,15 @@
       }
     }
 
-    fetchStatus();
-    setInterval(fetchStatus, 60000);
+    /* Archived page: don't request live server status from a historical endpoint. */
+    const legacyStatusText = document.getElementById('statusText');
+    const legacyStatusDot = document.getElementById('statusDot');
+    const legacyStatusPlayers = document.getElementById('statusPlayers');
+    if (legacyStatusText) legacyStatusText.textContent = 'Historical listing';
+    if (legacyStatusDot) legacyStatusDot.classList.remove('online');
+    if (legacyStatusPlayers) legacyStatusPlayers.textContent = '';
+    const legacyCapacity = document.querySelector('.bento-capacity');
+    if (legacyCapacity) legacyCapacity.setAttribute('aria-label', 'Historical capacity; not a live figure');
 
     // ── KONAMI CODE ──
     const konami = [38,38,40,40,37,39,37,39,66,65];
