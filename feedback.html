@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8"/>
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>Feedback — Freaky Niggas</title>
+  <title>Original Era Archive — Feedback — Freaky Niggas</title>
   <link rel="icon" type="image/gif" href="https://faizzzlol.github.io/freakyniggas/FreakyNiggasLogo.gif"/>
   <link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:ital,wght@0,700;0,900;1,900&family=DM+Mono:wght@400;500&family=Barlow:wght@400;600&display=swap" rel="stylesheet"/>
   <style>
@@ -227,6 +227,7 @@
       .form-body { padding: 1.3rem; }
     }
   </style>
+  <link rel="stylesheet" href="/freakyniggas/legacy-archive.css">
 </head>
 <body>
 
@@ -238,10 +239,17 @@
     <ul class="nav-links">
       <li><a href="https://faizzzlol.github.io/freakyniggas/">Home</a></li>
       <li><a href="https://faizzzlol.github.io/freakyniggas/minecraft">Minecraft</a></li>
-      <li><a href="https://faizzzlol.github.io/freakyniggas/valorant">Valorant</a></li>
-      <li><a href="https://faizzzlol.github.io/freakyniggas/feedback" class="active">Feedback</a></li>
+      <li><a href="https://faizzzlol.github.io/freakyniggas/valorant/">Valorant</a></li>
+      <li><a href="https://faizzzlol.github.io/freakyniggas/feedback.html" class="active">Feedback</a></li>
     </ul>
   </nav>
+<aside class="fn-archive-notice" aria-label="FN Squad original-era archive notice">
+  <div class="fn-archive-notice__inner">
+    <span class="fn-archive-notice__eyebrow">FN SQUAD / ORIGINAL ERA / ARCHIVE</span>
+    <p><strong>You're visiting our preserved original website.</strong> Some names, links, news examples and server details are historical and may be outdated. <span lang="ms">Ini laman web lama FN Squad; maklumatnya mungkin tidak lagi terkini.</span></p>
+  </div>
+  <a class="fn-archive-notice__link" href="https://fnsquadofficial.github.io/">Visit current FN Squad ↗</a>
+</aside>
 
   <div class="page-hero">
     <div class="breadcrumb">
@@ -254,6 +262,7 @@
   </div>
 
   <div class="section">
+<div class="fn-archive-history-note" role="note"><strong>Original-era feedback page:</strong> This page is kept for FN Squad history. Items and statuses shown here are not verified as current. For up-to-date information, visit <a href="https://fnsquadofficial.github.io/contact/">FN Squad Official</a>.</div>
 
     <div class="form-card" id="formCard">
       <div class="form-body">
@@ -285,19 +294,19 @@
         </div>
 
         <div class="form-note">
-          ⚠ Once submitted, feedback cannot be edited or deleted. Double-check before hitting submit.
+          This form creates an email draft. Your feedback is not sent to FN Squad unless you send the message using your email app. You may also write directly to <a href="mailto:fnsquadofficial@gmail.com">fnsquadofficial@gmail.com</a>.
         </div>
 
       </div>
       <div class="form-foot">
-        <button class="btn-submit" onclick="submitFeedback()">Submit Feedback →</button>
+        <button class="btn-submit" onclick="submitFeedback()">Create Email Draft →</button>
       </div>
     </div>
 
     <div class="success-card" id="successCard">
       <div class="success-icon">✓</div>
       <div class="success-title">Thanks!</div>
-      <div class="success-msg">Your feedback has been received. We actually read these.</div>
+      <div class="success-msg">Your email app should open. FN Squad receives feedback only after you send your email.</div>
     </div>
 
   </div>
@@ -316,16 +325,24 @@
       const name = document.getElementById('name').value.trim();
       const feedback = document.getElementById('feedback').value.trim();
       const rating = document.querySelector('input[name="rating"]:checked');
-
       if (!name) { alert('Please enter your name.'); return; }
       if (!rating) { alert('Please select a rating.'); return; }
       if (!feedback) { alert('Please write some feedback.'); return; }
-
-      // Show success state
-      document.getElementById('formCard').style.display = 'none';
-      const s = document.getElementById('successCard');
-      s.style.display = 'flex';
-      s.style.animation = 'fadeUp 0.5s ease both';
+      const subject = 'FN Squad original-era website feedback';
+      const body = 'Name: ' + name + '\nRating: ' + rating.value
+        + '/5\n\nFeedback:\n' + feedback;
+      const draft = 'mailto:fnsquadofficial@gmail.com?subject='
+        + encodeURIComponent(subject) + '&body=' + encodeURIComponent(body);
+      window.location.href = draft;
+      /* An email draft is not a submission. Never show a false success state. */
+      const success = document.getElementById('successCard');
+      const card = document.getElementById('formCard');
+      if (card) card.style.display = 'none';
+      if (success) {
+        success.style.display = 'flex';
+        success.querySelector('.success-title').textContent = 'Email draft';
+        success.querySelector('.success-msg').textContent = 'Check your email app and press Send. If no app opened, email fnsquadofficial@gmail.com directly.';
+      }
     }
   </script>
 
