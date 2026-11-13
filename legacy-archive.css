@@ -1,0 +1,16 @@
+/* FN Squad Original Era archive notice. Intentionally separate from preserved original design. */
+.fn-archive-notice,
+.fn-archive-notice *{box-sizing:border-box}
+.fn-archive-notice{position:relative;z-index:90;display:flex;align-items:center;justify-content:space-between;gap:18px;width:min(1120px,calc(100% - 32px));margin:80px auto 0;padding:17px 21px;border:1px solid #515151;border-radius:9px;background:#161616;color:#f6f6f6;font-family:Arial,Helvetica,sans-serif;font-size:14px;line-height:1.55;box-shadow:0 8px 24px rgba(0,0,0,.22)}
+.fn-archive-notice__inner{min-width:0;flex:1}
+.fn-archive-notice__eyebrow{display:block;margin-bottom:4px;color:#b9b9b9;font-size:10px;font-weight:800;letter-spacing:.13em;text-transform:uppercase}
+.fn-archive-notice p{margin:0!important;color:#dfdfdf!important;font-size:14px!important;line-height:1.55!important;max-width:90ch}
+.fn-archive-notice strong{color:#fff}
+.fn-archive-notice__link{display:inline-flex;align-items:center;justify-content:center;flex:0 0 auto;min-height:44px;padding:10px 15px;border:1px solid #dedede;border-radius:6px;color:#111!important;background:#eee!important;font-size:12px;font-weight:800;text-decoration:none!important;white-space:nowrap}
+.fn-archive-notice__link:hover,.fn-archive-notice__link:focus-visible{background:#fff!important;outline-offset:3px}
+.fn-archive-history-note{margin:14px 0;padding:13px 16px;border:1px solid #444;border-radius:7px;background:#141414;color:#d0d0d0;font-size:13px;line-height:1.6}
+.fn-archive-history-note a{color:#fff;text-decoration:underline;text-underline-offset:3px}
+.fn-archive-site-link{display:inline-flex;align-items:center;min-height:40px;color:#eee;font-weight:700;font-size:.75rem;letter-spacing:.04em;text-decoration:underline;text-underline-offset:3px}
+@media(max-width:760px){.fn-archive-notice{align-items:stretch;flex-direction:column;margin-top:72px;padding:15px 16px;gap:11px}.fn-archive-notice__link{width:100%;white-space:normal}.fn-archive-notice p{font-size:13px!important}}
+@media(max-width:400px){.fn-archive-notice{width:calc(100% - 24px);margin-top:72px}}
+@media(prefers-reduced-motion:reduce){.fn-archive-notice *, .fn-archive-notice{scroll-behavior:auto;animation:none}}
