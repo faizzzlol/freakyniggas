@@ -2,7 +2,7 @@
 
 > **FN Squad Original Era archive status (November 2026).** This repository preserves the group's earlier gaming website and its historic branding and design. It is **not** the current authoritative FN Squad website.
 >
-> **Current FN Squad:** https://fnsquadofficial.github.io/
+> **Current FN Squad:** https://fnsquadofficial.github.io/v2/
 >
 > **Historic website:** https://faizzzlol.github.io/freakyniggas/
 >
